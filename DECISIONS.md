@@ -33,10 +33,10 @@ Architectural and product decisions for this project, in chronological order. Ad
 **Why:** Zero cost, sufficient limits (project count isn't a constraint). However, Hobby's terms restrict it to non-commercial use — if Fosters & Paws formally adopts this as a production tool, hosting ownership needs to move to an account they control, or the commercial-use question needs to be resolved directly with Vercel.
 **Revisit when:** F&P confirms adoption (Kevin currently ~75% confident they will).
  
-### 2026-08-04 — Opt-in consent checkbox added to Phase 1, ahead of the feature it supports
-**Decision:** Contact info step includes an unchecked-by-default "Keep me updated" checkbox, even though no email automation exists yet.
+### 2026-08-04 — Opt-in consent checkbox scoped into Phase 1, ahead of the feature it supports
+**Decision:** Contact info step will include an unchecked-by-default "Keep me updated" checkbox, even though no email automation exists yet.
 **Why:** V3 (automated re-engagement email campaign, concept-only) requires CAN-SPAM-compliant opt-in consent. Capturing it now costs one form field; retrofitting it later would mean re-contacting every prior user before V3 could send anything.
-**Note:** The checkbox currently only sets a local form-state flag — it is not wired to any ESP or storage layer. That wiring is out of scope until an ESP is chosen (see PRD Open Questions).
+**Note:** This entry originally read as if the checkbox were already implemented — it wasn't. It was scoped/decided here but the field didn't actually exist in `GuidedMatch.jsx` until a later session caught the gap during a CLAUDE.md-guided review and added it (an `updatesOptIn` checkbox field on the `your_info_contact` step). It currently only sets a local form-state flag — it is not wired to any ESP or storage layer. That wiring is out of scope until an ESP is chosen (see PRD Open Questions).
  
 ### 2026-08-04 — Spirit Dog Quiz added to Phase 1 scope, hybrid archetype + real-dog design
 **Decision:** A second, lighter-weight flow (the "Spirit Dog Quiz") ships in Phase 1 alongside the core guided match, not deferred to a later phase. Result screen shows both a fun original archetype (e.g. "Spicy Chihuahua") and 1-3 real `MOCK_DOGS` matching that archetype's energy/size profile, with Adopt / Donate / Share CTAs.

@@ -1,15 +1,16 @@
 import { useState, useMemo } from 'react'
- 
+import { THEME_CSS, ProgressDots, OptionGrid, StepActions } from './shared/StepPrimitives'
+
 // ============================================================
-// Fosters & Paws — Dog Matching Tool (Phase 1)
+// Fosters & Paws — Guided Adoption Match (Feature 1, Phase 1)
 // Adapted from SUPR's onboarding shell (step flow, progress
 // dots, option-card pattern). All Supabase/auth calls stripped.
 // Runs entirely against mock dog data — no ShelterLuv API.
 // ============================================================
- 
+
 // ---------- Mock dog data (stand-in for ShelterLuv /animals) ----------
 const ENERGY_SCALE = ['Lazy bones', 'Chill', 'Mix', 'Energetic', 'Spazz']
- 
+
 const MOCK_DOGS = [
   { id: 'd1', name: 'Biscuit', breed: 'Labrador Mix', age: 3, ageLabel: 'Adult', size: 'Large', energy: 'Energetic', goodWithKids: true, houseTrained: true, bio: 'A goofy, food-motivated boy who loves a long walk and a longer nap after.', emoji: '🐕' },
   { id: 'd2', name: 'Pepper', breed: 'Terrier Mix', age: 8, ageLabel: 'Senior', size: 'Small', energy: 'Chill', goodWithKids: true, houseTrained: true, bio: 'A calm senior gentleman who\'d rather supervise from the couch than run laps.', emoji: '🐩' },
@@ -20,7 +21,7 @@ const MOCK_DOGS = [
   { id: 'd7', name: 'Rocky', breed: 'Boxer Mix', age: 1, ageLabel: 'Young', size: 'Medium', energy: 'Spazz', goodWithKids: true, houseTrained: false, bio: 'All puppy energy, all the time. Loves kids almost as much as tennis balls.', emoji: '🐶' },
   { id: 'd8', name: 'Willow', breed: 'Retriever Mix', age: 9, ageLabel: 'Senior', size: 'Medium', energy: 'Chill', goodWithKids: true, houseTrained: true, bio: 'A gentle old soul looking for a soft bed and an easy routine.', emoji: '🐕' },
 ]
- 
+
 // ---------- Question definitions ----------
 const STEPS = [
   {
@@ -116,16 +117,17 @@ const STEPS = [
       { key: 'phone', label: 'Phone', required: true },
       { key: 'phoneType', label: 'Phone Type', required: false, select: ['Cell', 'Home', 'Work'] },
       { key: 'email', label: 'Email Address', required: true },
+      { key: 'updatesOptIn', label: 'Keep me updated on new matches, meet-and-greets, and ways to help', type: 'checkbox', required: false },
     ],
   },
 ]
- 
+
 const TOTAL_STEPS = STEPS.length
- 
+
 function energyIcon(label) {
   return { 'Lazy bones': '🦥', Chill: '😌', Mix: '🎲', Energetic: '🔥', Spazz: '⚡' }[label] || '🐾'
 }
- 
+
 // ---------- Matching logic ----------
 function sizeFit(yard, homeType, size) {
   // Rough compatibility score 0-1 per dog size given living situation
@@ -139,40 +141,40 @@ function sizeFit(yard, homeType, size) {
   const boost = (yardBoost[yard] || {})[size] ?? 0
   return Math.max(0, Math.min(1, base + boost))
 }
- 
+
 function computeMatches(answers) {
   const scored = MOCK_DOGS.map(dog => {
     // Hard filters
     if (answers.good_with_kids === 'yes' && !dog.goodWithKids) return { dog, score: -1 }
     if (answers.potty_trained === 'yes' && !dog.houseTrained) return { dog, score: -1 }
- 
+
     let score = 0
     // Activity match — closeness on the energy scale (40%)
     const wantIdx = ENERGY_SCALE.indexOf(answers.activity)
     const dogIdx = ENERGY_SCALE.indexOf(dog.energy)
     const activityScore = wantIdx >= 0 ? 1 - Math.abs(wantIdx - dogIdx) / (ENERGY_SCALE.length - 1) : 0.5
     score += activityScore * 40
- 
+
     // Size/home fit (30%)
     score += sizeFit(answers.yard, answers.home_type, dog.size) * 30
- 
+
     // Kids in household bonus (15%) — if user has young kids, weight goodWithKids even without hard "yes"
     if (answers.kids === 'under_10') score += dog.goodWithKids ? 15 : 0
     else score += 10 // neutral credit if not directly applicable
- 
+
     // House-trained soft bonus (15%)
     score += dog.houseTrained ? 15 : 5
- 
+
     return { dog, score }
   })
- 
+
   const eligible = scored.filter(s => s.score >= 0)
   eligible.sort((a, b) => b.score - a.score)
- 
+
   const threshold = 55
   let matches = eligible.filter(s => s.score >= threshold)
   if (matches.length < 2) matches = eligible.slice(0, 3) // fallback so we never show an empty result
- 
+
   // Shuffle so it never reads as a fixed ranking, even though it's scored underneath
   const shuffled = [...matches]
   for (let i = shuffled.length - 1; i > 0; i--) {
@@ -181,7 +183,7 @@ function computeMatches(answers) {
   }
   return shuffled.map(s => s.dog)
 }
- 
+
 function matchReasons(dog, answers) {
   const reasons = []
   if (answers.activity && dog.energy === answers.activity) reasons.push(`${dog.energy} energy — matches what you're looking for`)
@@ -193,30 +195,31 @@ function matchReasons(dog, answers) {
   if (reasons.length === 0) reasons.push(`${dog.size} · ${dog.ageLabel}`)
   return reasons.slice(0, 3)
 }
- 
-// ---------- UI bits ----------
-function ProgressDots({ step }) {
-  return (
-    <div className="fp-progress">
-      {Array.from({ length: TOTAL_STEPS }, (_, i) => (
-        <div key={i} className={`fp-dot ${i + 1 === step ? 'fp-dot--active' : ''} ${i + 1 < step ? 'fp-dot--done' : ''}`} />
-      ))}
-    </div>
-  )
-}
- 
-export default function FostersPawsMatch() {
+
+// ---------- Guided-match component ----------
+export default function GuidedMatch() {
   const [phase, setPhase] = useState('welcome') // welcome | flow | computing | results
   const [step, setStep] = useState(1)
   const [answers, setAnswers] = useState({})
   const [formDraft, setFormDraft] = useState({})
- 
+  const [draftStep, setDraftStep] = useState(step)
+
   const current = STEPS[step - 1]
- 
+
+  // Rehydrate the draft from any previously saved answer whenever a form
+  // step is (re)entered, so Back doesn't show blank fields or, worse,
+  // let Continue silently overwrite a saved answer with an empty draft.
+  // Adjusted during render (not an effect) per React's guidance for
+  // resetting state when a value changes: https://react.dev/learn/you-might-not-need-an-effect
+  if (step !== draftStep) {
+    setDraftStep(step)
+    setFormDraft(current?.type === 'form' ? (answers[current.id] || {}) : {})
+  }
+
   function setAnswer(id, value) {
     setAnswers(prev => ({ ...prev, [id]: value }))
   }
- 
+
   function goNext() {
     if (step >= TOTAL_STEPS) {
       setPhase('computing')
@@ -225,49 +228,48 @@ export default function FostersPawsMatch() {
       setStep(s => s + 1)
     }
   }
- 
+
   function goBack() {
     if (step === 1) { setPhase('welcome'); return }
     setStep(s => s - 1)
   }
- 
+
   function selectSingle(value) {
     setAnswer(current.id, value)
     setTimeout(goNext, 200)
   }
- 
+
   function updateField(key, value) {
     setFormDraft(prev => ({ ...prev, [key]: value }))
   }
- 
+
   function submitForm() {
     setAnswer(current.id, formDraft)
-    setFormDraft({})
     goNext()
   }
- 
+
   const formValid = useMemo(() => {
     if (current?.type !== 'form') return true
     return current.fields.filter(f => f.required).every(f => (formDraft[f.key] || '').trim())
   }, [current, formDraft])
- 
+
   const matches = useMemo(() => {
     if (phase !== 'results') return []
     const flatAnswers = { ...answers }
     return computeMatches(flatAnswers)
   }, [phase]) // eslint-disable-line react-hooks/exhaustive-deps
- 
+
   function restart() {
     setAnswers({})
     setFormDraft({})
     setStep(1)
     setPhase('welcome')
   }
- 
+
   return (
     <div className="fp-page">
-      <style>{CSS}</style>
- 
+      <style>{THEME_CSS}{CSS}</style>
+
       {phase === 'welcome' && (
         <div className="fp-body fp-body--center">
           <div className="fp-welcome">
@@ -280,82 +282,83 @@ export default function FostersPawsMatch() {
           </div>
         </div>
       )}
- 
+
       {phase === 'flow' && current && (
         <>
           <div className="fp-header">
-            <ProgressDots step={step} />
+            <ProgressDots total={TOTAL_STEPS} step={step} />
             <button className="fp-back" onClick={goBack}>← Back</button>
           </div>
- 
+
           <div className="fp-body">
             <div className="fp-eyebrow">{current.section}</div>
             <h2 className="fp-question">{current.question}</h2>
             {current.hint && <p className="fp-hint">{current.hint}</p>}
- 
+
             {current.type === 'single' && (
-              <div className="fp-option-grid">
-                {current.options.map(opt => (
-                  <div
-                    key={opt.value}
-                    className={`fp-option-card ${answers[current.id] === opt.value ? 'fp-option-card--selected' : ''}`}
-                    onClick={() => selectSingle(opt.value)}
-                  >
-                    <span className="fp-option-icon">{opt.icon}</span>
-                    <div className="fp-option-label">{opt.label}</div>
-                  </div>
-                ))}
-              </div>
+              <OptionGrid options={current.options} selected={answers[current.id]} onSelect={selectSingle} />
             )}
- 
+
             {current.type === 'form' && (
               <>
                 <div className="fp-form-fields">
                   {current.fields.map(field => (
-                    <div key={field.key} className="fp-field">
-                      <label className="fp-field-label">
-                        {field.label}{field.required && <span className="fp-required"> *</span>}
-                      </label>
-                      {field.select ? (
-                        <select
-                          className="fp-input"
-                          value={formDraft[field.key] || ''}
-                          onChange={e => updateField(field.key, e.target.value)}
-                        >
-                          <option value="">Select…</option>
-                          {field.select.map(o => <option key={o} value={o}>{o}</option>)}
-                        </select>
-                      ) : (
+                    field.type === 'checkbox' ? (
+                      <label key={field.key} className="fp-checkbox-field">
                         <input
-                          className="fp-input"
-                          type="text"
-                          maxLength={field.maxLength}
-                          placeholder={field.placeholder || ''}
-                          value={formDraft[field.key] || ''}
-                          onChange={e => updateField(field.key, e.target.value)}
+                          type="checkbox"
+                          className="fp-checkbox"
+                          checked={!!formDraft[field.key]}
+                          onChange={e => updateField(field.key, e.target.checked)}
                         />
-                      )}
-                    </div>
+                        <span>{field.label}</span>
+                      </label>
+                    ) : (
+                      <div key={field.key} className="fp-field">
+                        <label className="fp-field-label">
+                          {field.label}{field.required && <span className="fp-required"> *</span>}
+                        </label>
+                        {field.select ? (
+                          <select
+                            className="fp-input"
+                            value={formDraft[field.key] || ''}
+                            onChange={e => updateField(field.key, e.target.value)}
+                          >
+                            <option value="">Select…</option>
+                            {field.select.map(o => <option key={o} value={o}>{o}</option>)}
+                          </select>
+                        ) : (
+                          <input
+                            className="fp-input"
+                            type="text"
+                            maxLength={field.maxLength}
+                            placeholder={field.placeholder || ''}
+                            value={formDraft[field.key] || ''}
+                            onChange={e => updateField(field.key, e.target.value)}
+                          />
+                        )}
+                      </div>
+                    )
                   ))}
                 </div>
-                <div className="fp-actions">
+                <StepActions>
                   <button className="fp-btn fp-btn--primary" disabled={!formValid} onClick={submitForm}>
                     Continue
                   </button>
-                </div>
+                </StepActions>
               </>
             )}
           </div>
         </>
       )}
- 
+
       {phase === 'computing' && (
         <div className="fp-body fp-body--center">
           <div className="fp-spinner" />
           <p className="fp-lead" style={{ marginTop: 16 }}>Finding your matches…</p>
         </div>
       )}
- 
+
       {phase === 'results' && (
         <div className="fp-body">
           <div className="fp-eyebrow">Your matches</div>
@@ -363,7 +366,7 @@ export default function FostersPawsMatch() {
           <p className="fp-hint">
             These aren't ranked — every dog here could be a great fit based on what you told us. Reach out about any of them.
           </p>
- 
+
           <div className="fp-match-grid">
             {matches.map(dog => (
               <div key={dog.id} className="fp-match-card">
@@ -382,42 +385,19 @@ export default function FostersPawsMatch() {
               </div>
             ))}
           </div>
- 
-          <div className="fp-actions" style={{ marginTop: 24 }}>
+
+          <StepActions style={{ marginTop: 24 }}>
             <button className="fp-btn fp-btn--ghost" onClick={restart}>Start over</button>
-          </div>
+          </StepActions>
         </div>
       )}
     </div>
   )
 }
- 
-// ---------- Styles (light, warm palette inferred from fostersandpaws.org) ----------
+
+// ---------- Styles (flow-specific — shared tokens/primitives live in shared/StepPrimitives) ----------
 const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Nunito:wght@400;600;700&display=swap');
- 
-.fp-page {
-  --bg-page: #FBF6EC;
-  --bg-card: #FFFFFF;
-  --border: #E9DFC9;
-  --accent: #E0A32E;
-  --accent-ink: #8A5A00;
-  --text-primary: #2E2B24;
-  --text-muted: #7A7263;
-  min-height: 100%;
-  background: var(--bg-page);
-  color: var(--text-primary);
-  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  padding: 0 0 32px;
-  border-radius: 12px;
-  overflow: hidden;
-}
-.fp-title, .fp-question, .fp-match-name { font-family: 'Quicksand', 'Nunito', sans-serif; }
 .fp-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px 0; }
-.fp-progress { display: flex; gap: 6px; flex: 1; }
-.fp-dot { height: 4px; flex: 1; border-radius: 2px; background: var(--border); transition: background .2s; }
-.fp-dot--done { background: var(--accent); opacity: 0.5; }
-.fp-dot--active { background: var(--accent); }
 .fp-back { background: none; border: none; color: var(--text-muted); font-size: 14px; cursor: pointer; margin-left: 16px; white-space: nowrap; }
 .fp-body { padding: 28px 24px 0; max-width: 560px; margin: 0 auto; }
 .fp-body--center { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 420px; padding-top: 0; }
@@ -428,17 +408,6 @@ const CSS = `
 .fp-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-ink); margin-bottom: 8px; }
 .fp-question { font-size: 22px; font-weight: 700; margin: 0 0 6px; }
 .fp-hint { color: var(--text-muted); font-size: 14px; margin: 0 0 20px; line-height: 1.5; }
-.fp-option-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
-.fp-option-card {
-  display: flex; align-items: center; gap: 10px;
-  background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
-  padding: 14px; cursor: pointer; transition: border-color .15s, background .15s, box-shadow .15s;
-  box-shadow: 0 1px 2px rgba(46,43,36,0.04);
-}
-.fp-option-card:hover { border-color: var(--accent); }
-.fp-option-card--selected { border-color: var(--accent); background: rgba(224,163,46,0.14); box-shadow: 0 2px 8px rgba(224,163,46,0.18); }
-.fp-option-icon { font-size: 20px; }
-.fp-option-label { font-size: 14px; font-weight: 600; }
 .fp-form-fields { display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; }
 .fp-field-label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
 .fp-required { color: var(--accent-ink); }
@@ -447,28 +416,19 @@ const CSS = `
   padding: 11px 14px; color: var(--text-primary); font-size: 15px; font-family: inherit; box-sizing: border-box;
 }
 .fp-input:focus { outline: none; border-color: var(--accent); }
-.fp-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
-.fp-btn {
-  border: none; border-radius: 12px; padding: 13px 20px; font-size: 15px; font-weight: 700;
-  cursor: pointer; font-family: 'Quicksand', inherit; transition: opacity .15s, box-shadow .15s;
-}
-.fp-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-.fp-btn--primary { background: var(--accent); color: #2E2B24; box-shadow: 0 2px 6px rgba(224,163,46,0.35); }
-.fp-btn--primary:not(:disabled):hover { opacity: 0.9; }
-.fp-btn--ghost { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
-.fp-btn--full { width: 100%; margin-top: 14px; }
+.fp-checkbox-field { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--text-muted); line-height: 1.4; cursor: pointer; }
+.fp-checkbox { margin-top: 2px; accent-color: var(--accent); width: 16px; height: 16px; flex-shrink: 0; }
 .fp-spinner { width: 28px; height: 28px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: fp-spin .7s linear infinite; }
 @keyframes fp-spin { to { transform: rotate(360deg); } }
 .fp-match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 8px; }
 .fp-match-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 18px; box-shadow: 0 1px 3px rgba(46,43,36,0.06); }
 .fp-match-emoji { font-size: 30px; margin-bottom: 6px; }
-.fp-match-name { font-size: 17px; font-weight: 700; }
+.fp-match-name { font-size: 17px; font-weight: 700; font-family: 'Quicksand', 'Nunito', sans-serif; }
 .fp-match-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
 .fp-match-bio { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin: 0 0 10px; }
 .fp-match-reasons { display: flex; flex-wrap: wrap; gap: 6px; }
 .fp-chip { font-size: 11px; background: rgba(224,163,46,0.16); color: var(--accent-ink); border-radius: 20px; padding: 4px 10px; font-weight: 700; }
 @media (max-width: 480px) {
-  .fp-option-grid, .fp-match-grid { grid-template-columns: 1fr; }
+  .fp-match-grid { grid-template-columns: 1fr; }
 }
 `
- 

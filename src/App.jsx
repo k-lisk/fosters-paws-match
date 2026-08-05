@@ -1,7 +1,7 @@
-import FostersPawsMatch from './FostersPawsMatch'
+import GuidedMatch from './GuidedMatch'
 
 function App() {
-  return <FostersPawsMatch />
+  return <GuidedMatch />
 }
 
 export default App

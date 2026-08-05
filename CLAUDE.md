@@ -10,7 +10,7 @@ Fosters & Paws Dog Matching Tool — a guided adopter intake flow that matches a
  
 - **Framework:** React + Vite
 - **Language:** JavaScript (not TypeScript — matches SUPR, keeps this fast to iterate on)
-- **Styling:** Plain CSS via a single injected `<style>` block per component (see existing `FostersPawsMatch.jsx` for the pattern) — no CSS framework, no CSS-in-JS library
+- **Styling:** Plain CSS via a single injected `<style>` block per component (see existing `GuidedMatch.jsx` for the pattern) — no CSS framework, no CSS-in-JS library
 - **State:** React `useState`/`useMemo` only. No Redux, no Zustand, no context providers — the whole app is one flow with local state.
 - **Backend:** None in Phase 1. No Supabase, no database, no server. `MOCK_DOGS` is a hardcoded array in the component file.
 - **Package manager:** npm
