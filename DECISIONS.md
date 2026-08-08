@@ -23,6 +23,7 @@ Architectural and product decisions for this project, in chronological order. Ad
 **Decision:** Light/warm palette (`#FBF6EC` background, `#E0A32E` gold accent) built from browsing fostersandpaws.org, not from extracted CSS values.
 **Why:** Squarespace's live CSS isn't accessible via a simple fetch; no brand guide was available at build time.
 **Revisit when:** Kevin or Fosters & Paws supplies actual hex values — swap is low-cost since all colors are CSS custom properties.
+**Superseded:** See the 2026-08-07 "Real Fosters & Paws brand tokens applied" entry below — real hex values and logo assets are now in use.
  
 ### 2026-08-04 — MIT License
 **Decision:** Repo licensed MIT.
@@ -43,7 +44,23 @@ Architectural and product decisions for this project, in chronological order. Ad
 **Why:** Explicit call from Kevin — the quiz serves a genuinely different funnel stage (casual/social visitors not ready for full intake) than the serious 10-question flow, and the hybrid design (fun hook + real payoff) avoids it being just a gimmick with no conversion path.
 **Tradeoff acknowledged:** This roughly doubles Phase 1's build surface before anything ships. If build time becomes a constraint, the core match flow (Feature 1) takes priority — it's the load-bearing deliverable; the quiz is high-value but not load-bearing.
 **Constraint:** Archetype names, copy, and mechanic are original. The quiz is inspired by the general "spirit animal quiz" format (prompted by a Parks and Recreation episode), not by specific dialogue, jokes, or content from the show — this is a public-facing tool tied to Kevin's name, so no reproduction of the source material.
- 
+
+### 2026-08-07 — Mock data moved to a shared module
+**Decision:** `MOCK_DOGS`, `ENERGY_SCALE`, and `energyIcon` moved out of `GuidedMatch.jsx` into `src/shared/mockDogs.js`. Both `GuidedMatch.jsx` and `SpiritDogQuiz.jsx` import from there.
+**Why:** Building the Spirit Dog Quiz meant a second flow needed the exact same dog data and energy scale. CLAUDE.md's original "mock data lives in the main component file" guidance assumed a single flow; once a second flow needed it, keeping the data in one flow file and importing it into the other would've made one feature file depend on another, which is backwards. A shared plain-data module isn't the "separate data-fetching layer" that guidance was warning against — no fetch/API logic, just relocating a constant both flows need.
+**Do not** re-inline this data into a component file without checking both flows still work.
+
+### 2026-08-07 — Spirit Dog Quiz results are ranked, not shuffled
+**Decision:** The quiz's result screen shows its top 1-2 dog matches in closeness-score order (best first), unlike Feature 1's explicitly unranked/shuffled results.
+**Why:** This is a deliberate divergence from the 2026-08-04 "Results are unranked and shuffled" decision, not an inconsistency — that decision was scoped to Feature 1's guided-match engine, where multiple dogs are presented as equally-valid options an adopter should evaluate on their own terms. The quiz explicitly frames its dogs as "closest to your result" (a ranked concept by definition), and it's a different, lighter-weight matching engine serving a different (casual, top-of-funnel) audience.
+**Do not** read this as Feature 1's shuffle decision having been reversed — that one still stands as written.
+
+### 2026-08-07 — Real Fosters & Paws brand tokens applied, single Quicksand typeface
+**Decision:** Replaced the inferred placeholder palette with Kevin-supplied brand values: `--accent: #9a6463`, `--accent-text: #f5f5f5`, `--text-primary: #37383d`, `--text-muted: #5f675d`, `--border: #cccaba`. `--bg-page: #f5f5f5` and `--bg-card: #ffffff` were assumed (not explicitly specified) since page/card backgrounds weren't part of the supplied token list. Typeface consolidated to a single Quicksand family (was Quicksand for headings + Nunito for body); the separate `--accent-ink` token (a deliberately darker shade used for small text like eyebrow labels/chips, since the old gold `--accent` was too light to read as text) was dropped — those spots now reuse `--accent` directly, since the new accent is dark enough to double as text.
+**Why:** Kevin supplied real brand values and three logo SVGs (`public/logos/`) mid-build, ahead of the "Kevin or Fosters & Paws supplies actual hex values" trigger in the superseded 2026-08-04 entry.
+**Note:** `FP_Logo_WhiteText.svg` is unused for now — there's no dark surface in the current theme to place it on. Revisit if a future dark-mode or dark-section design needs it.
+**Revisit when:** rendering shows the page/card background contrast (both very light, ~4% apart) or the `--accent`-as-text legibility reads as too subtle in practice — both were flagged as best-guess calls at the time this was written, not confirmed against a full brand guide.
+
 ---
  
 ## Template for new entries

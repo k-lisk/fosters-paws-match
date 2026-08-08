@@ -1,26 +1,14 @@
 import { useState, useMemo } from 'react'
 import { THEME_CSS, ProgressDots, OptionGrid, StepActions } from './shared/StepPrimitives'
+import { ENERGY_SCALE, MOCK_DOGS, energyIcon } from './shared/mockDogs'
 
 // ============================================================
 // Fosters & Paws — Guided Adoption Match (Feature 1, Phase 1)
 // Adapted from SUPR's onboarding shell (step flow, progress
 // dots, option-card pattern). All Supabase/auth calls stripped.
 // Runs entirely against mock dog data — no ShelterLuv API.
+// Entered from the shared Landing screen — see App.jsx.
 // ============================================================
-
-// ---------- Mock dog data (stand-in for ShelterLuv /animals) ----------
-const ENERGY_SCALE = ['Lazy bones', 'Chill', 'Mix', 'Energetic', 'Spazz']
-
-const MOCK_DOGS = [
-  { id: 'd1', name: 'Biscuit', breed: 'Labrador Mix', age: 3, ageLabel: 'Adult', size: 'Large', energy: 'Energetic', goodWithKids: true, houseTrained: true, bio: 'A goofy, food-motivated boy who loves a long walk and a longer nap after.', emoji: '🐕' },
-  { id: 'd2', name: 'Pepper', breed: 'Terrier Mix', age: 8, ageLabel: 'Senior', size: 'Small', energy: 'Chill', goodWithKids: true, houseTrained: true, bio: 'A calm senior gentleman who\'d rather supervise from the couch than run laps.', emoji: '🐩' },
-  { id: 'd3', name: 'Duke', breed: 'Pit Mix', age: 4, ageLabel: 'Adult', size: 'Large', energy: 'Mix', goodWithKids: false, houseTrained: true, bio: 'Sweet and loyal one-on-one, does best in a home without young kids.', emoji: '🐕‍🦺' },
-  { id: 'd4', name: 'Luna', breed: 'Hound Mix', age: 1, ageLabel: 'Young', size: 'Medium', energy: 'Spazz', goodWithKids: true, houseTrained: false, bio: 'A bouncy pup still learning her manners — needs patience and a yard to zoom in.', emoji: '🐶' },
-  { id: 'd5', name: 'Cooper', breed: 'Shepherd Mix', age: 2, ageLabel: 'Adult', size: 'Large', energy: 'Energetic', goodWithKids: true, houseTrained: true, bio: 'Smart, athletic, and always up for a job — hiking, fetch, agility, you name it.', emoji: '🐕' },
-  { id: 'd6', name: 'Daisy', breed: 'Chihuahua Mix', age: 5, ageLabel: 'Adult', size: 'Small', energy: 'Lazy bones', goodWithKids: false, houseTrained: true, bio: 'A tiny lap warmer who prefers quiet adult households.', emoji: '🐕' },
-  { id: 'd7', name: 'Rocky', breed: 'Boxer Mix', age: 1, ageLabel: 'Young', size: 'Medium', energy: 'Spazz', goodWithKids: true, houseTrained: false, bio: 'All puppy energy, all the time. Loves kids almost as much as tennis balls.', emoji: '🐶' },
-  { id: 'd8', name: 'Willow', breed: 'Retriever Mix', age: 9, ageLabel: 'Senior', size: 'Medium', energy: 'Chill', goodWithKids: true, houseTrained: true, bio: 'A gentle old soul looking for a soft bed and an easy routine.', emoji: '🐕' },
-]
 
 // ---------- Question definitions ----------
 const STEPS = [
@@ -124,10 +112,6 @@ const STEPS = [
 
 const TOTAL_STEPS = STEPS.length
 
-function energyIcon(label) {
-  return { 'Lazy bones': '🦥', Chill: '😌', Mix: '🎲', Energetic: '🔥', Spazz: '⚡' }[label] || '🐾'
-}
-
 // ---------- Matching logic ----------
 function sizeFit(yard, homeType, size) {
   // Rough compatibility score 0-1 per dog size given living situation
@@ -197,10 +181,10 @@ function matchReasons(dog, answers) {
 }
 
 // ---------- Guided-match component ----------
-export default function GuidedMatch() {
-  const [phase, setPhase] = useState('welcome') // welcome | flow | computing | results
+export default function GuidedMatch({ initialAnswers = {}, onExit }) {
+  const [phase, setPhase] = useState('flow') // flow | computing | results
   const [step, setStep] = useState(1)
-  const [answers, setAnswers] = useState({})
+  const [answers, setAnswers] = useState(() => ({ ...initialAnswers }))
   const [formDraft, setFormDraft] = useState({})
   const [draftStep, setDraftStep] = useState(step)
 
@@ -230,7 +214,7 @@ export default function GuidedMatch() {
   }
 
   function goBack() {
-    if (step === 1) { setPhase('welcome'); return }
+    if (step === 1) { onExit?.(); return }
     setStep(s => s - 1)
   }
 
@@ -263,25 +247,12 @@ export default function GuidedMatch() {
     setAnswers({})
     setFormDraft({})
     setStep(1)
-    setPhase('welcome')
+    setPhase('flow')
   }
 
   return (
     <div className="fp-page">
       <style>{THEME_CSS}{CSS}</style>
-
-      {phase === 'welcome' && (
-        <div className="fp-body fp-body--center">
-          <div className="fp-welcome">
-            <div className="fp-logo">🐾</div>
-            <h1 className="fp-title">Find your Fosters &amp; Paws match</h1>
-            <p className="fp-lead">
-              A few quick questions about your home and lifestyle — we'll suggest dogs in our care who could be a great fit.
-            </p>
-            <button className="fp-btn fp-btn--primary" onClick={() => setPhase('flow')}>Get started</button>
-          </div>
-        </div>
-      )}
 
       {phase === 'flow' && current && (
         <>
@@ -395,22 +366,12 @@ export default function GuidedMatch() {
   )
 }
 
-// ---------- Styles (flow-specific — shared tokens/primitives live in shared/StepPrimitives) ----------
+// ---------- Styles (flow-specific — shared tokens/primitives/chrome live in shared/StepPrimitives) ----------
 const CSS = `
-.fp-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px 0; }
-.fp-back { background: none; border: none; color: var(--text-muted); font-size: 14px; cursor: pointer; margin-left: 16px; white-space: nowrap; }
-.fp-body { padding: 28px 24px 0; max-width: 560px; margin: 0 auto; }
-.fp-body--center { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 420px; padding-top: 0; }
-.fp-welcome { max-width: 380px; }
-.fp-logo { font-size: 44px; margin-bottom: 12px; }
-.fp-title { font-size: 26px; font-weight: 700; margin: 0 0 12px; }
-.fp-lead { color: var(--text-muted); font-size: 15px; line-height: 1.55; margin: 0 0 24px; }
-.fp-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-ink); margin-bottom: 8px; }
-.fp-question { font-size: 22px; font-weight: 700; margin: 0 0 6px; }
-.fp-hint { color: var(--text-muted); font-size: 14px; margin: 0 0 20px; line-height: 1.5; }
+.fp-lead { color: var(--text-muted); font-size: 15px; line-height: 1.55; margin: 0; }
 .fp-form-fields { display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; }
 .fp-field-label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
-.fp-required { color: var(--accent-ink); }
+.fp-required { color: var(--accent); }
 .fp-input {
   width: 100%; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px;
   padding: 11px 14px; color: var(--text-primary); font-size: 15px; font-family: inherit; box-sizing: border-box;
@@ -421,13 +382,13 @@ const CSS = `
 .fp-spinner { width: 28px; height: 28px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: fp-spin .7s linear infinite; }
 @keyframes fp-spin { to { transform: rotate(360deg); } }
 .fp-match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 8px; }
-.fp-match-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 18px; box-shadow: 0 1px 3px rgba(46,43,36,0.06); }
+.fp-match-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 18px; box-shadow: 0 1px 3px rgba(55,56,61,0.06); }
 .fp-match-emoji { font-size: 30px; margin-bottom: 6px; }
-.fp-match-name { font-size: 17px; font-weight: 700; font-family: 'Quicksand', 'Nunito', sans-serif; }
+.fp-match-name { font-size: 17px; font-weight: 700; }
 .fp-match-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
 .fp-match-bio { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin: 0 0 10px; }
 .fp-match-reasons { display: flex; flex-wrap: wrap; gap: 6px; }
-.fp-chip { font-size: 11px; background: rgba(224,163,46,0.16); color: var(--accent-ink); border-radius: 20px; padding: 4px 10px; font-weight: 700; }
+.fp-chip { font-size: 11px; background: rgba(154,100,99,0.16); color: var(--accent); border-radius: 20px; padding: 4px 10px; font-weight: 700; }
 @media (max-width: 480px) {
   .fp-match-grid { grid-template-columns: 1fr; }
 }

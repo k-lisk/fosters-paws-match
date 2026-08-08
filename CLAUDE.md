@@ -12,7 +12,7 @@ Fosters & Paws Dog Matching Tool — a guided adopter intake flow that matches a
 - **Language:** JavaScript (not TypeScript — matches SUPR, keeps this fast to iterate on)
 - **Styling:** Plain CSS via a single injected `<style>` block per component (see existing `GuidedMatch.jsx` for the pattern) — no CSS framework, no CSS-in-JS library
 - **State:** React `useState`/`useMemo` only. No Redux, no Zustand, no context providers — the whole app is one flow with local state.
-- **Backend:** None in Phase 1. No Supabase, no database, no server. `MOCK_DOGS` is a hardcoded array in the component file.
+- **Backend:** None in Phase 1. No Supabase, no database, no server. `MOCK_DOGS` is a hardcoded array in `src/shared/mockDogs.js`.
 - **Package manager:** npm
 ## Build & Verify Commands
  
@@ -29,9 +29,9 @@ There is no test suite yet. If Claude Code adds one, prefer Vitest (pairs native
  
 - **Component style:** Function components, hooks only, matches the SUPR onboarding component this was adapted from
 - **File structure:** Keep this as a single-page app — still no `react-router`. Phase 1 now has two flows (the guided match, and the Spirit Dog Quiz), toggled from a shared landing screen via local state, not routes. Split these into separate component files (e.g. `GuidedMatch.jsx`, `SpiritDogQuiz.jsx`) that share common primitives (progress dots, option-card, button styles) rather than growing one monolithic file — the original single-file `FostersPawsMatch.jsx` was fine for one flow, not for two.
-- **Shared code:** Factor the step-shell UI (progress dots, option-card grid, step-actions row) and the CSS custom properties into a shared module both flows import, instead of duplicating them
+- **Shared code:** `src/shared/StepPrimitives.jsx` holds the step-shell UI (progress dots, option-card grid, step-actions row), the page/header/eyebrow chrome common to all three screens, the badge/sticker card style (Landing's quiz entry + the quiz's archetype result), and the CSS custom properties — all three top-level screens (`Landing.jsx`, `GuidedMatch.jsx`, `SpiritDogQuiz.jsx`) import from it instead of duplicating any of this
 - **Naming:** `fp-` prefix on CSS classes (already established) to avoid collision if this is ever embedded in another page
-- **Mock data:** Lives at the top of the main component file as a plain array/object export. Don't move it to a separate data-fetching layer until Phase 2 actually introduces the ShelterLuv API — premature abstraction for a single hardcoded array adds indirection with no payoff yet.
+- **Mock data:** `src/shared/mockDogs.js` exports `MOCK_DOGS`, `ENERGY_SCALE`, and `energyIcon` as plain array/object/function exports. Moved out of the main component file once a second flow (the Spirit Dog Quiz) needed the same data — this is still a shared constant, not a fetching layer, so the "don't build a data-fetching layer until Phase 2" guidance still holds: don't add fetch/API logic here until Phase 2 actually introduces the ShelterLuv API.
 - **Comments:** Keep the section-divider comment style already in the file (`// ---------- Section name ----------`) for new major sections
 ## Things to NOT do without asking
  

@@ -1,31 +1,41 @@
 // ============================================================
 // Shared step-shell primitives (CLAUDE.md: progress dots,
 // option-card grid, step-actions row) + the CSS custom
-// properties both flows theme off of. Imported by GuidedMatch
-// and (once built) SpiritDogQuiz — keep this free of
-// flow-specific markup/logic.
+// properties both flows theme off of, the page/header/eyebrow
+// chrome common to all three screens, and the badge/sticker
+// card style shared by Landing's quiz entry and the Spirit Dog
+// Quiz's archetype result. Imported by GuidedMatch, Landing,
+// and SpiritDogQuiz — keep this free of flow-specific
+// markup/logic.
 // ============================================================
 
 export const THEME_CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Nunito:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
 
 .fp-page {
-  --bg-page: #FBF6EC;
-  --bg-card: #FFFFFF;
-  --border: #E9DFC9;
-  --accent: #E0A32E;
-  --accent-ink: #8A5A00;
-  --text-primary: #2E2B24;
-  --text-muted: #7A7263;
+  --bg-page: #f5f5f5;
+  --bg-card: #ffffff;
+  --border: #cccaba;
+  --accent: #9a6463;
+  --accent-text: #f5f5f5;
+  --text-primary: #37383d;
+  --text-muted: #5f675d;
   min-height: 100%;
   background: var(--bg-page);
   color: var(--text-primary);
-  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   padding: 0 0 32px;
   border-radius: 12px;
   overflow: hidden;
 }
-.fp-title, .fp-question { font-family: 'Quicksand', 'Nunito', sans-serif; }
+
+.fp-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px 0; }
+.fp-back { background: none; border: none; color: var(--text-muted); font-size: 14px; cursor: pointer; margin-left: 16px; white-space: nowrap; }
+.fp-body { padding: 28px 24px 0; max-width: 560px; margin: 0 auto; }
+.fp-body--center { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 420px; padding-top: 0; }
+.fp-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+.fp-question { font-size: 22px; font-weight: 700; margin: 0 0 6px; }
+.fp-hint { color: var(--text-muted); font-size: 14px; margin: 0 0 20px; line-height: 1.5; }
 
 .fp-progress { display: flex; gap: 6px; flex: 1; }
 .fp-dot { height: 4px; flex: 1; border-radius: 2px; background: var(--border); transition: background .2s; }
@@ -37,23 +47,31 @@ export const THEME_CSS = `
   display: flex; align-items: center; gap: 10px;
   background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
   padding: 14px; cursor: pointer; transition: border-color .15s, background .15s, box-shadow .15s;
-  box-shadow: 0 1px 2px rgba(46,43,36,0.04);
+  box-shadow: 0 1px 2px rgba(55,56,61,0.04);
 }
 .fp-option-card:hover { border-color: var(--accent); }
-.fp-option-card--selected { border-color: var(--accent); background: rgba(224,163,46,0.14); box-shadow: 0 2px 8px rgba(224,163,46,0.18); }
+.fp-option-card--selected { border-color: var(--accent); background: rgba(154,100,99,0.14); box-shadow: 0 2px 8px rgba(154,100,99,0.18); }
 .fp-option-icon { font-size: 20px; }
 .fp-option-label { font-size: 14px; font-weight: 600; }
 
 .fp-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
 .fp-btn {
   border: none; border-radius: 12px; padding: 13px 20px; font-size: 15px; font-weight: 700;
-  cursor: pointer; font-family: 'Quicksand', inherit; transition: opacity .15s, box-shadow .15s;
+  cursor: pointer; font-family: inherit; transition: opacity .15s, box-shadow .15s;
 }
 .fp-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-.fp-btn--primary { background: var(--accent); color: #2E2B24; box-shadow: 0 2px 6px rgba(224,163,46,0.35); }
+.fp-btn--primary { background: var(--accent); color: var(--accent-text); box-shadow: 0 2px 6px rgba(154,100,99,0.35); }
 .fp-btn--primary:not(:disabled):hover { opacity: 0.9; }
 .fp-btn--ghost { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
 .fp-btn--full { width: 100%; margin-top: 14px; }
+
+.fp-badge-card {
+  background: var(--bg-card);
+  border: 2px dashed var(--accent);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 3px 10px rgba(154,100,99,0.15);
+}
 
 @media (max-width: 480px) {
   .fp-option-grid { grid-template-columns: 1fr; }
