@@ -27,7 +27,6 @@ This also serves a second purpose: it's a portfolio project demonstrating funnel
 - **Account creation / login** — this is a single-session guided form, not a persistent user account system.
 - **Real submission delivery** (email/CRM write) — Phase 1's "Ask about {dog}" action is a placeholder. Wiring it to an actual inbox or ShelterLuv record is a Phase 2/handoff decision, not built now.
 - **Spirit Dog Quiz does not collect contact info or PII** — it's anonymous and stateless. Any lead capture only happens if the user proceeds into the full match flow afterward.
-- **No server-side share tracking or social preview image generation** for the quiz in Phase 1 — sharing uses the browser's native share sheet (or clipboard fallback) with plain text, not a custom OG image pipeline.
 - **No reproduction of Parks and Recreation content** — the quiz is inspired by the general "spirit animal quiz" format, not by specific jokes, dialogue, or character names from the show. All archetype names and copy are original.
 ## User Stories
  
@@ -47,38 +46,38 @@ Phase 1 now ships two features sharing one repo: the core guided match (serious,
 ### Feature 1: Guided Adoption Match
  
 **Must-Have (P0)**
-- 10-step guided question flow covering Homelife (4), Behavior (3), Your Info (3 grouped screens), pulled from F&P's real adoption application questions
+- 11-step guided question flow covering Homelife (4), Behavior (4), Your Info (3 grouped screens), pulled from F&P's real adoption application questions
 - Progress indicator showing position in the flow
 - Back navigation that preserves previously entered answers
 - Required-field validation on contact info steps (first/last name, address, phone, email)
-- Matching engine: hard-filters on "good with small children" and "house trained" when the adopter requires them; weighted scoring on activity-level closeness and home/yard size fit for the rest
-- Results screen showing 2+ matched dogs, each with photo/placeholder, breed, age, size, a short bio, and 2-3 plain-language "why this match" reasons
+- Matching engine: hard-filters on "good with small children" and "house trained" when the adopter requires them; weighted scoring on activity-level closeness, home/yard size fit, and puppy/adult preference for the rest
+- Results screen showing 2+ matched dogs, each with a photo placeholder (gray box, correct aspect ratio — no real photo assets yet), breed, age, size, a short bio, and 2-3 plain-language "why this match" reasons
 - Results are **not** rank-ordered — display order is randomized per session so no single dog is structurally favored
 - Fully responsive layout (mobile-first, since most adopters will find this via a phone)
 - Runs entirely on mock data — zero backend, zero external calls
 **Nice-to-Have (P1)**
 - "Start over" / reset flow from the results screen
 - Graceful fallback state when zero dogs clear the match threshold (show closest 2-3 rather than a dead end)
-- Visual theme aligned to Fosters & Paws' actual brand (currently using an inferred palette — see Open Questions)
+- Visual theme aligned to Fosters & Paws' actual brand (real brand tokens now in use — see DECISIONS.md)
 - Lightweight animation/transition between steps (nothing heavy — consistent with SUPR's existing feel)
 - Opt-in checkbox on the contact info step ("Keep me updated on new matches, meet-and-greets, and ways to help") — captures consent now so V3's email campaign doesn't require re-contacting users later. Unchecked by default; not required to complete the flow.
+- "Want to see more?" section on the results screen with outbound links to Browse Puppies and Browse Adult Dogs on fostersandpaws.org (opens in a new tab)
 ### Feature 2: Spirit Dog Quiz
  
 **Must-Have (P0)**
-- Landing screen offers two clear entry points: "Find my match" (Feature 1) and "What's my spirit dog?" (this quiz) — distinct enough visually that users understand these are different in tone/commitment
-- 5-6 question quiz, deliberately lighter and faster than the intake flow (lifestyle/personality-flavored questions, e.g. weekend plans, energy level, snack preference — not the serious Homelife/Behavior question set)
+- Landing screen offers two clear entry points: "What's my spirit dog?" (this quiz) and "Find my match" (Feature 1) — distinct enough visually that users understand these are different in tone/commitment. The quiz renders first/primary on the landing screen as the top-of-funnel hook; Feature 1 remains the substantive conversion flow (see DECISIONS.md).
+- 6-question quiz across 3 themed sections (Vibe Check / Recharge & Refuel / Energy & Home Base), deliberately lighter and faster than the intake flow (lifestyle/personality-flavored questions, e.g. weekend plans, energy level, snack preference — not the serious Homelife/Behavior question set)
 - Answers map to one of a fixed set of original archetypes (e.g. "Spicy Chihuahua," "Golden Retriever Energy") — each with a name, emoji/icon, and 1-2 sentence original blurb. No content lifted from the Parks and Rec episode.
-- Archetype maps to an underlying profile (energy level + size lean) used to filter `MOCK_DOGS`, surfacing 1-3 real dogs whose attributes align with the archetype
+- Archetype maps to an underlying profile (energy level + size lean) used to match against `MOCK_DOGS`; results guarantee one Puppy-category and one Adult-category dog (not just top-2-by-closeness), each labeled with its age category
 - Results screen shows the archetype card **and** the real matching dog(s) together — the fun result is the hook, the real dogs are the payoff
-- Three calls to action on the result screen:
-  1. **Adopt** — enters Feature 1's full intake flow, with the quiz's energy-level answer pre-seeded into the `activity` question so the user isn't asked the same thing twice
+- Two calls to action on the result screen:
+  1. **Find my match** — enters Feature 1's full intake flow, with the quiz's energy-level answer pre-seeded into the `activity` question so the user isn't asked the same thing twice; a subtext line ("11 quick questions → your real matches") makes it unambiguous this leads into the full flow
   2. **Donate** — external link to fostersandpaws.org/donate, opens in a new tab
-  3. **Share** — uses the Web Share API where available, falls back to copy-to-clipboard; share text includes the archetype name, not a dog's real identity/location details
 - Quiz is fully anonymous — no name/contact/address fields anywhere in this flow (see Non-Goals)
 **Nice-to-Have (P1)**
-- Fallback state if zero mock dogs match an archetype's profile (surface the closest 1-2 regardless, same pattern as Feature 1)
 - Visually distinct "badge" or "sticker" treatment for the archetype card vs. Feature 1's more serious match cards, so the tonal shift is obvious
 - Restart/retake quiz option
+- "Want to see more?" section on the results screen with outbound links to Browse Puppies and Browse Adult Dogs on fostersandpaws.org (opens in a new tab) — same section as Feature 1's results screen
 **Future Considerations (this feature, P2)**
 - Shareable unique result URLs (would require encoding quiz answers into a query param or short link — not needed for a text-only share in Phase 1)
 - Custom social preview image per archetype (OG image generation) for richer link previews when shared

@@ -9,6 +9,10 @@ import { THEME_CSS } from './shared/StepPrimitives'
 // color: the serious card carries the real logo/wordmark, the
 // quiz card gets the badge/sticker treatment shared with the
 // quiz's own archetype result card (see shared/StepPrimitives).
+// The quiz card renders first/primary (fp-btn--primary) as the
+// top-of-funnel hook; Find My Match is secondary here even
+// though it remains the substantive conversion flow — see
+// DECISIONS.md.
 // ============================================================
 
 export default function Landing({ onFindMatch, onSpiritQuiz }) {
@@ -21,26 +25,26 @@ export default function Landing({ onFindMatch, onSpiritQuiz }) {
           <p className="fp-lead">Two ways to get started — pick whatever fits your mood.</p>
 
           <div className="fp-entry-grid">
-            <div className="fp-entry-card fp-entry-card--serious">
-              <img src="/logos/FP_Logo_FullColor.svg" alt="Fosters & Paws" className="fp-entry-logo" />
-              <h2 className="fp-entry-title">Find my match</h2>
-              <p className="fp-entry-body">
-                A guided, ~10 question flow matched against real dogs in our care.
-              </p>
-              <button className="fp-btn fp-btn--primary fp-btn--full" onClick={onFindMatch}>
-                Find my match
-              </button>
-            </div>
-
             <div className="fp-entry-card fp-badge-card">
               <img src="/logos/FP_Paw_FullColor.svg" alt="" aria-hidden="true" className="fp-entry-paw" />
               <div className="fp-entry-icon">🎲</div>
               <h2 className="fp-entry-title">What's my spirit dog?</h2>
               <p className="fp-entry-body">
-                Just for fun — 5 quick questions, with a real dog match waiting at the end.
+                Just for fun — 6 quick questions, with a real dog match waiting at the end.
               </p>
-              <button className="fp-btn fp-btn--ghost fp-btn--full" onClick={onSpiritQuiz}>
+              <button className="fp-btn fp-btn--primary fp-btn--full" onClick={onSpiritQuiz}>
                 What's my spirit dog? 🎲
+              </button>
+            </div>
+
+            <div className="fp-entry-card fp-entry-card--serious">
+              <img src="/logos/FP_Logo_FullColor.svg" alt="Fosters & Paws" className="fp-entry-logo" />
+              <h2 className="fp-entry-title">Find my match</h2>
+              <p className="fp-entry-body">
+                A guided, ~11 question flow matched against real dogs in our care.
+              </p>
+              <button className="fp-btn fp-btn--ghost fp-btn--full" onClick={onFindMatch}>
+                Find my match
               </button>
             </div>
           </div>

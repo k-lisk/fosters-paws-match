@@ -1,20 +1,22 @@
 import { useState, useMemo } from 'react'
-import { THEME_CSS, ProgressDots, OptionGrid, StepActions } from './shared/StepPrimitives'
+import { THEME_CSS, ProgressDots, OptionGrid, StepActions, PhotoPlaceholder, BrowseMoreLinks } from './shared/StepPrimitives'
 import { ENERGY_SCALE, MOCK_DOGS } from './shared/mockDogs'
 
 // ============================================================
 // Fosters & Paws — Spirit Dog Quiz (Feature 2, Phase 1)
-// Lighter, faster sibling to GuidedMatch — 5 personality
-// questions map to an original archetype, which maps back to
-// real MOCK_DOGS via the same closeness-scoring pattern as
-// GuidedMatch's matching engine. See SPIRIT_DOG_ARCHETYPES.md.
-// Entered from the shared Landing screen — see App.jsx.
+// Lighter, faster sibling to GuidedMatch — 6 personality
+// questions across 3 themed sections map to an original
+// archetype, which maps back to real MOCK_DOGS via the same
+// closeness-scoring pattern as GuidedMatch's matching engine,
+// guaranteeing one Puppy-category and one Adult-category dog.
+// See SPIRIT_DOG_ARCHETYPES.md. Entered from the shared Landing
+// screen — see App.jsx.
 // ============================================================
 
 // ---------- Question definitions ----------
 const QUIZ_QUESTIONS = [
   {
-    id: 'q1', question: 'Your ideal Saturday?',
+    id: 'q1', section: 'Vibe Check', question: 'Your ideal Saturday?',
     options: [
       { value: 'A', label: 'Sleeping in, no plans', icon: '😴', energy: 0, size: 'Small' },
       { value: 'B', label: 'Coffee shop, low-key hang', icon: '☕', energy: 1, size: 'Small' },
@@ -24,27 +26,7 @@ const QUIZ_QUESTIONS = [
     ],
   },
   {
-    id: 'q2', question: 'Pick a snack.',
-    options: [
-      { value: 'A', label: "Whatever's closest — I'm not moving", icon: '🛋️', energy: 0, size: 'Small' },
-      { value: 'B', label: 'Something slow and comforting', icon: '🍵', energy: 1, size: 'Small' },
-      { value: 'C', label: "Depends what's in the fridge", icon: '🥪', energy: 2, size: null },
-      { value: 'D', label: 'Something I can eat on the go', icon: '🍎', energy: 3, size: 'Big' },
-      { value: 'E', label: 'Anything. I will also steal yours', icon: '😈', energy: 4, size: 'Big' },
-    ],
-  },
-  {
-    id: 'q3', question: 'Pick a soundtrack for your life.',
-    options: [
-      { value: 'A', label: 'Ambient, barely audible', icon: '🌫️', energy: 0, size: null },
-      { value: 'B', label: 'Acoustic, chill', icon: '🎸', energy: 1, size: null },
-      { value: 'C', label: "Whatever's on shuffle", icon: '🔀', energy: 2, size: null },
-      { value: 'D', label: 'Upbeat, gets you moving', icon: '🎶', energy: 3, size: null },
-      { value: 'E', label: 'Full chaos playlist, no skips', icon: '🤘', energy: 4, size: null },
-    ],
-  },
-  {
-    id: 'q4', question: 'Your friends would describe you as...',
+    id: 'q4', section: 'Vibe Check', question: 'Your friends would describe you as...',
     options: [
       { value: 'A', label: 'The one who never leaves the couch', icon: '🛋️', energy: 0, size: 'Small' },
       { value: 'B', label: 'Low-maintenance, easygoing', icon: '😌', energy: 1, size: 'Small' },
@@ -54,7 +36,37 @@ const QUIZ_QUESTIONS = [
     ],
   },
   {
-    id: 'q5', question: 'Pick your ideal home base.',
+    id: 'q2', section: 'Recharge & Refuel', question: 'Pick a snack.',
+    options: [
+      { value: 'A', label: "Whatever's closest — I'm not moving", icon: '🛋️', energy: 0, size: 'Small' },
+      { value: 'B', label: 'Something slow and comforting', icon: '🍵', energy: 1, size: 'Small' },
+      { value: 'C', label: "Depends what's in the fridge", icon: '🥪', energy: 2, size: null },
+      { value: 'D', label: 'Something I can eat on the go', icon: '🍎', energy: 3, size: 'Big' },
+      { value: 'E', label: 'Anything. I will also steal yours', icon: '😈', energy: 4, size: 'Big' },
+    ],
+  },
+  {
+    id: 'q6', section: 'Recharge & Refuel', question: 'How do you recharge after a long week?',
+    options: [
+      { value: 'A', label: 'Total hibernation mode', icon: '🛌', energy: 0, size: 'Small' },
+      { value: 'B', label: 'A quiet night in, low-key', icon: '🕯️', energy: 1, size: 'Small' },
+      { value: 'C', label: 'Whatever the week calls for', icon: '🌗', energy: 2, size: null },
+      { value: 'D', label: 'Get outside and move', icon: '🚴', energy: 3, size: 'Big' },
+      { value: 'E', label: 'Go even harder — rest is for later', icon: '🚀', energy: 4, size: 'Big' },
+    ],
+  },
+  {
+    id: 'q3', section: 'Energy & Home Base', question: 'Pick a soundtrack for your life.',
+    options: [
+      { value: 'A', label: 'Ambient, barely audible', icon: '🌫️', energy: 0, size: null },
+      { value: 'B', label: 'Acoustic, chill', icon: '🎸', energy: 1, size: null },
+      { value: 'C', label: "Whatever's on shuffle", icon: '🔀', energy: 2, size: null },
+      { value: 'D', label: 'Upbeat, gets you moving', icon: '🎶', energy: 3, size: null },
+      { value: 'E', label: 'Full chaos playlist, no skips', icon: '🤘', energy: 4, size: null },
+    ],
+  },
+  {
+    id: 'q5', section: 'Energy & Home Base', question: 'Pick your ideal home base.',
     options: [
       { value: 'A', label: 'A single cozy blanket fort', icon: '🏕️', energy: 0, size: 'Small' },
       { value: 'B', label: 'A quiet corner with a good view', icon: '🪟', energy: 1, size: 'Small' },
@@ -111,19 +123,32 @@ function sizeLeanFit(dogSize, sizeLean) {
   return dogSize === 'Large' ? 1 : dogSize === 'Medium' ? 0.5 : 0 // sizeLean === 'Big'
 }
 
+// Guarantees one Puppy-category and one Adult-category dog (not just top-2-by-
+// closeness), still ranked by closeness within the pair so the closer match
+// displays first — consistent with the quiz's "ranked, not shuffled" results.
 function matchDogs(archetype) {
-  const scored = MOCK_DOGS.map(dog => {
+  const scoreDog = dog => {
     const dogIdx = ENERGY_SCALE.indexOf(dog.energy)
     const energyScore = 1 - Math.abs(dogIdx - archetype.energyIdx) / (ENERGY_SCALE.length - 1)
     const sizeScore = sizeLeanFit(dog.size, archetype.sizeLean)
-    return { dog, score: energyScore * 0.6 + sizeScore * 0.4 }
-  })
-  scored.sort((a, b) => b.score - a.score)
-  return scored.slice(0, 2).map(s => s.dog) // no threshold — always top 2, so the P1 fallback holds by construction
-}
+    return energyScore * 0.6 + sizeScore * 0.4
+  }
+  // Picks randomly among ties at the top score, not just the first array entry —
+  // otherwise same-profile dogs (e.g. littermates) would always resolve to
+  // whichever was added first, defeating the point of having more than one.
+  const topByCategory = category => {
+    const pool = MOCK_DOGS
+      .filter(dog => dog.ageCategory === category)
+      .map(dog => ({ dog, score: scoreDog(dog) }))
+    const topScore = Math.max(...pool.map(p => p.score))
+    const tied = pool.filter(p => p.score === topScore)
+    return tied[Math.floor(Math.random() * tied.length)]
+  }
 
-function shareText(archetype) {
-  return `I'm ${archetype.name} ${archetype.emoji} — take the quiz and find your spirit dog at Fosters & Paws`
+  return [topByCategory('Adult'), topByCategory('Puppy')]
+    .filter(Boolean)
+    .sort((a, b) => b.score - a.score)
+    .map(s => s.dog)
 }
 
 // ---------- Spirit Dog Quiz component ----------
@@ -131,7 +156,6 @@ export default function SpiritDogQuiz({ onAdopt, onExit }) {
   const [phase, setPhase] = useState('quiz') // quiz | result
   const [step, setStep] = useState(1)
   const [answers, setAnswers] = useState({})
-  const [shareStatus, setShareStatus] = useState(null)
 
   const current = QUIZ_QUESTIONS[step - 1]
 
@@ -160,21 +184,7 @@ export default function SpiritDogQuiz({ onAdopt, onExit }) {
   function retake() {
     setAnswers({})
     setStep(1)
-    setShareStatus(null)
     setPhase('quiz')
-  }
-
-  async function handleShare() {
-    const text = shareText(result.archetype)
-    if (navigator.share) {
-      try { await navigator.share({ text }) } catch { /* user cancelled — no-op */ }
-    } else {
-      try {
-        await navigator.clipboard.writeText(text)
-        setShareStatus('copied')
-        setTimeout(() => setShareStatus(null), 1500)
-      } catch { /* clipboard unavailable — no-op */ }
-    }
   }
 
   return (
@@ -189,7 +199,7 @@ export default function SpiritDogQuiz({ onAdopt, onExit }) {
           </div>
 
           <div className="fp-body">
-            <div className="fp-eyebrow">Spirit Dog Quiz</div>
+            <div className="fp-eyebrow">{current.section}</div>
             <h2 className="fp-question">{current.question}</h2>
             <OptionGrid options={current.options} selected={answers[current.id]} onSelect={selectAnswer} />
           </div>
@@ -210,7 +220,8 @@ export default function SpiritDogQuiz({ onAdopt, onExit }) {
           <div className="fp-quiz-dog-grid">
             {result.dogs.map(dog => (
               <div key={dog.id} className="fp-quiz-dog-card">
-                <div className="fp-quiz-dog-emoji">{dog.emoji}</div>
+                <PhotoPlaceholder emoji={dog.emoji} />
+                <span className="fp-quiz-dog-age">{dog.ageCategory}</span>
                 <div className="fp-quiz-dog-name">{dog.name}</div>
                 <div className="fp-quiz-dog-meta">{dog.breed} · {dog.ageLabel} · {dog.size}</div>
                 <p className="fp-quiz-dog-bio">{dog.bio}</p>
@@ -220,8 +231,9 @@ export default function SpiritDogQuiz({ onAdopt, onExit }) {
 
           <StepActions style={{ marginTop: 24 }}>
             <button className="fp-btn fp-btn--primary" onClick={() => onAdopt?.(result.energyLabel)}>
-              Adopt — start my full match
+              Find my match
             </button>
+            <p className="fp-adopt-subtext">11 quick questions → your real matches.</p>
             <a
               className="fp-btn fp-btn--ghost"
               href="https://fostersandpaws.org/donate"
@@ -230,11 +242,10 @@ export default function SpiritDogQuiz({ onAdopt, onExit }) {
             >
               Donate
             </a>
-            <button className="fp-btn fp-btn--ghost" onClick={handleShare}>
-              {shareStatus === 'copied' ? 'Copied!' : 'Share my result'}
-            </button>
             <button className="fp-btn fp-btn--ghost" onClick={retake}>Retake the quiz</button>
           </StepActions>
+
+          <BrowseMoreLinks />
         </div>
       )}
     </div>
@@ -250,10 +261,11 @@ const CSS = `
 .fp-quiz-dogs-heading { font-size: 16px; margin-bottom: 12px; }
 .fp-quiz-dog-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .fp-quiz-dog-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 18px; box-shadow: 0 1px 3px rgba(55,56,61,0.06); }
-.fp-quiz-dog-emoji { font-size: 30px; margin-bottom: 6px; }
+.fp-quiz-dog-age { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; background: rgba(154,100,99,0.16); color: var(--accent); border-radius: 20px; padding: 3px 10px; margin-bottom: 8px; }
 .fp-quiz-dog-name { font-size: 17px; font-weight: 700; }
 .fp-quiz-dog-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
 .fp-quiz-dog-bio { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin: 0; }
+.fp-adopt-subtext { color: var(--text-muted); font-size: 12px; text-align: center; margin: -2px 0 6px; }
 @media (max-width: 480px) {
   .fp-quiz-dog-grid { grid-template-columns: 1fr; }
 }

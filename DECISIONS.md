@@ -61,6 +61,32 @@ Architectural and product decisions for this project, in chronological order. Ad
 **Note:** `FP_Logo_WhiteText.svg` is unused for now — there's no dark surface in the current theme to place it on. Revisit if a future dark-mode or dark-section design needs it.
 **Revisit when:** rendering shows the page/card background contrast (both very light, ~4% apart) or the `--accent`-as-text legibility reads as too subtle in practice — both were flagged as best-guess calls at the time this was written, not confirmed against a full brand guide.
 
+### 2026-08-08 — Quiz restructured to 6 questions / 3 sections; puppy/adult data added to matching
+**Decision:** Spirit Dog Quiz grew from 5 questions to 6, grouped into 3 themed sections (Vibe Check / Recharge & Refuel / Energy & Home Base) with a per-question eyebrow matching `GuidedMatch`'s pattern. `MOCK_DOGS` gained an `ageCategory` field (`'Puppy'` if `age < 1`, else `'Adult'`) and a 9th dog, Waffles (a puppy). The quiz's dog-matching now guarantees one Puppy-category and one Adult-category result, not just top-2-by-closeness — still ranked by score within the pair.
+**Why:** Kevin's call, to give the quiz more room to breathe content-wise and to make life-stage (puppy vs. adult) a first-class dimension across both flows, not just Feature 1.
+**Note:** With only one puppy (Waffles) in the mock set, every quiz-taker who lands a Puppy slot saw the same dog — no variety there. Resolved 2026-08-08 by adding a 10th dog, Pretzel — Waffles' littermate (age ~0.15, same reflecting-reality reasoning: Fosters & Paws fosters litters together after rescuing a pregnant/nursing mom, then profiles each pup individually around 8 weeks old). The Puppy slot now scores between the two like any other category.
+**Do not** assume the profile-scoring formula changed — `computeProfile`'s averaging/tallying is generic over the question array's length and already skipped `size: null` options, so the extra question needed zero formula changes.
+
+### 2026-08-08 — New Feature 1 puppy/adult preference question, soft-scored
+**Decision:** Added "Are you looking for a puppy or an adult dog?" to the Behavior section (Puppy / Adult / No preference, with a hint about training/supervision tradeoffs). Feature 1 is now an 11-step flow (Behavior grew from 3 to 4 questions). `computeMatches`'s weights were rebalanced to stay at 100%: activity 35% (was 40), size/home fit 25% (was 30), kids bonus 15% (unchanged), house-trained bonus 10% (was 15), puppy/adult fit 15% (new).
+**Why:** Explicit ask to add life-stage preference as a match factor, but as a soft boost consistent with how activity-level closeness already works — not a hard filter like the kids/potty-trained questions, since a puppy/adult mismatch shouldn't disqualify an otherwise great match the way "not good with kids" should when kids are a hard requirement.
+**Do not** move this into the `// Hard filters` block without revisiting this decision explicitly — the whole point was that it boosts, not excludes.
+
+### 2026-08-08 — Results-screen CTAs reworked: Share removed, Adopt renamed, "Want to see more?" added
+**Decision:** Three changes across both results screens: (1) the quiz's Share button — component, handler, and `shareText` helper — removed entirely, nothing left in its place; (2) the quiz's "Adopt" CTA renamed to "Find my match" (matching Landing's exact existing casing) with a subtext line ("11 quick questions → your real matches"); (3) a new "Want to see more?" section with outbound Browse Puppies / Browse Adult Dogs links (fostersandpaws.org, new tab) added to both `GuidedMatch`'s and `SpiritDogQuiz`'s results screens via a new shared `BrowseMoreLinks` component in `shared/StepPrimitives.jsx`.
+**Why:** Share was non-functional (no real FB/IG integration behind it) — a dead button reads worse than no button. The Adopt rename makes it unambiguous that CTA leads into Feature 1's full flow, matching Landing's own wording for continuity. The Browse links replace an earlier, never-formally-scoped "see all adoptable dogs" idea with simple outbound links instead of building an internal browse view.
+**Revisit when:** a real share/social integration is scoped — at that point this is a new feature, not a revival of the removed button.
+
+### 2026-08-08 — Gray-box photo placeholders on both results screens
+**Decision:** Both `GuidedMatch`'s match cards and the quiz's dog cards now show a 4:3 gray-box placeholder (`--bg-page` fill, `--border` outline) with the dog's emoji centered inside, replacing the previous floating-emoji-above-the-name treatment. New shared `PhotoPlaceholder` component in `shared/StepPrimitives.jsx`.
+**Why:** Stand-in for real dog photos, which don't exist yet in the mock data. 4:3 was Kevin's-agent's pick with no F&P convention to go on — flagged as adjustable, not a firm design commitment.
+**Revisit when:** real photo assets exist (Phase 2 ShelterLuv integration) — swap `PhotoPlaceholder` for an actual `<img>`.
+
+### 2026-08-08 — Landing screen hierarchy flipped: Spirit Dog Quiz card now primary/first
+**Decision:** On the Landing screen, the quiz's entry card now renders first (left) and carries the `fp-btn--primary` emphasis; Find My Match renders second (right) with `fp-btn--ghost`. Visual *treatment* stays attached to content type — quiz keeps its badge/sticker look, Find My Match keeps its logo/solid-card look — only position and button emphasis flipped.
+**Why:** Explicit call from Kevin, to lead with the lower-commitment, shareable entry point (PRD Goal #5) as the top-of-funnel hook. This does **not** demote Feature 1's importance — it remains the substantive conversion flow, and the quiz's own "Find my match" CTA still funnels into it. Only which screen leads changes.
+**Note:** There's no earlier *formally logged* DECISIONS.md entry for the original card order — it was an implicit choice baked into the original `Landing.jsx` build (2026-08-07) and never written up at the time. This entry is the first formal record of the ordering decision, in either direction.
+
 ---
  
 ## Template for new entries

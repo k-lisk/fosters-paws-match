@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { THEME_CSS, ProgressDots, OptionGrid, StepActions } from './shared/StepPrimitives'
+import { THEME_CSS, ProgressDots, OptionGrid, StepActions, PhotoPlaceholder, BrowseMoreLinks } from './shared/StepPrimitives'
 import { ENERGY_SCALE, MOCK_DOGS, energyIcon } from './shared/mockDogs'
 
 // ============================================================
@@ -45,7 +45,7 @@ const STEPS = [
   {
     id: 'kids', section: 'Homelife', type: 'single',
     question: 'Do you have children or grandchildren?',
-    hint: '',
+    hint: 'This is about kids who live in or regularly visit your home, not an exact headcount.',
     options: [
       { value: 'no', label: 'No', icon: '🚫' },
       { value: 'under_10', label: 'Yes, under 10', icon: '🧒' },
@@ -57,6 +57,16 @@ const STEPS = [
     question: 'How active of a dog are you looking for?',
     hint: '',
     options: ENERGY_SCALE.map(label => ({ value: label, label, icon: energyIcon(label) })),
+  },
+  {
+    id: 'puppy_or_adult', section: 'Behavior', type: 'single',
+    question: 'Are you looking for a puppy or an adult dog?',
+    hint: 'Puppies need more training, supervision, and patience — adult dogs are often already house-trained and settled.',
+    options: [
+      { value: 'puppy', label: 'Puppy', icon: '🐾' },
+      { value: 'adult', label: 'Adult', icon: '🦴' },
+      { value: 'no_preference', label: 'No preference', icon: '🤝' },
+    ],
   },
   {
     id: 'good_with_kids', section: 'Behavior', type: 'single',
@@ -126,6 +136,11 @@ function sizeFit(yard, homeType, size) {
   return Math.max(0, Math.min(1, base + boost))
 }
 
+function puppyAdultFit(pref, dog) {
+  if (!pref || pref === 'no_preference') return 0.5 // neutral credit if not directly applicable
+  return (pref === 'puppy') === (dog.ageCategory === 'Puppy') ? 1 : 0
+}
+
 function computeMatches(answers) {
   const scored = MOCK_DOGS.map(dog => {
     // Hard filters
@@ -133,21 +148,24 @@ function computeMatches(answers) {
     if (answers.potty_trained === 'yes' && !dog.houseTrained) return { dog, score: -1 }
 
     let score = 0
-    // Activity match — closeness on the energy scale (40%)
+    // Activity match — closeness on the energy scale (35%)
     const wantIdx = ENERGY_SCALE.indexOf(answers.activity)
     const dogIdx = ENERGY_SCALE.indexOf(dog.energy)
     const activityScore = wantIdx >= 0 ? 1 - Math.abs(wantIdx - dogIdx) / (ENERGY_SCALE.length - 1) : 0.5
-    score += activityScore * 40
+    score += activityScore * 35
 
-    // Size/home fit (30%)
-    score += sizeFit(answers.yard, answers.home_type, dog.size) * 30
+    // Size/home fit (25%)
+    score += sizeFit(answers.yard, answers.home_type, dog.size) * 25
 
     // Kids in household bonus (15%) — if user has young kids, weight goodWithKids even without hard "yes"
     if (answers.kids === 'under_10') score += dog.goodWithKids ? 15 : 0
     else score += 10 // neutral credit if not directly applicable
 
-    // House-trained soft bonus (15%)
-    score += dog.houseTrained ? 15 : 5
+    // House-trained soft bonus (10%)
+    score += dog.houseTrained ? 10 : 3
+
+    // Puppy/adult preference — soft boost, not a hard filter (15%)
+    score += puppyAdultFit(answers.puppy_or_adult, dog) * 15
 
     return { dog, score }
   })
@@ -176,6 +194,8 @@ function matchReasons(dog, answers) {
   if (answers.potty_trained === 'yes' && dog.houseTrained) reasons.push('House trained')
   if (answers.home_type === 'apartment' && dog.size === 'Small') reasons.push('Right-sized for apartment living')
   if (answers.yard === 'large' && dog.size === 'Large') reasons.push('Will make great use of a large yard')
+  if (answers.puppy_or_adult === 'puppy' && dog.ageCategory === 'Puppy') reasons.push('A puppy, just like you wanted')
+  if (answers.puppy_or_adult === 'adult' && dog.ageCategory === 'Adult') reasons.push('An adult dog, already settled in')
   if (reasons.length === 0) reasons.push(`${dog.size} · ${dog.ageLabel}`)
   return reasons.slice(0, 3)
 }
@@ -341,7 +361,7 @@ export default function GuidedMatch({ initialAnswers = {}, onExit }) {
           <div className="fp-match-grid">
             {matches.map(dog => (
               <div key={dog.id} className="fp-match-card">
-                <div className="fp-match-emoji">{dog.emoji}</div>
+                <PhotoPlaceholder emoji={dog.emoji} />
                 <div className="fp-match-name">{dog.name}</div>
                 <div className="fp-match-meta">{dog.breed} · {dog.ageLabel} · {dog.size}</div>
                 <p className="fp-match-bio">{dog.bio}</p>
@@ -360,6 +380,8 @@ export default function GuidedMatch({ initialAnswers = {}, onExit }) {
           <StepActions style={{ marginTop: 24 }}>
             <button className="fp-btn fp-btn--ghost" onClick={restart}>Start over</button>
           </StepActions>
+
+          <BrowseMoreLinks />
         </div>
       )}
     </div>
@@ -383,7 +405,6 @@ const CSS = `
 @keyframes fp-spin { to { transform: rotate(360deg); } }
 .fp-match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 8px; }
 .fp-match-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 18px; box-shadow: 0 1px 3px rgba(55,56,61,0.06); }
-.fp-match-emoji { font-size: 30px; margin-bottom: 6px; }
 .fp-match-name { font-size: 17px; font-weight: 700; }
 .fp-match-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
 .fp-match-bio { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin: 0 0 10px; }
