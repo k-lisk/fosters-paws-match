@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
-import { THEME_CSS, ProgressDots, OptionGrid, StepActions, PhotoPlaceholder, BrowseMoreLinks } from './shared/StepPrimitives'
+import { THEME_CSS, ProgressDots, OptionGrid, StepActions, BrowseMoreLinks } from './shared/StepPrimitives'
+import { DogCard, DOG_CARD_CSS } from './shared/DogCard'
 import { ENERGY_SCALE, MOCK_DOGS, energyIcon } from './shared/mockDogs'
 
 // ============================================================
@@ -44,12 +45,12 @@ const STEPS = [
   },
   {
     id: 'kids', section: 'Homelife', type: 'single',
-    question: 'Do you have children or grandchildren?',
-    hint: 'This is about kids who live in or regularly visit your home, not an exact headcount.',
+    question: 'Will your dog regularly be around children?',
+    hint: '',
     options: [
       { value: 'no', label: 'No', icon: '🚫' },
-      { value: 'under_10', label: 'Yes, under 10', icon: '🧒' },
-      { value: 'over_10', label: 'Yes, over 10', icon: '🧑' },
+      { value: 'under_10', label: 'Mostly under 10', icon: '🧒' },
+      { value: 'over_10', label: 'Mostly over 10', icon: '🧑' },
     ],
   },
   {
@@ -104,7 +105,7 @@ const STEPS = [
       { key: 'street', label: 'Street Address', required: true },
       { key: 'city', label: 'City', required: true },
       { key: 'state', label: 'State', required: true, maxLength: 2, placeholder: 'CA' },
-      { key: 'zip', label: 'Zip', required: true, maxLength: 10 },
+      { key: 'zip', label: 'Zip', required: true, maxLength: 10, validate: v => v.replace(/\D/g, '').length >= 5 },
     ],
   },
   {
@@ -112,7 +113,7 @@ const STEPS = [
     question: 'How should we contact you?',
     hint: '',
     fields: [
-      { key: 'phone', label: 'Phone', required: true },
+      { key: 'phone', label: 'Phone', required: true, format: 'phone' },
       { key: 'phoneType', label: 'Phone Type', required: false, select: ['Cell', 'Home', 'Work'] },
       { key: 'email', label: 'Email Address', required: true },
       { key: 'updatesOptIn', label: 'Keep me updated on new matches, meet-and-greets, and ways to help', type: 'checkbox', required: false },
@@ -200,6 +201,15 @@ function matchReasons(dog, answers) {
   return reasons.slice(0, 3)
 }
 
+// ---------- Form helpers ----------
+function formatPhone(value) {
+  const digits = value.replace(/\D/g, '').slice(0, 10)
+  if (digits.length === 0) return ''
+  if (digits.length < 4) return `(${digits}`
+  if (digits.length < 7) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`
+  return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`
+}
+
 // ---------- Guided-match component ----------
 export default function GuidedMatch({ initialAnswers = {}, onExit }) {
   const [phase, setPhase] = useState('flow') // flow | computing | results
@@ -254,7 +264,12 @@ export default function GuidedMatch({ initialAnswers = {}, onExit }) {
 
   const formValid = useMemo(() => {
     if (current?.type !== 'form') return true
-    return current.fields.filter(f => f.required).every(f => (formDraft[f.key] || '').trim())
+    return current.fields.every(f => {
+      const value = (formDraft[f.key] || '').trim()
+      if (f.required && !value) return false
+      if (value && f.validate && !f.validate(value)) return false
+      return true
+    })
   }, [current, formDraft])
 
   const matches = useMemo(() => {
@@ -272,7 +287,7 @@ export default function GuidedMatch({ initialAnswers = {}, onExit }) {
 
   return (
     <div className="fp-page">
-      <style>{THEME_CSS}{CSS}</style>
+      <style>{THEME_CSS}{DOG_CARD_CSS}{CSS}</style>
 
       {phase === 'flow' && current && (
         <>
@@ -321,11 +336,11 @@ export default function GuidedMatch({ initialAnswers = {}, onExit }) {
                         ) : (
                           <input
                             className="fp-input"
-                            type="text"
+                            type={field.format === 'phone' ? 'tel' : 'text'}
                             maxLength={field.maxLength}
                             placeholder={field.placeholder || ''}
                             value={formDraft[field.key] || ''}
-                            onChange={e => updateField(field.key, e.target.value)}
+                            onChange={e => updateField(field.key, field.format === 'phone' ? formatPhone(e.target.value) : e.target.value)}
                           />
                         )}
                       </div>
@@ -358,22 +373,9 @@ export default function GuidedMatch({ initialAnswers = {}, onExit }) {
             These aren't ranked — every dog here could be a great fit based on what you told us. Reach out about any of them.
           </p>
 
-          <div className="fp-match-grid">
+          <div className="fp-dog-card-grid">
             {matches.map(dog => (
-              <div key={dog.id} className="fp-match-card">
-                <PhotoPlaceholder emoji={dog.emoji} />
-                <div className="fp-match-name">{dog.name}</div>
-                <div className="fp-match-meta">{dog.breed} · {dog.ageLabel} · {dog.size}</div>
-                <p className="fp-match-bio">{dog.bio}</p>
-                <div className="fp-match-reasons">
-                  {matchReasons(dog, answers).map((r, i) => (
-                    <span key={i} className="fp-chip">{r}</span>
-                  ))}
-                </div>
-                <button className="fp-btn fp-btn--primary fp-btn--full" onClick={() => window.alert(`In production, this would start an inquiry with Fosters & Paws about ${dog.name}.`)}>
-                  Ask about {dog.name}
-                </button>
-              </div>
+              <DogCard key={dog.id} dog={dog} tags={matchReasons(dog, answers)} />
             ))}
           </div>
 
@@ -403,14 +405,4 @@ const CSS = `
 .fp-checkbox { margin-top: 2px; accent-color: var(--accent); width: 16px; height: 16px; flex-shrink: 0; }
 .fp-spinner { width: 28px; height: 28px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: fp-spin .7s linear infinite; }
 @keyframes fp-spin { to { transform: rotate(360deg); } }
-.fp-match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 8px; }
-.fp-match-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 18px; box-shadow: 0 1px 3px rgba(55,56,61,0.06); }
-.fp-match-name { font-size: 17px; font-weight: 700; }
-.fp-match-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
-.fp-match-bio { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin: 0 0 10px; }
-.fp-match-reasons { display: flex; flex-wrap: wrap; gap: 6px; }
-.fp-chip { font-size: 11px; background: rgba(154,100,99,0.16); color: var(--accent); border-radius: 20px; padding: 4px 10px; font-weight: 700; }
-@media (max-width: 480px) {
-  .fp-match-grid { grid-template-columns: 1fr; }
-}
 `

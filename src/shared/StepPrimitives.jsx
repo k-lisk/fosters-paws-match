@@ -4,10 +4,10 @@
 // properties both flows theme off of, the page/header/eyebrow
 // chrome common to all three screens, the badge/sticker card
 // style shared by Landing's quiz entry and the Spirit Dog
-// Quiz's archetype result, the gray-box photo placeholder used
-// on both results screens, and the "Want to see more?" outbound
-// browse links shared by both results screens. Imported by
-// GuidedMatch, Landing, and SpiritDogQuiz — keep this free of
+// Quiz's archetype result, and the outbound "see all adoptable
+// dogs" browse links shared by both results screens. The
+// dog-result card itself lives in shared/DogCard.jsx. Imported
+// by GuidedMatch, Landing, and SpiritDogQuiz — keep this free of
 // flow-specific markup/logic.
 // ============================================================
 
@@ -75,21 +75,10 @@ export const THEME_CSS = `
   box-shadow: 0 3px 10px rgba(154,100,99,0.15);
 }
 
-.fp-photo-placeholder {
-  aspect-ratio: 4 / 3;
-  background: var(--bg-page);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 40px;
-  margin-bottom: 10px;
-}
-
 .fp-browse-more { margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border); }
 .fp-browse-more-heading { font-size: 14px; font-weight: 700; margin: 0 0 10px; }
-.fp-browse-more-links { display: flex; flex-direction: column; gap: 8px; }
+.fp-browse-more-links { display: flex; flex-direction: row; gap: 8px; }
+.fp-browse-more-links .fp-btn { flex: 1; }
 
 @media (max-width: 480px) {
   .fp-option-grid { grid-template-columns: 1fr; }
@@ -134,21 +123,16 @@ export function StepActions({ children, style, className }) {
   )
 }
 
-// ---------- Photo placeholder (gray box, stand-in until real photos exist) ----------
-export function PhotoPlaceholder({ emoji }) {
-  return <div className="fp-photo-placeholder">{emoji}</div>
-}
-
-// ---------- "Want to see more?" outbound browse links ----------
+// ---------- Outbound browse links ----------
 export function BrowseMoreLinks() {
   return (
     <div className="fp-browse-more">
-      <h3 className="fp-browse-more-heading">Want to see more?</h3>
+      <h3 className="fp-browse-more-heading">See all adoptable dogs</h3>
       <div className="fp-browse-more-links">
-        <a className="fp-btn fp-btn--ghost" href="https://www.fostersandpaws.org/puppies" target="_blank" rel="noopener noreferrer">
+        <a className="fp-btn fp-btn--primary" href="https://www.fostersandpaws.org/puppies" target="_blank" rel="noopener noreferrer">
           Browse Puppies →
         </a>
-        <a className="fp-btn fp-btn--ghost" href="https://www.fostersandpaws.org/adult-dogs" target="_blank" rel="noopener noreferrer">
+        <a className="fp-btn fp-btn--primary" href="https://www.fostersandpaws.org/adult-dogs" target="_blank" rel="noopener noreferrer">
           Browse Adult Dogs →
         </a>
       </div>

@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
-import { THEME_CSS, ProgressDots, OptionGrid, StepActions, PhotoPlaceholder, BrowseMoreLinks } from './shared/StepPrimitives'
+import { THEME_CSS, ProgressDots, OptionGrid, StepActions, BrowseMoreLinks } from './shared/StepPrimitives'
+import { DogCard, DOG_CARD_CSS } from './shared/DogCard'
 import { ENERGY_SCALE, MOCK_DOGS } from './shared/mockDogs'
 
 // ============================================================
@@ -189,7 +190,7 @@ export default function SpiritDogQuiz({ onAdopt, onExit }) {
 
   return (
     <div className="fp-page">
-      <style>{THEME_CSS}{CSS}</style>
+      <style>{THEME_CSS}{DOG_CARD_CSS}{CSS}</style>
 
       {phase === 'quiz' && current && (
         <>
@@ -217,15 +218,9 @@ export default function SpiritDogQuiz({ onAdopt, onExit }) {
           </div>
 
           <h3 className="fp-question fp-quiz-dogs-heading">Dogs with this energy right now</h3>
-          <div className="fp-quiz-dog-grid">
+          <div className="fp-dog-card-grid">
             {result.dogs.map(dog => (
-              <div key={dog.id} className="fp-quiz-dog-card">
-                <PhotoPlaceholder emoji={dog.emoji} />
-                <span className="fp-quiz-dog-age">{dog.ageCategory}</span>
-                <div className="fp-quiz-dog-name">{dog.name}</div>
-                <div className="fp-quiz-dog-meta">{dog.breed} · {dog.ageLabel} · {dog.size}</div>
-                <p className="fp-quiz-dog-bio">{dog.bio}</p>
-              </div>
+              <DogCard key={dog.id} dog={dog} tags={[dog.ageCategory]} />
             ))}
           </div>
 
@@ -259,14 +254,5 @@ const CSS = `
 .fp-archetype-name { font-size: 24px; font-weight: 700; margin: 0 0 8px; }
 .fp-archetype-blurb { color: var(--text-muted); font-size: 14px; line-height: 1.5; margin: 0; }
 .fp-quiz-dogs-heading { font-size: 16px; margin-bottom: 12px; }
-.fp-quiz-dog-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.fp-quiz-dog-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 18px; box-shadow: 0 1px 3px rgba(55,56,61,0.06); }
-.fp-quiz-dog-age { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; background: rgba(154,100,99,0.16); color: var(--accent); border-radius: 20px; padding: 3px 10px; margin-bottom: 8px; }
-.fp-quiz-dog-name { font-size: 17px; font-weight: 700; }
-.fp-quiz-dog-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
-.fp-quiz-dog-bio { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin: 0; }
 .fp-adopt-subtext { color: var(--text-muted); font-size: 12px; text-align: center; margin: -2px 0 6px; }
-@media (max-width: 480px) {
-  .fp-quiz-dog-grid { grid-template-columns: 1fr; }
-}
 `
