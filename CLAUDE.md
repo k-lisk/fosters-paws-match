@@ -37,7 +37,7 @@ There is no test suite yet. If Claude Code adds one, prefer Vitest (pairs native
  
 - Don't add a backend, database, or auth system "just in case" — Phase 1 is explicitly zero-backend (see PRD Non-Goals)
 - Don't add TypeScript, a CSS framework, or a state management library — these are conscious omissions, not oversights
-- Don't wire "Ask about {dog}" to a real email/API call — it's a placeholder alert by design until a submission-delivery decision is made (see PRD Open Questions)
+- Don't wire the dog card's CTA ("Learn more", `src/shared/DogCard.jsx` — labeled "Ask about {dog}" in earlier builds) to a real email/API call — it's a placeholder alert by design until a submission-delivery decision is made (see PRD Open Questions)
 - Don't build the opt-in checkbox into an actual email capture/ESP integration — Phase 1 only captures and stores the consent flag locally in form state; there's nothing to send to yet
 ## Deployment
  

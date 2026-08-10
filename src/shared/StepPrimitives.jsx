@@ -76,7 +76,7 @@ export const THEME_CSS = `
 }
 
 .fp-browse-more { margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border); }
-.fp-browse-more-heading { font-size: 14px; font-weight: 700; margin: 0 0 10px; }
+.fp-browse-more-heading { font-size: 18px; font-weight: 700; margin: 0 0 12px; }
 .fp-browse-more-links { display: flex; flex-direction: row; gap: 8px; }
 .fp-browse-more-links .fp-btn { flex: 1; }
 
@@ -130,10 +130,10 @@ export function BrowseMoreLinks() {
       <h3 className="fp-browse-more-heading">See all adoptable dogs</h3>
       <div className="fp-browse-more-links">
         <a className="fp-btn fp-btn--primary" href="https://www.fostersandpaws.org/puppies" target="_blank" rel="noopener noreferrer">
-          Browse Puppies →
+          View Puppies
         </a>
         <a className="fp-btn fp-btn--primary" href="https://www.fostersandpaws.org/adult-dogs" target="_blank" rel="noopener noreferrer">
-          Browse Adult Dogs →
+          View Adult Dogs
         </a>
       </div>
     </div>

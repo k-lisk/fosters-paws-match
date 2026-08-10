@@ -187,16 +187,20 @@ function computeMatches(answers) {
   return shuffled.map(s => s.dog)
 }
 
+function energyTag(dogEnergy) {
+  const idx = ENERGY_SCALE.indexOf(dogEnergy)
+  if (idx <= 1) return 'Low Energy' // Lazy bones, Chill
+  if (idx === 2) return 'Med Energy' // Mix
+  return 'High Energy' // Energetic, Spazz
+}
+
 function matchReasons(dog, answers) {
   const reasons = []
-  if (answers.activity && dog.energy === answers.activity) reasons.push(`${dog.energy} energy — matches what you're looking for`)
-  else if (answers.activity) reasons.push(`${dog.energy} energy level`)
-  if (answers.good_with_kids === 'yes' && dog.goodWithKids) reasons.push('Good with small children')
-  if (answers.potty_trained === 'yes' && dog.houseTrained) reasons.push('House trained')
-  if (answers.home_type === 'apartment' && dog.size === 'Small') reasons.push('Right-sized for apartment living')
-  if (answers.yard === 'large' && dog.size === 'Large') reasons.push('Will make great use of a large yard')
-  if (answers.puppy_or_adult === 'puppy' && dog.ageCategory === 'Puppy') reasons.push('A puppy, just like you wanted')
-  if (answers.puppy_or_adult === 'adult' && dog.ageCategory === 'Adult') reasons.push('An adult dog, already settled in')
+  if (answers.activity) reasons.push(energyTag(dog.energy))
+  if (answers.good_with_kids === 'yes' && dog.goodWithKids) reasons.push('Child Approved')
+  if (answers.potty_trained === 'yes' && dog.houseTrained) reasons.push('House Broken')
+  if (answers.home_type === 'apartment' && dog.size === 'Small') reasons.push('Apartment Friendly')
+  if (answers.yard === 'large' && dog.size === 'Large') reasons.push('Yard Ready')
   if (reasons.length === 0) reasons.push(`${dog.size} · ${dog.ageLabel}`)
   return reasons.slice(0, 3)
 }
@@ -265,6 +269,7 @@ export default function GuidedMatch({ initialAnswers = {}, onExit }) {
   const formValid = useMemo(() => {
     if (current?.type !== 'form') return true
     return current.fields.every(f => {
+      if (f.type === 'checkbox') return true // boolean value, never required in this app
       const value = (formDraft[f.key] || '').trim()
       if (f.required && !value) return false
       if (value && f.validate && !f.validate(value)) return false
@@ -375,7 +380,7 @@ export default function GuidedMatch({ initialAnswers = {}, onExit }) {
 
           <div className="fp-dog-card-grid">
             {matches.map(dog => (
-              <DogCard key={dog.id} dog={dog} tags={matchReasons(dog, answers)} />
+              <DogCard key={dog.id} dog={dog} tags={[dog.ageCategory, ...matchReasons(dog, answers)]} />
             ))}
           </div>
 

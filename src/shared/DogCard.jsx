@@ -94,7 +94,7 @@ export function DogCard({ dog, tags = [] }) {
         className="fp-btn fp-btn--primary fp-dog-card-cta"
         onClick={() => window.alert(`In production, this would start an inquiry with Fosters & Paws about ${dog.name}.`)}
       >
-        Ask about {dog.name}
+        Learn more
       </button>
     </div>
   )

@@ -51,7 +51,7 @@ Phase 1 now ships two features sharing one repo: the core guided match (serious,
 - Back navigation that preserves previously entered answers
 - Required-field validation on contact info steps (first/last name, address, phone, email)
 - Matching engine: hard-filters on "good with small children" and "house trained" when the adopter requires them; weighted scoring on activity-level closeness, home/yard size fit, and puppy/adult preference for the rest
-- Results screen showing 2+ matched dogs via the shared `DogCard` component (`src/shared/DogCard.jsx` — also used by Feature 2, so card changes only happen once): photo placeholder (gray box, correct aspect ratio — no real photo assets yet), breed, age, size, a short bio, 2-3 plain-language "why this match" reasons, an individual "Ask about {dog}" CTA, and a small donate button in the corner of every card. Cards in a row are equal height with the CTA anchored to the bottom regardless of bio length.
+- Results screen showing 2+ matched dogs via the shared `DogCard` component (`src/shared/DogCard.jsx` — also used by Feature 2, so card changes only happen once): photo placeholder (gray box, correct aspect ratio — no real photo assets yet), breed, age, size, a short bio, short canonical-label tags (age category + up to 3 "why this match" reasons, e.g. Adult, High Energy, Child Approved), a static "Learn more" CTA, and a small donate button in the corner of every card. Cards in a row are equal height with the CTA anchored to the bottom regardless of bio length.
 - Results are **not** rank-ordered — display order is randomized per session so no single dog is structurally favored
 - Fully responsive layout (mobile-first, since most adopters will find this via a phone)
 - Runs entirely on mock data — zero backend, zero external calls
@@ -61,7 +61,7 @@ Phase 1 now ships two features sharing one repo: the core guided match (serious,
 - Visual theme aligned to Fosters & Paws' actual brand (real brand tokens now in use — see DECISIONS.md)
 - Lightweight animation/transition between steps (nothing heavy — consistent with SUPR's existing feel)
 - Opt-in checkbox on the contact info step ("Keep me updated on new matches, meet-and-greets, and ways to help") — captures consent now so V3's email campaign doesn't require re-contacting users later. Unchecked by default; not required to complete the flow.
-- "See all adoptable dogs" section on the results screen with outbound links to Browse Puppies and Browse Adult Dogs on fostersandpaws.org (opens in a new tab), styled to match the `DogCard` CTA so it reads as one visual system
+- "See all adoptable dogs" section on the results screen with outbound links ("View Puppies" / "View Adult Dogs") to fostersandpaws.org (opens in a new tab), styled to match the `DogCard` CTA so it reads as one visual system
 ### Feature 2: Spirit Dog Quiz
  
 **Must-Have (P0)**
@@ -73,12 +73,12 @@ Phase 1 now ships two features sharing one repo: the core guided match (serious,
 - Two calls to action on the result screen:
   1. **Find my match** — enters Feature 1's full intake flow, with the quiz's energy-level answer pre-seeded into the `activity` question so the user isn't asked the same thing twice; a subtext line ("11 quick questions → your real matches") makes it unambiguous this leads into the full flow
   2. **Donate** — external link to fostersandpaws.org/donate, opens in a new tab
-- Dog result cards use the same shared `DogCard` component as Feature 1 — photo placeholder, bio, age-category tag, individual "Ask about" CTA, corner donate button, equal card heights
+- Dog result cards use the same shared `DogCard` component as Feature 1 — photo placeholder, bio, short canonical-label tags, static "Learn more" CTA, corner donate button, equal card heights
 - Quiz is fully anonymous — no name/contact/address fields anywhere in this flow (see Non-Goals)
 **Nice-to-Have (P1)**
 - Visually distinct "badge" or "sticker" treatment for the archetype card vs. Feature 1's more serious match cards, so the tonal shift is obvious
 - Restart/retake quiz option
-- "See all adoptable dogs" section on the results screen with outbound links to Browse Puppies and Browse Adult Dogs on fostersandpaws.org (opens in a new tab), styled to match the `DogCard` CTA so it reads as one visual system — same section as Feature 1's results screen
+- "See all adoptable dogs" section on the results screen with outbound links ("View Puppies" / "View Adult Dogs") to fostersandpaws.org (opens in a new tab), styled to match the `DogCard` CTA so it reads as one visual system — same section as Feature 1's results screen
 **Future Considerations (this feature, P2)**
 - Shareable unique result URLs (would require encoding quiz answers into a query param or short link — not needed for a text-only share in Phase 1)
 - Custom social preview image per archetype (OG image generation) for richer link previews when shared
