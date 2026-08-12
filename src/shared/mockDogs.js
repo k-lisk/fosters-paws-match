@@ -5,10 +5,17 @@
 // needed the same data (previously lived in GuidedMatch.jsx).
 // ============================================================
 
+import { IconZzz, IconSnowflake, IconYinYang, IconLightning, IconPartyHat, IconPaw } from './icons'
+
 export const ENERGY_SCALE = ['Lazy bones', 'Chill', 'Mix', 'Energetic', 'Spazz']
 
+// Index-aligned with ENERGY_SCALE — also the default icon set the Spirit Dog
+// Quiz's numeric energy: 0-4 values map to (design/Design Pass.dc.html).
+export const ENERGY_SCALE_ICONS = [IconZzz, IconSnowflake, IconYinYang, IconLightning, IconPartyHat]
+
 export function energyIcon(label) {
-  return { 'Lazy bones': '🦥', Chill: '😌', Mix: '🎲', Energetic: '🔥', Spazz: '⚡' }[label] || '🐾'
+  const index = ENERGY_SCALE.indexOf(label)
+  return index === -1 ? IconPaw : ENERGY_SCALE_ICONS[index]
 }
 
 export const MOCK_DOGS = [
