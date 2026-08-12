@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
+    body { margin: 0; }
+    a { color: #9a6463; }
+    a:hover { color: #7d504f; }
+  </style>
+</helmet>
+
+<div style="background:#f5f5f5; min-height:100vh; font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; color:#37383d;" data-comment-anchor="99c03a4cf9-div">
+
+  <!-- NAV -->
+  <div style="position:sticky; top:0; z-index:10; background:#ffffff; border-bottom:1px solid #cccaba; padding:14px 32px; display:flex; align-items:center; gap:24px; flex-wrap:wrap;">
+    <span style="font-weight:700; font-size:15px;">Fosters &amp; Paws — Design Pass</span>
+    <div style="display:flex; gap:18px; flex-wrap:wrap; margin-left:auto;">
+      <a href="#progress" style="font-size:13px; font-weight:600; text-decoration:none;">Progress indicator</a>
+      <a href="#guided-question" style="font-size:13px; font-weight:600; text-decoration:none;">Guided Match</a>
+      <a href="#quiz-question" style="font-size:13px; font-weight:600; text-decoration:none;">Spirit Quiz</a>
+      <a href="#guided-results" style="font-size:13px; font-weight:600; text-decoration:none;">Your Matches</a>
+      <a href="#quiz-results" style="font-size:13px; font-weight:600; text-decoration:none;">Quiz Results</a>
+      <a href="#components" style="font-size:13px; font-weight:600; text-decoration:none;">Component sheet</a>
+    </div>
+  </div>
+
+  <div style="max-width:1180px; margin:0 auto; padding:40px 32px 100px;" data-comment-anchor="816261ed14-div">
+
+    <p style="max-width:640px; color:#5f675d; font-size:14px; line-height:1.6; margin:0 0 48px;">
+      Segmented per-section progress rings, a unified dog card, a real CTA color hierarchy, responsive option-grid rules, and a single line-icon system replacing emoji — applied consistently across the Guided Match and Spirit Dog Quiz flows.
+    </p>
+
+    <!-- ============ SECTION: PROGRESS INDICATOR ============ -->
+    <section id="progress" data-screen-label="Progress Indicator" style="margin-bottom:72px;">
+      <div style="font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#9a6463; margin-bottom:8px;">1 — Progress Indicator</div>
+      <h2 style="font-size:24px; font-weight:700; margin:0 0 28px;">Segmented, per-section circular progress</h2>
+
+      <div style="font-size:13px; font-weight:700; color:#37383d; margin-bottom:12px;">Desktop / tablet — rings sized up to feel intentional, not squeezed into a corner</div>
+      <div style="display:flex; gap:64px; flex-wrap:wrap; margin-bottom:36px;">
+        <div style="background:#ffffff; border:1px solid #cccaba; border-radius:16px; padding:32px 40px;">
+          <div style="font-size:13px; font-weight:700; color:#5f675d; margin-bottom:20px;">Guided Match (11 questions → 3 sections)</div>
+          <div style="display:flex; align-items:flex-start;">
+            <div style="display:flex; flex-direction:column; align-items:center; gap:10px; width:96px;">
+              <div style="width:56px; height:56px; border-radius:50%; background:#9a6463; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 6px rgba(154,100,99,.35);">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7"></path></svg>
+              </div>
+              <span style="font-size:13px; font-weight:700; color:#9a6463; text-align:center;">Homelife</span>
+            </div>
+            <div style="width:72px; height:2px; background:#9a6463; margin-top:28px;"></div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:10px; width:96px;">
+              <div style="width:56px; height:56px; border-radius:50%; background:conic-gradient(#9a6463 0deg 180deg, #e4e1d3 180deg 360deg); display:flex; align-items:center; justify-content:center; padding:4px; box-sizing:border-box;">
+                <div style="width:100%; height:100%; border-radius:50%; background:#ffffff; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:#9a6463;">2/4</div>
+              </div>
+              <span style="font-size:13px; font-weight:700; color:#37383d; text-align:center;">Behavior</span>
+            </div>
+            <div style="width:72px; height:2px; background:#cccaba; margin-top:28px;"></div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:10px; width:96px;">
+              <div style="width:56px; height:56px; border-radius:50%; border:2px solid #cccaba;"></div>
+              <span style="font-size:13px; font-weight:600; color:#5f675d; text-align:center;">Your Info</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#ffffff; border:1px solid #cccaba; border-radius:16px; padding:32px 40px;">
+          <div style="font-size:13px; font-weight:700; color:#5f675d; margin-bottom:20px;">Spirit Dog Quiz (6 questions → 3 sections)</div>
+          <div style="display:flex; align-items:flex-start;">
+            <div style="display:flex; flex-direction:column; align-items:center; gap:10px; width:116px;">
+              <div style="width:56px; height:56px; border-radius:50%; background:#9a6463; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 6px rgba(154,100,99,.35);">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7"></path></svg>
+              </div>
+              <span style="font-size:13px; font-weight:700; color:#9a6463; text-align:center;">Vibe Check</span>
+            </div>
+            <div style="width:56px; height:2px; background:#9a6463; margin-top:28px;"></div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:10px; width:116px;">
+              <div style="width:56px; height:56px; border-radius:50%; background:conic-gradient(#9a6463 0deg 180deg, #e4e1d3 180deg 360deg); display:flex; align-items:center; justify-content:center; padding:4px; box-sizing:border-box;">
+                <div style="width:100%; height:100%; border-radius:50%; background:#ffffff; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:#9a6463;">1/2</div>
+              </div>
+              <span style="font-size:13px; font-weight:700; color:#37383d; text-align:center;">Recharge &amp; Refuel</span>
+            </div>
+            <div style="width:56px; height:2px; background:#cccaba; margin-top:28px;"></div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:10px; width:116px;">
+              <div style="width:56px; height:56px; border-radius:50%; border:2px solid #cccaba;"></div>
+              <span style="font-size:13px; font-weight:600; color:#5f675d; text-align:center;">Energy &amp; Home Base</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="font-size:13px; font-weight:700; color:#37383d; margin-bottom:12px;">Mobile web — condensed to the active ring only, no change from what's already correct today</div>
+      <div style="background:#ffffff; border:1px solid #cccaba; border-radius:16px; padding:20px; width:220px;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="width:38px; height:38px; border-radius:50%; background:conic-gradient(#9a6463 0deg 90deg, #e4e1d3 90deg 360deg); display:flex; align-items:center; justify-content:center; padding:3px; box-sizing:border-box; flex-shrink:0;">
+            <div style="width:100%; height:100%; border-radius:50%; background:#ffffff; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:#9a6463;">1/4</div>
+          </div>
+          <div>
+            <div style="font-size:13px; font-weight:700;">Behavior</div>
+            <div style="font-size:11px; color:#5f675d;">Section 2 of 3</div>
+          </div>
+        </div>
+      </div>
+      <p style="max-width:600px; font-size:12.5px; color:#5f675d; margin:10px 0 0;">Desktop/tablet shows the full section row since there's width to spare — it reads as a map of the whole flow. Mobile only shows the current section's ring plus a text label ("Section 2 of 3") since the full row doesn't fit without crowding; this matches the app's existing mobile pattern, just re-skinned to the ring.</p>
+    </section>
+
+    <!-- ============ SECTION: GUIDED MATCH QUESTION ============ -->
+    <section id="guided-question" data-screen-label="Guided Match — Question" style="margin-bottom:72px;">
+      <div style="font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#9a6463; margin-bottom:8px;">Guided Match — mid-flow question</div>
+      <h2 style="font-size:24px; font-weight:700; margin:0 0 24px;">Icons + progress ring applied to a real screen</h2>
+
+      <div style="max-width:640px; background:#ffffff; border:1px solid #cccaba; border-radius:16px; box-shadow:0 4px 20px rgba(55,56,61,.06); overflow:hidden;">
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:24px 32px 0;" data-comment-anchor="2ecf4006e6-div">
+          <div style="display:flex; align-items:flex-start;">
+            <div style="display:flex; flex-direction:column; align-items:center; gap:8px; width:78px;">
+              <div style="width:42px; height:42px; border-radius:50%; background:#9a6463; display:flex; align-items:center; justify-content:center;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7"></path></svg>
+              </div>
+              <span style="font-size:11px; font-weight:700; color:#9a6463;">Homelife</span>
+            </div>
+            <div style="width:44px; height:2px; background:#9a6463; margin-top:21px;"></div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:8px; width:78px;">
+              <div style="width:42px; height:42px; border-radius:50%; background:conic-gradient(#9a6463 0deg 90deg, #e4e1d3 90deg 360deg); display:flex; align-items:center; justify-content:center; padding:3px; box-sizing:border-box;">
+                <div style="width:100%; height:100%; border-radius:50%; background:#ffffff; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:#9a6463;">1/4</div>
+              </div>
+              <span style="font-size:11px; font-weight:700; color:#37383d;">Behavior</span>
+            </div>
+            <div style="width:44px; height:2px; background:#cccaba; margin-top:21px;"></div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:8px; width:78px;">
+              <div style="width:42px; height:42px; border-radius:50%; border:2px solid #cccaba;"></div>
+              <span style="font-size:11px; font-weight:600; color:#5f675d;">Your Info</span>
+            </div>
+          </div>
+          <span style="font-size:13px; color:#5f675d; white-space:nowrap; margin-left:12px;">← Back</span>
+        </div>
+
+        <div style="padding:28px 32px 36px;" data-comment-anchor="058462b223-div">
+          <div style="font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#9a6463; margin-bottom:8px;">Behavior</div>
+          <h3 style="font-size:20px; font-weight:700; margin:0 0 20px;">How active of a dog are you looking for?</h3>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div style="display:flex; align-items:center; gap:10px; background:#ffffff; border:1px solid #cccaba; border-radius:12px; padding:14px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" data-comment-anchor="8449eca0f8-svg"><path d="M3 17h3.5l-3.5 3.5h3.5"></path><path d="M9.5 13h4l-4 4h4"></path><path d="M16 9h4.5l-4.5 4.5h4.5"></path></svg>
+              <span style="font-size:14px; font-weight:600;">Lazy bones</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px; background:rgba(154,100,99,0.14); border:1px solid #9a6463; border-radius:12px; padding:14px; box-shadow:0 2px 8px rgba(154,100,99,.18);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><g><path d="M12 3v18"></path><path d="M9 6l3-3 3 3M9 18l3 3 3-3"></path></g><g transform="rotate(60 12 12)"><path d="M12 3v18"></path><path d="M9 6l3-3 3 3M9 18l3 3 3-3"></path></g><g transform="rotate(120 12 12)"><path d="M12 3v18"></path><path d="M9 6l3-3 3 3M9 18l3 3 3-3"></path></g></svg>
+              <span style="font-size:14px; font-weight:600;">Chill</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px; background:#ffffff; border:1px solid #cccaba; border-radius:12px; padding:14px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" data-comment-anchor="ccccffd221-path"></circle><path d="M12 3a4.5 4.5 0 000 9 4.5 4.5 0 010 9"></path></svg>
+              <span style="font-size:14px; font-weight:600;">Mix</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px; background:#ffffff; border:1px solid #cccaba; border-radius:12px; padding:14px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6z"></path></svg>
+              <span style="font-size:14px; font-weight:600;">Energetic</span>
+            </div>
+            <div style="grid-column:1 / -1; justify-self:center; width:calc(50% - 5px); display:flex; align-items:center; gap:10px; background:#ffffff; border:1px solid #cccaba; border-radius:12px; padding:14px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 4 L16.5 19 Q15 20.5 13.5 19 Q12 20.5 10.5 19 Q9 20.5 7.5 19 Z" data-comment-anchor="a835982e45-path"></path><circle cx="12" cy="4" r="1.3" fill="#9a6463" stroke="none"></circle><circle cx="19" cy="7" r="1" fill="#9a6463" stroke="none"></circle><circle cx="5" cy="9" r="1" fill="#9a6463" stroke="none"></circle><circle cx="20" cy="13" r="0.9" fill="#9a6463" stroke="none"></circle></svg>
+              <span style="font-size:14px; font-weight:600;">Spazz</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p style="max-width:640px; font-size:12.5px; color:#5f675d; margin:10px 0 0;">5 options → standard 2-col grid, widowed 5th option centered instead of left-aligned. Icons rebuilt once more, targeting the exact feedback: Spazz is a symmetric party-hat silhouette (pompom on top, scalloped fringe at the base, confetti dots around it) instead of a shape that read as a traffic cone; Mix is now a yin-yang (circle with symmetrical drops), matching that specific suggestion.</p>
+      <p style="max-width:640px; font-size:12.5px; color:#5f675d; margin:6px 0 0;"><strong style="color:#37383d;">Sliding-scale question, resolved:</strong> keeping this as 5 discrete labeled options rather than a slider. The five levels are named categories people recognize ("Lazy bones," "Spazz"), not a continuous measurement — a slider implies fine-grained precision that doesn't exist here. It would also be the only slider control in either flow; every other question in the app is a labeled choice, so switching just this one breaks the interaction consistency the rest of this pass is trying to establish. Applies to the matching quiz question below too.</p>
+    </section>
+
+    <!-- ============ SECTION: SPIRIT QUIZ QUESTION ============ -->
+    <section id="quiz-question" data-screen-label="Spirit Quiz — Question" style="margin-bottom:72px;">
+      <div style="font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#9a6463; margin-bottom:8px;">Spirit Dog Quiz — mid-flow question</div>
+      <h2 style="font-size:24px; font-weight:700; margin:0 0 24px;">Same progress + icon system, quiz flow</h2>
+
+      <div style="max-width:640px; background:#ffffff; border:1px solid #cccaba; border-radius:16px; box-shadow:0 4px 20px rgba(55,56,61,.06); overflow:hidden;">
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:24px 32px 0;">
+          <div style="display:flex; align-items:flex-start;">
+            <div style="display:flex; flex-direction:column; align-items:center; gap:8px; width:92px;">
+              <div style="width:42px; height:42px; border-radius:50%; background:#9a6463; display:flex; align-items:center; justify-content:center;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7"></path></svg>
+              </div>
+              <span style="font-size:11px; font-weight:700; color:#9a6463;">Vibe Check</span>
+            </div>
+            <div style="width:32px; height:2px; background:#9a6463; margin-top:21px;"></div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:8px; width:112px;">
+              <div style="width:42px; height:42px; border-radius:50%; background:conic-gradient(#9a6463 0deg 180deg, #e4e1d3 180deg 360deg); display:flex; align-items:center; justify-content:center; padding:3px; box-sizing:border-box;">
+                <div style="width:100%; height:100%; border-radius:50%; background:#ffffff; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:#9a6463;">1/2</div>
+              </div>
+              <span style="font-size:11px; font-weight:700; color:#37383d;">Recharge &amp; Refuel</span>
+            </div>
+            <div style="width:32px; height:2px; background:#cccaba; margin-top:21px;"></div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:8px; width:112px;">
+              <div style="width:42px; height:42px; border-radius:50%; border:2px solid #cccaba;"></div>
+              <span style="font-size:11px; font-weight:600; color:#5f675d;">Energy &amp; Home Base</span>
+            </div>
+          </div>
+          <span style="font-size:13px; color:#5f675d; white-space:nowrap; margin-left:12px;">← Back</span>
+        </div>
+
+        <div style="padding:28px 32px 36px;">
+          <div style="font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#9a6463; margin-bottom:8px;">Recharge &amp; Refuel</div>
+          <h3 style="font-size:20px; font-weight:700; margin:0 0 20px;">How do you recharge after a long week?</h3>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div style="display:flex; align-items:center; gap:10px; background:#ffffff; border:1px solid #cccaba; border-radius:12px; padding:14px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" data-comment-anchor="df115285f2-path"><path d="M3 17h3.5l-3.5 3.5h3.5"></path><path d="M9.5 13h4l-4 4h4"></path><path d="M16 9h4.5l-4.5 4.5h4.5"></path></svg>
+              <span style="font-size:14px; font-weight:600;">Total hibernation mode</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px; background:#ffffff; border:1px solid #cccaba; border-radius:12px; padding:14px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" data-comment-anchor="5ad28d689d-path"><rect x="3" y="11" width="18" height="6" rx="2"></rect><path d="M5 11V8a2 2 0 012-2h10a2 2 0 012 2v3"></path><path d="M5 17v2M19 17v2"></path></svg>
+              <span style="font-size:14px; font-weight:600;">A quiet night in, low-key</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px; background:rgba(154,100,99,0.14); border:1px solid #9a6463; border-radius:12px; padding:14px; box-shadow:0 2px 8px rgba(154,100,99,.18);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" data-comment-anchor="9c962e68c1-path"><path d="M4 17h16l-3 4H7z" data-comment-anchor="541c1c5b69-path"></path><path d="M12 17V7l6 5z"></path><path d="M2 20.5c1.5-1 3-1 4.5 0s3 1 4.5 0 3-1 4.5 0 3 1 4.5 0"></path></svg>
+              <span style="font-size:14px; font-weight:600;">Whatever the week calls for</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px; background:#ffffff; border:1px solid #cccaba; border-radius:12px; padding:14px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" data-comment-anchor="ec20a10090-path"><path d="M3 20L10 6l4 7 3-4 4 11z"></path><path d="M13 6V3"></path><path d="M13 3l3 1.4-3 1.4z" fill="#9a6463" stroke="none"></path></svg>
+              <span style="font-size:14px; font-weight:600;">Get outside and move</span>
+            </div>
+            <div style="grid-column:1 / -1; justify-self:center; width:calc(50% - 5px); display:flex; align-items:center; gap:10px; background:#ffffff; border:1px solid #cccaba; border-radius:12px; padding:14px;" data-comment-anchor="1eb495b313-div">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" data-comment-anchor="b4f8b4504e-polygon"><path d="M12 4 L16.5 19 Q15 20.5 13.5 19 Q12 20.5 10.5 19 Q9 20.5 7.5 19 Z" data-comment-anchor="2790c379ac-path"></path><circle cx="12" cy="4" r="1.3" fill="#9a6463" stroke="none"></circle><circle cx="19" cy="7" r="1" fill="#9a6463" stroke="none"></circle><circle cx="5" cy="9" r="1" fill="#9a6463" stroke="none"></circle><circle cx="20" cy="13" r="0.9" fill="#9a6463" stroke="none"></circle></svg>
+              <span style="font-size:14px; font-weight:600;">Go even harder — rest is later</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p style="max-width:640px; font-size:12.5px; color:#5f675d; margin:10px 0 0;">Updated approach: quiz answer icons no longer force-reuse the 5 Behavior energy icons — each answer gets an icon matching its own literal text, e.g. couch for "a quiet night in," mountain-with-flag for "get outside and move." "Whatever the week calls for" now gets its own icon rather than borrowing Mix's yin-yang: a small boat drifting on a wave, the literal "going with the flow" idiom — no fixed plans, no fixed shape either.</p>
+    </section>
+
+    <!-- ============ SECTION: GUIDED MATCH RESULTS ============ -->
+    <section id="guided-results" data-screen-label="Guided Match — Results" style="margin-bottom:72px;">
+      <div style="font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#9a6463; margin-bottom:8px;">2 — Dog Card · Guided Match results</div>
+      <h2 style="font-size:24px; font-weight:700; margin:0 0 24px;">"Your Matches" — redesigned card</h2>
+
+      <div style="max-width:600px; background:#ffffff; border:1px solid #cccaba; border-radius:16px; box-shadow:0 4px 20px rgba(55,56,61,.06); padding:28px;">
+        <div style="font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#9a6463; margin-bottom:8px;">Your matches</div>
+        <h3 style="font-size:20px; font-weight:700; margin:0 0 6px;">A few dogs we think you'd love</h3>
+        <p style="font-size:13.5px; color:#5f675d; line-height:1.5; margin:0 0 20px;">These aren't ranked — every dog here could be a great fit based on what you told us.</p>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+          <div style="position:relative; display:flex; flex-direction:column; background:#ffffff; border:1px solid #cccaba; border-radius:14px; padding:18px; box-shadow:0 1px 3px rgba(55,56,61,.06);">
+            <div style="aspect-ratio:4/3; background:#f5f5f5; border:1px solid #cccaba; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:11px; font-family:monospace; color:#8a8a80; margin-bottom:12px;">dog photo</div>
+            <div style="font-size:17px; font-weight:700;">Pepper</div>
+            <div style="font-size:12px; color:#5f675d; margin-bottom:10px;">Terrier Mix · Senior · Small</div>
+            <p style="font-size:13px; color:#5f675d; line-height:1.5; margin:0 0 14px;">A calm senior gentleman who'd rather supervise from the couch than run laps.</p>
+            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;">
+              <span style="font-size:11.5px; background:rgba(154,100,99,0.14); color:#9a6463; border-radius:20px; padding:6px 13px; font-weight:700;">Adult</span>
+              <span style="font-size:11.5px; background:rgba(154,100,99,0.14); color:#9a6463; border-radius:20px; padding:6px 13px; font-weight:700;">Low Energy</span>
+              <span style="font-size:11.5px; background:rgba(154,100,99,0.14); color:#9a6463; border-radius:20px; padding:6px 13px; font-weight:700;">Child Approved</span>
+              <span style="font-size:11.5px; background:rgba(154,100,99,0.14); color:#9a6463; border-radius:20px; padding:6px 13px; font-weight:700;">House Broken</span>
+              <span style="font-size:11.5px; background:#efece2; color:#5f675d; border-radius:20px; padding:6px 13px; font-weight:700;">+3 more</span>
+            </div>
+            <button style="width:100%; margin-top:auto; background:#ffffff; border:1.5px solid #9a6463; color:#9a6463; border-radius:10px; padding:9px 16px; font-size:13px; font-weight:700; font-family:inherit; cursor:pointer;" data-comment-anchor="09187f698c-button">Learn more</button>
+          </div>
+
+          <div style="position:relative; display:flex; flex-direction:column; background:#ffffff; border:1px solid #cccaba; border-radius:14px; padding:18px; box-shadow:0 1px 3px rgba(55,56,61,.06);">
+            <div style="aspect-ratio:4/3; background:#f5f5f5; border:1px solid #cccaba; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:11px; font-family:monospace; color:#8a8a80; margin-bottom:12px;">dog photo</div>
+            <div style="font-size:17px; font-weight:700;">Willow</div>
+            <div style="font-size:12px; color:#5f675d; margin-bottom:10px;">Retriever Mix · Senior · Medium</div>
+            <p style="font-size:13px; color:#5f675d; line-height:1.5; margin:0 0 14px;">A gentle old soul looking for a soft bed and an easy routine.</p>
+            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;">
+              <span style="font-size:11.5px; background:rgba(154,100,99,0.14); color:#9a6463; border-radius:20px; padding:6px 13px; font-weight:700;">Adult</span>
+              <span style="font-size:11.5px; background:rgba(154,100,99,0.14); color:#9a6463; border-radius:20px; padding:6px 13px; font-weight:700;">Low Energy</span>
+              <span style="font-size:11.5px; background:rgba(154,100,99,0.14); color:#9a6463; border-radius:20px; padding:6px 13px; font-weight:700;">Child Approved</span>
+            </div>
+            <button style="width:100%; margin-top:auto; background:#ffffff; border:1.5px solid #9a6463; color:#9a6463; border-radius:10px; padding:9px 16px; font-size:13px; font-weight:700; font-family:inherit; cursor:pointer;">Learn more</button>
+          </div>
+        </div>
+
+        <a href="https://fostersandpaws.org/donate" style="display:block; text-align:center; margin-top:16px; background:#37383d; color:#ffffff; border-radius:12px; padding:13px 20px; font-size:14px; font-weight:700; text-decoration:none; box-shadow:0 2px 8px rgba(55,56,61,.3);">Donate to the rescue</a>
+        <button style="width:100%; margin-top:8px; background:transparent; border:none; color:#5f675d; font-size:13.5px; font-weight:600; font-family:inherit; cursor:pointer; padding:10px;">Start over</button>
+
+        <div style="border-top:1px solid #cccaba; margin-top:16px; padding-top:20px;">
+          <h4 style="font-size:16px; font-weight:700; margin:0 0 12px;">See all adoptable dogs</h4>
+          <div style="display:flex; gap:10px;">
+            <a href="https://www.fostersandpaws.org/puppies" style="flex:1; text-align:center; background:#ffffff; border:1.5px solid #9a6463; color:#9a6463; border-radius:12px; padding:12px 16px; font-size:14px; font-weight:700; text-decoration:none;">View Puppies</a>
+            <a href="https://www.fostersandpaws.org/adult-dogs" style="flex:1; text-align:center; background:#ffffff; border:1.5px solid #9a6463; color:#9a6463; border-radius:12px; padding:12px 16px; font-size:14px; font-weight:700; text-decoration:none;">View Adult Dogs</a>
+          </div>
+        </div>
+      </div>
+      <p style="max-width:600px; font-size:12.5px; color:#5f675d; margin:10px 0 0;"><strong style="color:#37383d;">Per-card donate, removed:</strong> the icon/pill that sat on each dog's photo is gone. Legally, money given on a specific dog's card reads as earmarked for that dog's care — a general "support the rescue" ask can't live there. Donate now only appears as the one full-width button below, which gives to the general fund.</p>
+      <p style="max-width:600px; font-size:12.5px; color:#5f675d; margin:6px 0 0;">Learn More stays outline (secondary); both cards' Learn More buttons are pinned to the bottom regardless of bio length.</p>
+      <p style="max-width:600px; font-size:12.5px; color:#5f675d; margin:6px 0 0;"><strong style="color:#37383d;">Tag limit, mocked up:</strong> Pepper's card shows what happens past the cap — 4 tags display, a 5th+ collapses into a single "+N more" pill rather than wrapping to a third line or crowding the card. Willow's card shows the normal 3-tag case for comparison. Recommend capping at 4 visible tags per card app-wide.</p>
+      <p style="max-width:600px; font-size:12.5px; color:#5f675d; margin:6px 0 0;" data-comment-anchor="d949293733-p"><strong style="color:#37383d;">Donate call, resolved:</strong> a full-width "Donate to the rescue" button is on both results screens' CTA stack (general fund only, per the legal note above) — not gated behind a per-dog icon. Most people who take either flow, especially the quiz, aren't going to adopt but plenty want to support the rescue; hiding the ask behind a small icon shut out that majority. It sits below the primary action so it never competes with the flow's main task.</p>
+    </section>
+
+    <!-- ============ SECTION: SPIRIT QUIZ RESULTS ============ -->
+    <section id="quiz-results" data-screen-label="Spirit Quiz — Results" style="margin-bottom:72px;">
+      <div style="font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#9a6463; margin-bottom:8px;">Spirit Dog Quiz — result screen</div>
+      <h2 style="font-size:24px; font-weight:700; margin:0 0 24px;">Same dog card component, archetype icon instead of emoji</h2>
+
+      <div style="max-width:600px; background:#ffffff; border:1px solid #cccaba; border-radius:16px; box-shadow:0 4px 20px rgba(55,56,61,.06); padding:28px;">
+        <div style="font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#9a6463; margin-bottom:12px;">Your spirit dog is...</div>
+
+        <div style="text-align:center; background:#ffffff; border:2px dashed #9a6463; border-radius:16px; padding:24px; margin-bottom:24px; box-shadow:0 3px 10px rgba(154,100,99,.15);">
+          <div style="width:56px; height:56px; border-radius:50%; background:rgba(154,100,99,0.14); display:flex; align-items:center; justify-content:center; margin:0 auto 12px;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3l10 5-10 5L2 8l10-5z"></path><path d="M6 10.5V16c0 1.5 3 3 6 3s6-1.5 6-3v-5.5"></path><path d="M22 8v6"></path></svg>
+          </div>
+          <h3 style="font-size:22px; font-weight:700; margin:0 0 8px;">The Overachiever</h3>
+          <p style="font-size:14px; color:#5f675d; line-height:1.5; margin:0;">You have a five-year plan and a workout routine. Impressive. Exhausting.</p>
+        </div>
+
+        <h4 style="font-size:15px; font-weight:700; margin:0 0 12px;">Dogs with this energy right now</h4>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+          <div style="position:relative; display:flex; flex-direction:column; background:#ffffff; border:1px solid #cccaba; border-radius:14px; padding:18px; box-shadow:0 1px 3px rgba(55,56,61,.06);">
+            <div style="aspect-ratio:4/3; background:#f5f5f5; border:1px solid #cccaba; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:11px; font-family:monospace; color:#8a8a80; margin-bottom:12px;">dog photo</div>
+            <div style="font-size:17px; font-weight:700;">Biscuit</div>
+            <div style="font-size:12px; color:#5f675d; margin-bottom:10px;">Labrador Mix · Adult · Large</div>
+            <p style="font-size:13px; color:#5f675d; line-height:1.5; margin:0 0 14px;">A goofy, food-motivated boy who loves a long walk and a longer nap after.</p>
+            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;">
+              <span style="font-size:11.5px; background:rgba(154,100,99,0.14); color:#9a6463; border-radius:20px; padding:6px 13px; font-weight:700;">Adult</span>
+            </div>
+            <button style="width:100%; margin-top:auto; background:#ffffff; border:1.5px solid #9a6463; color:#9a6463; border-radius:10px; padding:9px 16px; font-size:13px; font-weight:700; font-family:inherit; cursor:pointer;">Learn more</button>
+          </div>
+          <div style="position:relative; display:flex; flex-direction:column; background:#ffffff; border:1px solid #cccaba; border-radius:14px; padding:18px; box-shadow:0 1px 3px rgba(55,56,61,.06);">
+            <div style="aspect-ratio:4/3; background:#f5f5f5; border:1px solid #cccaba; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:11px; font-family:monospace; color:#8a8a80; margin-bottom:12px;">dog photo</div>
+            <div style="font-size:17px; font-weight:700;">Waffles</div>
+            <div style="font-size:12px; color:#5f675d; margin-bottom:10px;">Beagle Mix · Puppy · Small</div>
+            <p style="font-size:13px; color:#5f675d; line-height:1.5; margin:0 0 14px;">A tiny troublemaker with big energy — still working on manners, already an expert at zoomies.</p>
+            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;" data-comment-anchor="4d7d525c83-div">
+              <span style="font-size:11.5px; background:rgba(154,100,99,0.14); color:#9a6463; border-radius:20px; padding:6px 13px; font-weight:700;">Puppy</span>
+              <span style="font-size:11.5px; background:rgba(154,100,99,0.14); color:#9a6463; border-radius:20px; padding:6px 13px; font-weight:700;">High Energy</span>
+              <span style="font-size:11.5px; background:rgba(154,100,99,0.14); color:#9a6463; border-radius:20px; padding:6px 13px; font-weight:700;">Great with Dogs</span>
+              <span style="font-size:11.5px; background:rgba(154,100,99,0.14); color:#9a6463; border-radius:20px; padding:6px 13px; font-weight:700;">Needs Yard</span>
+              <span style="font-size:11.5px; background:#efece2; color:#5f675d; border-radius:20px; padding:6px 13px; font-weight:700;">+1 more</span>
+            </div>
+            <button style="width:100%; margin-top:auto; background:#ffffff; border:1.5px solid #9a6463; color:#9a6463; border-radius:10px; padding:9px 16px; font-size:13px; font-weight:700; font-family:inherit; cursor:pointer;">Learn more</button>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:10px; margin-top:24px;">
+          <button style="background:#9a6463; color:#f5f5f5; border:none; border-radius:12px; padding:14px 20px; font-size:15px; font-weight:700; font-family:inherit; cursor:pointer; box-shadow:0 2px 6px rgba(154,100,99,.35);">Find my match</button>
+          <p style="font-size:12px; color:#5f675d; text-align:center; margin:-2px 0 4px;">11 quick questions → your real matches.</p>
+          <a href="https://fostersandpaws.org/donate" style="display:block; text-align:center; background:#37383d; color:#ffffff; border-radius:12px; padding:13px 20px; font-size:14px; font-weight:700; text-decoration:none;">Donate to the rescue</a>
+          <button style="background:transparent; border:none; color:#5f675d; font-size:13.5px; font-weight:600; font-family:inherit; cursor:pointer; padding:8px;">Retake the quiz</button>
+        </div>
+      </div>
+      <p style="max-width:600px; font-size:12.5px; color:#5f675d; margin:10px 0 0;">Archetype emoji replaced by the same line-icon set, in a soft accent badge — a graduation cap stands in for "Overachiever." Per-card donate icon removed here too (same legal reasoning as Guided Match results); the general-fund Donate button stays in the CTA stack below.</p>
+    </section>
+
+    <!-- ============ SECTION: COMPONENT SHEET ============ -->
+    <section id="components" data-screen-label="Component Sheet" style="margin-bottom:24px;">
+      <div style="font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#9a6463; margin-bottom:8px;">3 &amp; 4 &amp; 5 — Component Sheet</div>
+      <h2 style="font-size:24px; font-weight:700; margin:0 0 28px;">Button hierarchy, icon set, grid rules</h2>
+
+      <!-- Button hierarchy -->
+      <div style="background:#ffffff; border:1px solid #cccaba; border-radius:16px; padding:28px 32px; margin-bottom:24px;">
+        <h3 style="font-size:16px; font-weight:700; margin:0 0 20px;">CTA color hierarchy</h3>
+        <div style="display:flex; gap:24px; flex-wrap:wrap;">
+          <div style="display:flex; flex-direction:column; gap:10px; width:220px;">
+            <button style="background:#9a6463; color:#f5f5f5; border:none; border-radius:12px; padding:13px 20px; font-size:14px; font-weight:700; font-family:inherit; cursor:pointer; box-shadow:0 2px 6px rgba(154,100,99,.35);">Find My Match</button>
+            <div style="font-size:12px; font-weight:700; color:#37383d;">Primary — solid accent</div>
+            <div style="font-size:11.5px; color:#5f675d; line-height:1.4;">One per screen. The main flow action: Continue, Find My Match.</div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:10px; width:220px;">
+            <button style="background:#ffffff; color:#9a6463; border:1.5px solid #9a6463; border-radius:12px; padding:11.5px 20px; font-size:14px; font-weight:700; font-family:inherit; cursor:pointer;">Learn More</button>
+            <div style="font-size:12px; font-weight:700; color:#37383d;">Secondary — accent outline</div>
+            <div style="font-size:11.5px; color:#5f675d; line-height:1.4;">Supporting actions: Learn More, View Puppies/Adult Dogs.</div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:10px; width:220px;">
+            <button style="background:transparent; color:#5f675d; border:none; border-radius:12px; padding:13px 20px; font-size:14px; font-weight:600; font-family:inherit; cursor:pointer;">Start Over</button>
+            <div style="font-size:12px; font-weight:700; color:#37383d;">Tertiary — text only</div>
+            <div style="font-size:11.5px; color:#5f675d; line-height:1.4;">Low-commitment utility: Start Over, Retake Quiz, Back.</div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:10px; width:220px;">
+            <button style="background:#37383d; color:#ffffff; border:none; border-radius:12px; padding:13px 20px; font-size:14px; font-weight:700; font-family:inherit; cursor:pointer; box-shadow:0 2px 8px rgba(55,56,61,.3);">Donate</button>
+            <div style="font-size:12px; font-weight:700; color:#37383d;">Donate — solid neutral-dark</div>
+            <div style="font-size:11.5px; color:#5f675d; line-height:1.4;">Deliberately distinct from the brand accent so it reads as its own serious ask. Only ever a general-fund ask — never attached to a specific dog's card.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Icon system -->
+      <div style="background:#ffffff; border:1px solid #cccaba; border-radius:16px; padding:28px 32px; margin-bottom:24px;" data-comment-anchor="46da4a4046-div">
+        <h3 style="font-size:16px; font-weight:700; margin:0 0 6px;">Icon system</h3>
+        <p style="font-size:12.5px; color:#5f675d; margin:0 0 24px;">One line-icon vocabulary — 1.8–2.2px stroke, rounded joins, accent color — replacing every emoji in both flows. Audited against every question in GuidedMatch.jsx and SpiritDogQuiz.jsx; mapped explicitly below so nothing ships with a gap.</p>
+
+        <div style="font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:#9a6463; margin-bottom:10px;">Guided Match — Homelife</div>
+        <div style="display:flex; flex-direction:column; gap:16px; margin-bottom:26px;" data-comment-anchor="a2a9341290-div">
+          <div>
+            <div style="font-size:13px; font-weight:700; margin-bottom:8px;">What type of home do you live in?</div>
+            <div style="display:flex; gap:22px; flex-wrap:wrap;">
+              <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 11l9-8 9 8"></path><path d="M5 10v10h14V10"></path></svg><span style="font-size:12.5px;">House</span></div>
+              <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12l9-7 9 7"></path><path d="M5 11v10h14V11"></path><path d="M12 8v13"></path><path d="M8 21v-5h2v5M14 21v-5h2v5"></path></svg><span style="font-size:12.5px;" data-comment-anchor="2413cb287f-span">Town Home — duplex</span></div>
+              <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="3" width="14" height="18" rx="1"></rect><path d="M9 7h.01M9 11h.01M9 15h.01M15 7h.01M15 11h.01M15 15h.01"></path></svg><span style="font-size:12.5px;">Apartment</span></div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:13px; font-weight:700; margin-bottom:8px;">Do you own or rent?</div>
+            <div style="display:flex; gap:22px; flex-wrap:wrap;">
+              <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="7.5" cy="15.5" r="3.2"></circle><path d="M10 13l9-9"></path><path d="M16 7l2.5 2.5"></path><path d="M14 9l2 2"></path></svg><span style="font-size:12.5px;">Own — Key</span></div>
+              <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2h9l3 3v17H6z"></path><path d="M15 2v3h3"></path><path d="M9 12h6M9 16h6"></path></svg><span style="font-size:12.5px;">Rent — Document</span></div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:13px; font-weight:700; margin-bottom:8px;">How big is the yard your dog will have access to?</div>
+            <div style="display:flex; gap:22px; flex-wrap:wrap;">
+              <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2C8 6 8 10 12 13c4-3 4-7 0-11z"></path><path d="M12 13v9"></path></svg><span style="font-size:12.5px;">Large Yard</span></div>
+              <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 21V11"></path><path d="M12 11c0-4-3-5-6-4 0 4 2.5 6.5 6 4z"></path><path d="M12 11c0-4 3-5 6-4 0 4-2.5 6.5-6 4z"></path></svg><span style="font-size:12.5px;">Medium Yard — Sprout</span></div>
+              <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M8.5 15h7l-1 6h-5z"></path><path d="M12 15V6"></path><path d="M12 10c-3-1-4-4-3-6 2 1 3 3 3 6z"></path><path d="M12 8c3-1 4-3.5 3-5.5-2 1-3 2.5-3 5.5z"></path></svg><span style="font-size:12.5px;" data-comment-anchor="7cec137413-span">Patio Access — potted plant</span></div>
+              <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="6" cy="6" r="2"></circle><path d="M2 20l6-9 4 5 3-4 7 8z"></path></svg><span style="font-size:12.5px;">Park — Landscape</span></div>
+            </div>
+          </div>
+          <div data-comment-anchor="66aaf10def-div">
+            <div style="font-size:13px; font-weight:700; margin-bottom:8px;">Will your dog regularly be around children?</div>
+            <div style="display:flex; gap:22px; flex-wrap:wrap;">
+              <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" data-comment-anchor="7dca7856e7-circle"></circle><path d="M6 6l12 12"></path></svg><span style="font-size:12.5px;">No — Ban</span></div>
+              <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="13" r="6"></circle><circle cx="7.5" cy="8" r="2.2"></circle><circle cx="16.5" cy="8" r="2.2"></circle><circle cx="9.5" cy="12.5" r="1" fill="#9a6463" stroke="none"></circle><circle cx="14.5" cy="12.5" r="1" fill="#9a6463" stroke="none"></circle><path d="M10 15.5c1.2 1 2.8 1 4 0"></path></svg><span style="font-size:12.5px;">Mostly under 10 — teddy bear</span></div>
+              <div style="display:flex; align-items:center; gap:8px;" data-comment-anchor="18bca1875e-div"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="9" width="18" height="9" rx="4"></rect><path d="M8 11.5v3M6.5 13h3"></path><circle cx="16" cy="12.5" r="1" fill="#9a6463" stroke="none"></circle><circle cx="18.5" cy="14.5" r="1" fill="#9a6463" stroke="none"></circle></svg><span style="font-size:12.5px;">Mostly over 10 — game controller</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:#9a6463; margin-bottom:10px;">Guided Match — Behavior</div>
+        <div style="display:flex; flex-direction:column; gap:16px; margin-bottom:26px;">
+          <div>
+            <div style="font-size:13px; font-weight:700; margin-bottom:8px;">How active of a dog are you looking for?</div>
+            <div style="display:flex; gap:22px; flex-wrap:wrap;">
+              <div style="display:flex; align-items:center; gap:8px;" data-comment-anchor="0b410e1039-div"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M3 17h3.5l-3.5 3.5h3.5" data-comment-anchor="aff0c95897-path"></path><path d="M9.5 13h4l-4 4h4"></path><path d="M16 9h4.5l-4.5 4.5h4.5"></path></svg><span style="font-size:12.5px;" data-comment-anchor="b3f7dde834-span">Lazy bones — Zzz</span></div>
+              <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" data-comment-anchor="184180bbb1-path"><g><path d="M12 3v18"></path><path d="M9 6l3-3 3 3M9 18l3 3 3-3"></path></g><g transform="rotate(60 12 12)"><path d="M12 3v18"></path><path d="M9 6l3-3 3 3M9 18l3 3 3-3"></path></g><g transform="rotate(120 12 12)"><path d="M12 3v18"></path><path d="M9 6l3-3 3 3M9 18l3 3 3-3"></path></g></svg><span style="font-size:12.5px;">Chill — snowflake</span></div>
+              <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" data-comment-anchor="13728cf103-circle"><circle cx="12" cy="12" r="9"></circle><path d="M12 3a4.5 4.5 0 000 9 4.5 4.5 0 010 9"></path></svg><span style="font-size:12.5px;">Mix — yin-yang</span></div>
+              <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6z" data-comment-anchor="1df171c8f3-path"></path></svg><span style="font-size:12.5px;">Energetic — lightning bolt</span></div>
+              <div style="display:flex; align-items:center; gap:8px;" data-comment-anchor="827f485e4d-div"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 4 L16.5 19 Q15 20.5 13.5 19 Q12 20.5 10.5 19 Q9 20.5 7.5 19 Z" data-comment-anchor="32bb81ef28-path"></path><circle cx="12" cy="4" r="1.3" fill="#9a6463" stroke="none"></circle><circle cx="19" cy="7" r="1" fill="#9a6463" stroke="none"></circle><circle cx="5" cy="9" r="1" fill="#9a6463" stroke="none"></circle><circle cx="20" cy="13" r="0.9" fill="#9a6463" stroke="none"></circle></svg><span style="font-size:12.5px;">Spazz — party hat</span></div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:13px; font-weight:700; margin-bottom:8px;">Are you looking for a puppy or an adult dog?</div>
+            <div style="display:flex; gap:22px; flex-wrap:wrap;">
+              <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><ellipse cx="12" cy="16" rx="5" ry="3.6"></ellipse><circle cx="6.5" cy="9" r="1.6"></circle><circle cx="10" cy="6.5" r="1.6"></circle><circle cx="14" cy="6.5" r="1.6"></circle><circle cx="17.5" cy="9" r="1.6"></circle></svg><span style="font-size:12.5px;">Puppy — Paw</span></div>
+              <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="#9a6463" stroke="none"><g transform="rotate(45 12 12)" data-comment-anchor="535bb54a40-circle"><rect x="7" y="10" width="10" height="4" rx="2"></rect><circle cx="6" cy="9" r="2.2"></circle><circle cx="6" cy="15" r="2.2"></circle><circle cx="18" cy="9" r="2.2"></circle><circle cx="18" cy="15" r="2.2"></circle></g></svg><span style="font-size:12.5px;">Adult — bone (solid)</span></div>
+              <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="10" width="7" height="5" rx="2.5"></rect><rect x="14" y="10" width="7" height="5" rx="2.5"></rect><path d="M10 12.5h4"></path></svg><span style="font-size:12.5px;">No preference — Handshake</span></div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:13px; font-weight:700; margin-bottom:8px;">Good with small children? / Potty trained at adoption?</div>
+            <div style="display:flex; gap:22px; flex-wrap:wrap;">
+              <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7"></path></svg><span style="font-size:12.5px;">Yes — Check</span></div>
+              <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 12h12"></path></svg><span style="font-size:12.5px;">No — Minus (reused for both questions)</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:#9a6463; margin-bottom:10px;">Spirit Dog Quiz — all 6 questions</div>
+        <div style="margin-bottom:26px;" data-comment-anchor="8c62b5abde-div">
+          <div style="font-size:13px; font-weight:700; margin-bottom:8px;" data-comment-anchor="188a05bad1-div">Every answer across all 6 questions maps to an energy level (0–4), reusing the Behavior energy icons above — not a new icon per literal answer text:</div>
+          <div style="display:flex; gap:22px; flex-wrap:wrap;">
+            <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M3 17h3.5l-3.5 3.5h3.5"></path><path d="M9.5 13h4l-4 4h4"></path><path d="M16 9h4.5l-4.5 4.5h4.5"></path></svg><span style="font-size:12.5px;">0 — Lazy bones</span></div>
+            <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><g><path d="M12 3v18"></path><path d="M9 6l3-3 3 3M9 18l3 3 3-3"></path></g><g transform="rotate(60 12 12)"><path d="M12 3v18"></path><path d="M9 6l3-3 3 3M9 18l3 3 3-3"></path></g><g transform="rotate(120 12 12)"><path d="M12 3v18"></path><path d="M9 6l3-3 3 3M9 18l3 3 3-3"></path></g></svg><span style="font-size:12.5px;">1 — Chill</span></div>
+            <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 3a4.5 4.5 0 000 9 4.5 4.5 0 010 9"></path></svg><span style="font-size:12.5px;">2 — Mix</span></div>
+            <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6z"></path></svg><span style="font-size:12.5px;">3 — Energetic</span></div>
+            <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 4 L16.5 19 Q15 20.5 13.5 19 Q12 20.5 10.5 19 Q9 20.5 7.5 19 Z"></path><circle cx="12" cy="4" r="1.3" fill="#9a6463" stroke="none"></circle><circle cx="19" cy="7" r="1" fill="#9a6463" stroke="none"></circle><circle cx="5" cy="9" r="1" fill="#9a6463" stroke="none"></circle><circle cx="20" cy="13" r="0.9" fill="#9a6463" stroke="none"></circle></svg><span style="font-size:12.5px;">4 — Spazz</span></div>
+          </div>
+          <p style="font-size:11.5px; color:#5f675d; margin:10px 0 0;">This shared 5-icon set (Zzz / snowflake / yin-yang / lightning / party hat) still anchors the energy scale everywhere it appears (Behavior question, archetypes). Individual quiz answers can use their own literal icon instead when it reads more clearly, even at the same energy level — e.g. the boat-on-a-wave below, used for "whatever the week calls for" instead of the Mix yin-yang.</p>
+          <div style="display:flex; align-items:center; gap:8px; margin-top:10px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 17h16l-3 4H7z"></path><path d="M12 17V7l6 5z"></path><path d="M2 20.5c1.5-1 3-1 4.5 0s3 1 4.5 0 3-1 4.5 0 3 1 4.5 0"></path></svg><span style="font-size:12.5px;">"Whatever the week calls for" — boat on a wave</span></div>
+        </div>
+
+        <div style="font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:#9a6463; margin-bottom:10px;">Spirit Dog archetypes (result screen)</div>
+        <div style="display:flex; gap:22px; flex-wrap:wrap; margin-bottom:26px;">
+          <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M3 17h3.5l-3.5 3.5h3.5"></path><path d="M9.5 13h4l-4 4h4"></path><path d="M16 9h4.5l-4.5 4.5h4.5"></path></svg><span style="font-size:12.5px;">The Professional Napper — Zzz</span></div>
+          <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9c2-1.5 4-1.5 6 0s4 1.5 6 0 4-1.5 6 0"></path><path d="M3 15c2-1.5 4-1.5 6 0s4 1.5 6 0 4-1.5 6 0"></path></svg><span style="font-size:12.5px;">The Zen Master — waves</span></div>
+          <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"></rect><circle cx="8.5" cy="8.5" r="1.2" fill="#9a6463" stroke="none"></circle><circle cx="15.5" cy="8.5" r="1.2" fill="#9a6463" stroke="none"></circle><circle cx="12" cy="12" r="1.2" fill="#9a6463" stroke="none"></circle><circle cx="8.5" cy="15.5" r="1.2" fill="#9a6463" stroke="none"></circle><circle cx="15.5" cy="15.5" r="1.2" fill="#9a6463" stroke="none"></circle></svg><span style="font-size:12.5px;">The Wildcard — dice</span></div>
+          <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3l10 5-10 5L2 8l10-5z"></path><path d="M6 10.5V16c0 1.5 3 3 6 3s6-1.5 6-3v-5.5"></path><path d="M22 8v6"></path></svg><span style="font-size:12.5px;">The Overachiever — grad cap</span></div>
+          <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M8.5 5c-.6-1.7.2-2.8 1.6-2.4.2 1-.2 2.2-1 3.2"></path><path d="M15.5 5c.6-1.7-.2-2.8-1.6-2.4-.2 1 .2 2.2 1 3.2"></path><circle cx="12" cy="13" r="7" data-comment-anchor="812646c608-circle"></circle><path d="M9 11.5h.01M15 11.5h.01" strokeWidth="2.6"></path><path d="M8.5 16c1.5 1.5 5.5 1.5 7 0"></path></svg><span style="font-size:12.5px;">The Chaos Gremlin — devil-horned face</span></div>
+          <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2c1 4-4 6-4 10a4 4 0 008 0c0-1.5-1-2-1-3.5C16 11 18 12 18 15a6 6 0 01-12 0C6 9 11 8 12 2z"></path></svg><span style="font-size:12.5px;">The Spicy Little Menace — flame</span></div>
+        </div>
+
+        <div style="font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:#9a6463; margin-bottom:10px;">Other</div>
+        <div style="display:flex; gap:22px; flex-wrap:wrap;">
+          <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a6463" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><ellipse cx="12" cy="16" rx="5" ry="3.6"></ellipse><circle cx="6.5" cy="9" r="1.6"></circle><circle cx="10" cy="6.5" r="1.6"></circle><circle cx="14" cy="6.5" r="1.6"></circle><circle cx="17.5" cy="9" r="1.6"></circle></svg><span style="font-size:12.5px;">Decorative paw mark</span></div>
+          <div style="display:flex; align-items:center; gap:8px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="#37383d" stroke="none"><path d="M12 21s-7-4.4-9.5-9A5.5 5.5 0 0112 5.4 5.5 5.5 0 0121.5 12c-2.5 4.6-9.5 9-9.5 9z"></path></svg><span style="font-size:12.5px;">Donate (general fund only)</span></div>
+        </div>
+
+        <p style="font-size:11.5px; color:#5f675d; margin:20px 0 0; border-top:1px solid #cccaba; padding-top:14px;"><strong style="color:#37383d;">Coverage check:</strong> all 8 single-select GuidedMatch questions and all 6 SpiritDogQuiz questions are covered above; the 3 "Your Info" steps are text/form fields with no options, so no icons apply there. All 6 archetypes covered. This round: rebuilt Spazz as a symmetric party hat with a pompom, scalloped fringe base, and confetti dots — the earlier off-center curved version read as unclear, not celebratory; rebuilt Mix as a yin-yang (circle with symmetrical drops) everywhere it's used, including the Spirit Quiz energy-level row; gave the quiz's "Whatever the week calls for" answer its own boat-on-a-wave icon instead of sharing Mix's — the earlier feather read as a football, so switched to the literal "going with the flow" idiom instead; also simplified the Mix yin-yang to just the circle and S-curve, with no extra dots.</p>
+      </div>
+
+      <!-- Responsive grid rules -->
+      <div style="background:#ffffff; border:1px solid #cccaba; border-radius:16px; padding:28px 32px;">
+        <h3 style="font-size:16px; font-weight:700; margin:0 0 6px;">Responsive option-grid rules (desktop/tablet)</h3>
+        <p style="font-size:12.5px; color:#5f675d; margin:0 0 20px;">Mobile is unchanged — this governs desktop and tablet single-select layouts only.</p>
+        <div style="display:flex; gap:28px; flex-wrap:wrap; align-items:flex-start;">
+          <div style="width:260px;">
+            <div style="font-size:12px; font-weight:700; color:#37383d; margin-bottom:10px;">2–3 options → stack, full width</div>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <div style="background:#ffffff; border:1px solid #cccaba; border-radius:10px; padding:11px 14px; font-size:13px; font-weight:600;">House</div>
+              <div style="background:#ffffff; border:1px solid #cccaba; border-radius:10px; padding:11px 14px; font-size:13px; font-weight:600;">Town Home</div>
+              <div style="background:#ffffff; border:1px solid #cccaba; border-radius:10px; padding:11px 14px; font-size:13px; font-weight:600;">Apartment</div>
+            </div>
+          </div>
+          <div style="width:260px;">
+            <div style="font-size:12px; font-weight:700; color:#37383d; margin-bottom:10px;">4 options → 2-column grid</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+              <div style="background:#ffffff; border:1px solid #cccaba; border-radius:10px; padding:11px 14px; font-size:13px; font-weight:600;">Large Yard</div>
+              <div style="background:#ffffff; border:1px solid #cccaba; border-radius:10px; padding:11px 14px; font-size:13px; font-weight:600;">Medium Yard</div>
+              <div style="background:#ffffff; border:1px solid #cccaba; border-radius:10px; padding:11px 14px; font-size:13px; font-weight:600;">Patio Access</div>
+              <div style="background:#ffffff; border:1px solid #cccaba; border-radius:10px; padding:11px 14px; font-size:13px; font-weight:600;">Park</div>
+            </div>
+          </div>
+          <div style="width:260px;">
+            <div style="font-size:12px; font-weight:700; color:#37383d; margin-bottom:10px;">5+ options → grid, widow centered</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+              <div style="background:#ffffff; border:1px solid #cccaba; border-radius:10px; padding:11px 14px; font-size:13px; font-weight:600;">Lazy bones</div>
+              <div style="background:#ffffff; border:1px solid #cccaba; border-radius:10px; padding:11px 14px; font-size:13px; font-weight:600;">Chill</div>
+              <div style="background:#ffffff; border:1px solid #cccaba; border-radius:10px; padding:11px 14px; font-size:13px; font-weight:600;">Mix</div>
+              <div style="background:#ffffff; border:1px solid #cccaba; border-radius:10px; padding:11px 14px; font-size:13px; font-weight:600;">Energetic</div>
+              <div style="grid-column:1 / -1; justify-self:center; width:calc(50% - 4px); background:#ffffff; border:1px solid #cccaba; border-radius:10px; padding:11px 14px; font-size:13px; font-weight:600; text-align:center;">Spazz</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+</x-dc>
+</body>
+</html>
