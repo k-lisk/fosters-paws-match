@@ -68,6 +68,7 @@ export const THEME_CSS = `
   background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
   padding: 14px; cursor: pointer; transition: border-color .15s, background .15s, box-shadow .15s;
   box-shadow: 0 1px 2px rgba(55,56,61,0.04);
+  box-sizing: border-box;
 }
 .fp-option-card:hover { border-color: var(--accent); }
 .fp-option-card--selected { border-color: var(--accent); background: rgba(154,100,99,0.14); box-shadow: 0 2px 8px rgba(154,100,99,0.18); }
