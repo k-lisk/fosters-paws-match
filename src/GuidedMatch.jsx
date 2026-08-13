@@ -1,13 +1,7 @@
 import { useState, useMemo } from 'react'
 import { THEME_CSS, SectionProgress, OptionGrid, StepActions, BrowseMoreLinks, DonateButton } from './shared/StepPrimitives'
 import { DogCard, DOG_CARD_CSS } from './shared/DogCard'
-import { ENERGY_SCALE, MOCK_DOGS, energyIcon } from './shared/mockDogs'
-import {
-  IconHouse, IconTownHome, IconApartment, IconKey, IconDocument,
-  IconLeaf, IconSprout, IconPottedPlant, IconLandscape,
-  IconBanCircle, IconTeddyBear, IconGameController,
-  IconPaw, IconBone, IconHandshake, IconCheck, IconMinus,
-} from './shared/icons'
+import { ENERGY_SCALE, MOCK_DOGS } from './shared/mockDogs'
 
 // ============================================================
 // Fosters & Paws — Guided Adoption Match (Feature 1, Phase 1)
@@ -24,9 +18,9 @@ const STEPS = [
     question: 'What type of home do you live in?',
     hint: 'This helps us think about space.',
     options: [
-      { value: 'house', label: 'House', icon: IconHouse },
-      { value: 'town_home', label: 'Town Home', icon: IconTownHome },
-      { value: 'apartment', label: 'Apartment', icon: IconApartment },
+      { value: 'house', label: 'House' },
+      { value: 'town_home', label: 'Town Home' },
+      { value: 'apartment', label: 'Apartment' },
     ],
   },
   {
@@ -34,8 +28,8 @@ const STEPS = [
     question: 'Do you own or rent?',
     hint: 'Some rentals have breed or size restrictions — good to know up front.',
     options: [
-      { value: 'own', label: 'Own', icon: IconKey },
-      { value: 'rent', label: 'Rent', icon: IconDocument },
+      { value: 'own', label: 'Own' },
+      { value: 'rent', label: 'Rent' },
     ],
   },
   {
@@ -43,10 +37,10 @@ const STEPS = [
     question: 'How big is the yard your dog will have access to?',
     hint: '',
     options: [
-      { value: 'large', label: 'Large Yard', icon: IconLeaf },
-      { value: 'medium', label: 'Medium Yard', icon: IconSprout },
-      { value: 'patio', label: 'Patio Access', icon: IconPottedPlant },
-      { value: 'park', label: 'Public Space — Park', icon: IconLandscape },
+      { value: 'large', label: 'Large Yard' },
+      { value: 'medium', label: 'Medium Yard' },
+      { value: 'patio', label: 'Patio Access' },
+      { value: 'park', label: 'Public Space — Park' },
     ],
   },
   {
@@ -54,25 +48,25 @@ const STEPS = [
     question: 'Will your dog regularly be around children?',
     hint: '',
     options: [
-      { value: 'no', label: 'No', icon: IconBanCircle },
-      { value: 'under_10', label: 'Mostly under 10', icon: IconTeddyBear },
-      { value: 'over_10', label: 'Mostly over 10', icon: IconGameController },
+      { value: 'no', label: 'No' },
+      { value: 'under_10', label: 'Mostly under 10' },
+      { value: 'over_10', label: 'Mostly over 10' },
     ],
   },
   {
     id: 'activity', section: 'Behavior', type: 'single',
     question: 'How active of a dog are you looking for?',
     hint: '',
-    options: ENERGY_SCALE.map(label => ({ value: label, label, icon: energyIcon(label) })),
+    options: ENERGY_SCALE.map(label => ({ value: label, label })),
   },
   {
     id: 'puppy_or_adult', section: 'Behavior', type: 'single',
     question: 'Are you looking for a puppy or an adult dog?',
     hint: 'Puppies need more training, supervision, and patience — adult dogs are often already house-trained and settled.',
     options: [
-      { value: 'puppy', label: 'Puppy', icon: IconPaw },
-      { value: 'adult', label: 'Adult', icon: IconBone },
-      { value: 'no_preference', label: 'No preference', icon: IconHandshake },
+      { value: 'puppy', label: 'Puppy' },
+      { value: 'adult', label: 'Adult' },
+      { value: 'no_preference', label: 'No preference' },
     ],
   },
   {
@@ -80,8 +74,8 @@ const STEPS = [
     question: 'Do you expect your dog to be good with small children?',
     hint: '',
     options: [
-      { value: 'yes', label: 'Yes', icon: IconCheck },
-      { value: 'no', label: 'No', icon: IconMinus },
+      { value: 'yes', label: 'Yes' },
+      { value: 'no', label: 'No' },
     ],
   },
   {
@@ -89,8 +83,8 @@ const STEPS = [
     question: 'Do you expect your dog to be potty trained at adoption?',
     hint: '',
     options: [
-      { value: 'yes', label: 'Yes', icon: IconCheck },
-      { value: 'no', label: "No, I'm ready to train", icon: IconMinus },
+      { value: 'yes', label: 'Yes' },
+      { value: 'no', label: "No, I'm ready to train" },
     ],
   },
   {

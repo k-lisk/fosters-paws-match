@@ -72,7 +72,6 @@ export const THEME_CSS = `
 .fp-option-card:hover { border-color: var(--accent); }
 .fp-option-card--selected { border-color: var(--accent); background: rgba(154,100,99,0.14); box-shadow: 0 2px 8px rgba(154,100,99,0.18); }
 .fp-option-card--widow { grid-column: 1 / -1; justify-self: center; width: calc(50% - 4px); }
-.fp-option-icon { display: flex; }
 .fp-option-label { font-size: 14px; font-weight: 600; }
 
 .fp-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
@@ -195,7 +194,6 @@ export function OptionGrid({ options, selected, onSelect }) {
   return (
     <div className={`fp-option-grid ${layoutClass}`}>
       {options.map((opt, i) => {
-        const Icon = opt.icon
         const isWidow = hasWidow && i === count - 1
         return (
           <div
@@ -203,7 +201,6 @@ export function OptionGrid({ options, selected, onSelect }) {
             className={`fp-option-card ${selected === opt.value ? 'fp-option-card--selected' : ''} ${isWidow ? 'fp-option-card--widow' : ''}`.trim()}
             onClick={() => onSelect(opt.value)}
           >
-            <span className="fp-option-icon"><Icon size={20} /></span>
             <div className="fp-option-label">{opt.label}</div>
           </div>
         )

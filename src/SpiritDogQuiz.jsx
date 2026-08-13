@@ -1,10 +1,8 @@
 import { useState, useMemo } from 'react'
 import { THEME_CSS, SectionProgress, OptionGrid, StepActions, BrowseMoreLinks, DonateButton } from './shared/StepPrimitives'
 import { DogCard, DOG_CARD_CSS } from './shared/DogCard'
-import { ENERGY_SCALE, ENERGY_SCALE_ICONS, MOCK_DOGS } from './shared/mockDogs'
-import { IconCouch, IconBoat, IconMountainFlag, IconZzz, IconWaves, IconDice, IconGradCap, IconDevilFace, IconFlame } from './shared/icons'
-
-const E = ENERGY_SCALE_ICONS
+import { ENERGY_SCALE, MOCK_DOGS } from './shared/mockDogs'
+import { IconZzz, IconWaves, IconDice, IconGradCap, IconDevilFace, IconFlame } from './shared/icons'
 
 // ============================================================
 // Fosters & Paws — Spirit Dog Quiz (Feature 2, Phase 1)
@@ -22,61 +20,61 @@ const QUIZ_QUESTIONS = [
   {
     id: 'q1', section: 'Vibe Check', question: 'Your ideal Saturday?',
     options: [
-      { value: 'A', label: 'Sleeping in, no plans', icon: E[0], energy: 0, size: 'Small' },
-      { value: 'B', label: 'Coffee shop, low-key hang', icon: E[1], energy: 1, size: 'Small' },
-      { value: 'C', label: 'Depends on my mood', icon: E[2], energy: 2, size: null },
-      { value: 'D', label: 'Big hike, need the whole day', icon: E[3], energy: 3, size: 'Big' },
-      { value: 'E', label: "Nonstop plans, can't sit still", icon: E[4], energy: 4, size: 'Big' },
+      { value: 'A', label: 'Sleeping in, no plans', energy: 0, size: 'Small' },
+      { value: 'B', label: 'Coffee shop, low-key hang', energy: 1, size: 'Small' },
+      { value: 'C', label: 'Depends on my mood', energy: 2, size: null },
+      { value: 'D', label: 'Big hike, need the whole day', energy: 3, size: 'Big' },
+      { value: 'E', label: "Nonstop plans, can't sit still", energy: 4, size: 'Big' },
     ],
   },
   {
     id: 'q4', section: 'Vibe Check', question: 'Your friends would describe you as...',
     options: [
-      { value: 'A', label: 'The one who never leaves the couch', icon: E[0], energy: 0, size: 'Small' },
-      { value: 'B', label: 'Low-maintenance, easygoing', icon: E[1], energy: 1, size: 'Small' },
-      { value: 'C', label: 'Unpredictable, in a good way', icon: E[2], energy: 2, size: null },
-      { value: 'D', label: 'Reliable, but always down for it', icon: E[3], energy: 3, size: 'Big' },
-      { value: 'E', label: 'A lot. In all caps', icon: E[4], energy: 4, size: 'Big' },
+      { value: 'A', label: 'The one who never leaves the couch', energy: 0, size: 'Small' },
+      { value: 'B', label: 'Low-maintenance, easygoing', energy: 1, size: 'Small' },
+      { value: 'C', label: 'Unpredictable, in a good way', energy: 2, size: null },
+      { value: 'D', label: 'Reliable, but always down for it', energy: 3, size: 'Big' },
+      { value: 'E', label: 'A lot. In all caps', energy: 4, size: 'Big' },
     ],
   },
   {
     id: 'q2', section: 'Recharge & Refuel', question: 'Pick a snack.',
     options: [
-      { value: 'A', label: "Whatever's closest — I'm not moving", icon: E[0], energy: 0, size: 'Small' },
-      { value: 'B', label: 'Something slow and comforting', icon: E[1], energy: 1, size: 'Small' },
-      { value: 'C', label: "Depends what's in the fridge", icon: E[2], energy: 2, size: null },
-      { value: 'D', label: 'Something I can eat on the go', icon: E[3], energy: 3, size: 'Big' },
-      { value: 'E', label: 'Anything. I will also steal yours', icon: E[4], energy: 4, size: 'Big' },
+      { value: 'A', label: "Whatever's closest — I'm not moving", energy: 0, size: 'Small' },
+      { value: 'B', label: 'Something slow and comforting', energy: 1, size: 'Small' },
+      { value: 'C', label: "Depends what's in the fridge", energy: 2, size: null },
+      { value: 'D', label: 'Something I can eat on the go', energy: 3, size: 'Big' },
+      { value: 'E', label: 'Anything. I will also steal yours', energy: 4, size: 'Big' },
     ],
   },
   {
     id: 'q6', section: 'Recharge & Refuel', question: 'How do you recharge after a long week?',
     options: [
-      { value: 'A', label: 'Total hibernation mode', icon: E[0], energy: 0, size: 'Small' },
-      { value: 'B', label: 'A quiet night in, low-key', icon: IconCouch, energy: 1, size: 'Small' },
-      { value: 'C', label: 'Whatever the week calls for', icon: IconBoat, energy: 2, size: null },
-      { value: 'D', label: 'Get outside and move', icon: IconMountainFlag, energy: 3, size: 'Big' },
-      { value: 'E', label: 'Go even harder — rest is for later', icon: E[4], energy: 4, size: 'Big' },
+      { value: 'A', label: 'Total hibernation mode', energy: 0, size: 'Small' },
+      { value: 'B', label: 'A quiet night in, low-key', energy: 1, size: 'Small' },
+      { value: 'C', label: 'Whatever the week calls for', energy: 2, size: null },
+      { value: 'D', label: 'Get outside and move', energy: 3, size: 'Big' },
+      { value: 'E', label: 'Go even harder — rest is for later', energy: 4, size: 'Big' },
     ],
   },
   {
     id: 'q3', section: 'Energy & Home Base', question: 'Pick a soundtrack for your life.',
     options: [
-      { value: 'A', label: 'Ambient, barely audible', icon: E[0], energy: 0, size: null },
-      { value: 'B', label: 'Acoustic, chill', icon: E[1], energy: 1, size: null },
-      { value: 'C', label: "Whatever's on shuffle", icon: E[2], energy: 2, size: null },
-      { value: 'D', label: 'Upbeat, gets you moving', icon: E[3], energy: 3, size: null },
-      { value: 'E', label: 'Full chaos playlist, no skips', icon: E[4], energy: 4, size: null },
+      { value: 'A', label: 'Ambient, barely audible', energy: 0, size: null },
+      { value: 'B', label: 'Acoustic, chill', energy: 1, size: null },
+      { value: 'C', label: "Whatever's on shuffle", energy: 2, size: null },
+      { value: 'D', label: 'Upbeat, gets you moving', energy: 3, size: null },
+      { value: 'E', label: 'Full chaos playlist, no skips', energy: 4, size: null },
     ],
   },
   {
     id: 'q5', section: 'Energy & Home Base', question: 'Pick your ideal home base.',
     options: [
-      { value: 'A', label: 'A single cozy blanket fort', icon: E[0], energy: 0, size: 'Small' },
-      { value: 'B', label: 'A quiet corner with a good view', icon: E[1], energy: 1, size: 'Small' },
-      { value: 'C', label: 'Wherever the group ends up', icon: E[2], energy: 2, size: null },
-      { value: 'D', label: 'Somewhere with room to roam', icon: E[3], energy: 3, size: 'Big' },
-      { value: 'E', label: 'Open floor space to zoom around', icon: E[4], energy: 4, size: 'Big' },
+      { value: 'A', label: 'A single cozy blanket fort', energy: 0, size: 'Small' },
+      { value: 'B', label: 'A quiet corner with a good view', energy: 1, size: 'Small' },
+      { value: 'C', label: 'Wherever the group ends up', energy: 2, size: null },
+      { value: 'D', label: 'Somewhere with room to roam', energy: 3, size: 'Big' },
+      { value: 'E', label: 'Open floor space to zoom around', energy: 4, size: 'Big' },
     ],
   },
 ]

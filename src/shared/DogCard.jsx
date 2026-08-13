@@ -42,10 +42,10 @@ export const DOG_CARD_CSS = `
 .fp-dog-card-name { font-size: 17px; font-weight: 700; }
 .fp-dog-card-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
 .fp-dog-card-bio { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin: 0 0 10px; }
-.fp-dog-card-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.fp-dog-card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
 .fp-chip { font-size: 11.5px; background: rgba(154,100,99,0.14); color: var(--accent); border-radius: 20px; padding: 6px 13px; font-weight: 700; }
 .fp-chip--more { background: #efece2; color: var(--text-muted); }
-.fp-dog-card-cta { width: 100%; margin-top: auto; padding-top: 14px; }
+.fp-dog-card-cta { width: 100%; margin-top: auto; }
 .fp-dog-card-cta.fp-btn--secondary { padding: 9px 16px; font-size: 13px; border-radius: 10px; }
 `
 

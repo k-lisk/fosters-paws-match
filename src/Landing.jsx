@@ -27,13 +27,12 @@ export default function Landing({ onFindMatch, onSpiritQuiz }) {
           <div className="fp-entry-grid">
             <div className="fp-entry-card fp-badge-card">
               <img src="/logos/FP_Paw_FullColor.svg" alt="" aria-hidden="true" className="fp-entry-paw" />
-              <div className="fp-entry-icon">🎲</div>
               <h2 className="fp-entry-title">What's my spirit dog?</h2>
               <p className="fp-entry-body">
                 Just for fun — 6 quick questions, with a real dog match waiting at the end.
               </p>
               <button className="fp-btn fp-btn--primary fp-btn--full" onClick={onSpiritQuiz}>
-                What's my spirit dog? 🎲
+                What's my spirit dog?
               </button>
             </div>
 
@@ -66,7 +65,6 @@ const CSS = `
   padding: 20px; box-shadow: 0 1px 3px rgba(55,56,61,0.06);
 }
 .fp-entry-logo { width: 100%; max-width: 200px; height: auto; margin-bottom: 14px; }
-.fp-entry-icon { font-size: 26px; margin-bottom: 10px; }
 .fp-entry-title { font-size: 17px; font-weight: 700; margin: 0 0 6px; }
 .fp-entry-body { color: var(--text-muted); font-size: 13px; line-height: 1.5; margin: 0 0 16px; flex: 1; }
 .fp-entry-paw { position: absolute; top: -12px; right: -12px; width: 42px; height: 42px; }
