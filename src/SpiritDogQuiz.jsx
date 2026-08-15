@@ -209,35 +209,56 @@ export default function SpiritDogQuiz({ onAdopt, onExit }) {
       )}
 
       {phase === 'result' && result && (
-        <div className="fp-body">
-          <div className="fp-eyebrow">Your spirit dog is...</div>
+        <>
+          <div className="fp-body fp-quiz-results">
+            <div className="fp-eyebrow">Your spirit dog is...</div>
 
-          <div className="fp-badge-card fp-archetype-card">
-            <div className="fp-archetype-badge">
-              <result.archetype.icon size={28} />
+            <div className="fp-badge-card fp-archetype-card">
+              <div className="fp-archetype-badge">
+                <result.archetype.icon size={28} />
+              </div>
+              <h2 className="fp-archetype-name">{result.archetype.name}</h2>
+              <p className="fp-archetype-blurb">{result.archetype.blurb}</p>
             </div>
-            <h2 className="fp-archetype-name">{result.archetype.name}</h2>
-            <p className="fp-archetype-blurb">{result.archetype.blurb}</p>
+
+            <h3 className="fp-question fp-quiz-dogs-heading">Dogs with this energy right now</h3>
+            <div className="fp-dog-card-grid">
+              {result.dogs.map(dog => (
+                <DogCard key={dog.id} dog={dog} tags={[dog.ageCategory]} />
+              ))}
+            </div>
+
+            <StepActions style={{ marginTop: 24 }}>
+              <button className="fp-btn fp-btn--tertiary" onClick={retake}>Retake the quiz</button>
+            </StepActions>
+
+            <BrowseMoreLinks />
+
+            <div className="fp-social-follow">
+              <h3 className="fp-social-heading">Follow us</h3>
+              <div className="fp-social-links">
+                <a href="https://www.instagram.com/fosters_and_paws/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                  <IconInstagram />
+                </a>
+                <a href="https://www.facebook.com/fostersandpaws" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                  <IconFacebook />
+                </a>
+                <a href="https://www.tiktok.com/@fostersandpaws" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+                  <IconTikTok />
+                </a>
+              </div>
+            </div>
           </div>
 
-          <h3 className="fp-question fp-quiz-dogs-heading">Dogs with this energy right now</h3>
-          <div className="fp-dog-card-grid">
-            {result.dogs.map(dog => (
-              <DogCard key={dog.id} dog={dog} tags={[dog.ageCategory]} />
-            ))}
+          <div className="fp-sticky-cta-bar">
+            <div className="fp-sticky-cta-bar-inner">
+              <button className="fp-btn fp-btn--primary" onClick={() => onAdopt?.(result.energyLabel)}>
+                Find my match
+              </button>
+              <DonateButton style={{ marginTop: 0 }} />
+            </div>
           </div>
-
-          <StepActions style={{ marginTop: 24 }}>
-            <button className="fp-btn fp-btn--primary" onClick={() => onAdopt?.(result.energyLabel)}>
-              Find my match
-            </button>
-            <p className="fp-adopt-subtext">11 quick questions → your real matches.</p>
-            <DonateButton style={{ marginTop: 0 }} />
-            <button className="fp-btn fp-btn--tertiary" onClick={retake}>Retake the quiz</button>
-          </StepActions>
-
-          <BrowseMoreLinks />
-        </div>
+        </>
       )}
     </div>
   )
@@ -253,5 +274,48 @@ const CSS = `
 .fp-archetype-name { font-size: 24px; font-weight: 700; margin: 0 0 8px; }
 .fp-archetype-blurb { color: var(--text-muted); font-size: 14px; line-height: 1.5; margin: 0; }
 .fp-quiz-dogs-heading { font-size: 16px; margin-bottom: 12px; }
-.fp-adopt-subtext { color: var(--text-muted); font-size: 12px; text-align: center; margin: -2px 0 6px; }
+
+.fp-quiz-results { padding-bottom: 148px; }
+
+.fp-social-follow { margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border); text-align: center; }
+.fp-social-heading { font-size: 18px; font-weight: 700; margin: 0 0 14px; }
+.fp-social-links { display: flex; justify-content: center; gap: 20px; }
+.fp-social-links a { color: var(--accent); display: flex; }
+
+.fp-sticky-cta-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  background: var(--bg-card); border-top: 1px solid var(--border);
+  box-shadow: 0 -2px 10px rgba(55,56,61,0.08);
+  padding: 12px 24px calc(12px + env(safe-area-inset-bottom, 0px));
+}
+.fp-sticky-cta-bar-inner { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
 `
+
+// ---------- Social platform icons (single-use, simplified glyphs — not the app's line-icon system) ----------
+function IconInstagram(props) {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4.2" />
+      <circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none" />
+    </svg>
+  )
+}
+
+function IconFacebook(props) {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M14 8.5h-1.5c-1 0-1.5.5-1.5 1.5v2h3l-.4 2.5h-2.6V21" />
+    </svg>
+  )
+}
+
+function IconTikTok(props) {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M13.5 3v10.8a3.3 3.3 0 11-2.8-3.27" />
+      <path d="M13.5 3c.4 2.1 2 3.6 4.1 3.8" />
+    </svg>
+  )
+}
