@@ -237,14 +237,14 @@ export default function SpiritDogQuiz({ onAdopt, onExit }) {
             <div className="fp-social-follow">
               <h3 className="fp-social-heading">Follow us</h3>
               <div className="fp-social-links">
-                <a href="https://www.instagram.com/fosters_and_paws/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                  <IconInstagram />
+                <a className="fp-social-icon" href="https://www.instagram.com/fosters_and_paws/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                  <img src="/logos/social/Instagram_Glyph_Black.svg" alt="" className="fp-social-icon-img fp-social-icon-img--inset" />
                 </a>
-                <a href="https://www.facebook.com/fostersandpaws" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-                  <IconFacebook />
+                <a className="fp-social-icon fp-social-icon--facebook" href="https://www.facebook.com/fostersandpaws" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                  <img src="/logos/social/Facebook_Logo_Secondary.png" alt="" className="fp-social-icon-img" />
                 </a>
-                <a href="https://www.tiktok.com/@fostersandpaws" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
-                  <IconTikTok />
+                <a className="fp-social-icon" href="https://www.tiktok.com/@fostersandpaws" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+                  <img src="/logos/social/TikTok_Icon_Black_Circle.png" alt="" className="fp-social-icon-img" />
                 </a>
               </div>
             </div>
@@ -280,7 +280,15 @@ const CSS = `
 .fp-social-follow { margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border); text-align: center; }
 .fp-social-heading { font-size: 18px; font-weight: 700; margin: 0 0 14px; }
 .fp-social-links { display: flex; justify-content: center; gap: 20px; }
-.fp-social-links a { color: var(--accent); display: flex; }
+.fp-social-icon {
+  width: 40px; height: 40px; border-radius: 50%; box-sizing: border-box;
+  border: 1px solid var(--border); background: var(--bg-card);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; flex-shrink: 0;
+}
+.fp-social-icon--facebook { background: var(--text-primary); }
+.fp-social-icon-img { width: 40px; height: 40px; display: block; }
+.fp-social-icon-img--inset { width: 24px; height: 24px; }
 
 .fp-sticky-cta-bar {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
@@ -290,32 +298,3 @@ const CSS = `
 }
 .fp-sticky-cta-bar-inner { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
 `
-
-// ---------- Social platform icons (single-use, simplified glyphs — not the app's line-icon system) ----------
-function IconInstagram(props) {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
-      <rect x="3" y="3" width="18" height="18" rx="5" />
-      <circle cx="12" cy="12" r="4.2" />
-      <circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none" />
-    </svg>
-  )
-}
-
-function IconFacebook(props) {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M14 8.5h-1.5c-1 0-1.5.5-1.5 1.5v2h3l-.4 2.5h-2.6V21" />
-    </svg>
-  )
-}
-
-function IconTikTok(props) {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
-      <path d="M13.5 3v10.8a3.3 3.3 0 11-2.8-3.27" />
-      <path d="M13.5 3c.4 2.1 2 3.6 4.1 3.8" />
-    </svg>
-  )
-}
