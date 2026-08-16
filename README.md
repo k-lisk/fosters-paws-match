@@ -34,8 +34,17 @@ Phase 1 has no backend and no external dependencies — it's fully demo-able as-
 git clone https://github.com/k-lisk/fosters-paws-match.git
 cd fosters-paws-match
 npm install
+cp .env.example .env
 npm run dev
 ```
+
+### Environment variables
+
+| Variable | Required | Purpose |
+|---|---|---|
+| `VITE_POSTHOG_KEY` | No — app runs fine without it, analytics just no-ops | PostHog project API key for funnel tracking (`src/shared/analytics.js`). Get one from your PostHog project's settings → Project API Key. |
+
+Only the key needs an env var — the PostHog host (`https://us.i.posthog.com`) isn't sensitive and is hardcoded in `analytics.js`.
  
 ## Roadmap (Phase 2)
  

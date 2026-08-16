@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Landing from './Landing'
 import GuidedMatch from './GuidedMatch'
 import SpiritDogQuiz from './SpiritDogQuiz'
+import { track } from './shared/analytics'
 
 // ============================================================
 // Top-level view router — toggles between the shared Landing
@@ -16,11 +17,13 @@ function App() {
   const [presetActivity, setPresetActivity] = useState(null)
 
   function startGuided(activity) {
+    track('guided_match_started', { source: activity ? 'quiz' : 'landing' })
     setPresetActivity(activity || null)
     setView('guided')
   }
 
   function startQuiz() {
+    track('quiz_started')
     setView('quiz')
   }
 

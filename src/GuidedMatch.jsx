@@ -1,7 +1,8 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { THEME_CSS, SectionProgress, OptionGrid, StepActions, BrowseMoreLinks, DonateButton } from './shared/StepPrimitives'
 import { DogCard, DOG_CARD_CSS } from './shared/DogCard'
 import { ENERGY_SCALE, MOCK_DOGS } from './shared/mockDogs'
+import { track } from './shared/analytics'
 
 // ============================================================
 // Fosters & Paws — Guided Adoption Match (Feature 1, Phase 1)
@@ -262,6 +263,9 @@ export default function GuidedMatch({ initialAnswers = {}, onExit }) {
   }
 
   function submitForm() {
+    if (current.id === 'your_info_contact') {
+      track('contact_info_submitted', { updates_opt_in: !!formDraft.updatesOptIn })
+    }
     setAnswer(current.id, formDraft)
     goNext()
   }
@@ -282,6 +286,12 @@ export default function GuidedMatch({ initialAnswers = {}, onExit }) {
     const flatAnswers = { ...answers }
     return computeMatches(flatAnswers)
   }, [phase]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (phase === 'results') {
+      track('guided_match_completed', { match_count: matches.length })
+    }
+  }, [phase, matches])
 
   function restart() {
     setAnswers({})
@@ -384,7 +394,7 @@ export default function GuidedMatch({ initialAnswers = {}, onExit }) {
             ))}
           </div>
 
-          <DonateButton style={{ marginTop: 24 }} />
+          <DonateButton style={{ marginTop: 24 }} source="guided_match" />
 
           <StepActions>
             <button className="fp-btn fp-btn--tertiary" onClick={restart}>Start over</button>

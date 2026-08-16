@@ -13,6 +13,7 @@
 
 import { Fragment } from 'react'
 import { IconCheck } from './icons'
+import { track } from './analytics'
 
 export const THEME_CSS = `
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
@@ -79,6 +80,7 @@ export const THEME_CSS = `
 .fp-btn {
   border: none; border-radius: 12px; padding: 13px 20px; font-size: 14px; font-weight: 700;
   cursor: pointer; font-family: inherit; transition: opacity .15s, box-shadow .15s, background .15s;
+  text-align: center; text-decoration: none;
 }
 .fp-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .fp-btn--primary { background: var(--accent); color: var(--accent-text); box-shadow: 0 2px 6px rgba(154,100,99,0.35); }
@@ -90,7 +92,7 @@ export const THEME_CSS = `
 .fp-btn--donate { background: var(--text-primary); color: #ffffff; border: none; box-shadow: 0 2px 8px rgba(55,56,61,0.3); }
 .fp-btn--donate:not(:disabled):hover { opacity: 0.9; }
 .fp-btn--ghost { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
-.fp-btn--full { display: block; width: 100%; margin-top: 14px; box-sizing: border-box; text-align: center; }
+.fp-btn--full { display: block; width: 100%; margin-top: 14px; box-sizing: border-box; }
 
 .fp-badge-card {
   background: var(--bg-card);
@@ -237,7 +239,7 @@ export function BrowseMoreLinks() {
 }
 
 // ---------- Donate CTA ----------
-export function DonateButton({ style }) {
+export function DonateButton({ style, source }) {
   return (
     <a
       className="fp-btn fp-btn--donate fp-btn--full"
@@ -245,6 +247,7 @@ export function DonateButton({ style }) {
       href="https://www.fostersandpaws.org/donate"
       target="_blank"
       rel="noopener noreferrer"
+      onClick={() => track('donate_clicked', { source })}
     >
       Donate to the rescue
     </a>

@@ -1,8 +1,9 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { THEME_CSS, SectionProgress, OptionGrid, StepActions, BrowseMoreLinks, DonateButton } from './shared/StepPrimitives'
 import { DogCard, DOG_CARD_CSS } from './shared/DogCard'
 import { ENERGY_SCALE, MOCK_DOGS } from './shared/mockDogs'
 import { IconZzz, IconWaves, IconDice, IconGradCap, IconDevilFace, IconFlame } from './shared/icons'
+import { track } from './shared/analytics'
 
 // ============================================================
 // Fosters & Paws — Spirit Dog Quiz (Feature 2, Phase 1)
@@ -183,6 +184,12 @@ export default function SpiritDogQuiz({ onAdopt, onExit }) {
     return { archetype, dogs, energyLabel: ENERGY_SCALE[profile.energyIdx] }
   }, [phase]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {
+    if (phase === 'result' && result) {
+      track('quiz_completed', { archetype: result.archetype.id, archetype_name: result.archetype.name })
+    }
+  }, [phase, result])
+
   function retake() {
     setAnswers({})
     setStep(1)
@@ -221,6 +228,10 @@ export default function SpiritDogQuiz({ onAdopt, onExit }) {
               <p className="fp-archetype-blurb">{result.archetype.blurb}</p>
             </div>
 
+            <StepActions style={{ marginBottom: 20 }}>
+              <button className="fp-btn fp-btn--tertiary" onClick={retake}>Retake the quiz</button>
+            </StepActions>
+
             <h3 className="fp-question fp-quiz-dogs-heading">Dogs with this energy right now</h3>
             <div className="fp-dog-card-grid">
               {result.dogs.map(dog => (
@@ -228,22 +239,18 @@ export default function SpiritDogQuiz({ onAdopt, onExit }) {
               ))}
             </div>
 
-            <StepActions style={{ marginTop: 24 }}>
-              <button className="fp-btn fp-btn--tertiary" onClick={retake}>Retake the quiz</button>
-            </StepActions>
-
             <BrowseMoreLinks />
 
             <div className="fp-social-follow">
               <h3 className="fp-social-heading">Follow us</h3>
               <div className="fp-social-links">
-                <a className="fp-social-icon" href="https://www.instagram.com/fosters_and_paws/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                <a className="fp-social-icon" href="https://www.instagram.com/fosters_and_paws/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" onClick={() => track('social_link_clicked', { platform: 'instagram' })}>
                   <img src="/logos/social/Instagram_Glyph_Black.svg" alt="" className="fp-social-icon-img fp-social-icon-img--inset" />
                 </a>
-                <a className="fp-social-icon fp-social-icon--facebook" href="https://www.facebook.com/fostersandpaws" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                <a className="fp-social-icon fp-social-icon--facebook" href="https://www.facebook.com/fostersandpaws" target="_blank" rel="noopener noreferrer" aria-label="Facebook" onClick={() => track('social_link_clicked', { platform: 'facebook' })}>
                   <img src="/logos/social/Facebook_Logo_Secondary.png" alt="" className="fp-social-icon-img" />
                 </a>
-                <a className="fp-social-icon" href="https://www.tiktok.com/@fostersandpaws" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+                <a className="fp-social-icon" href="https://www.tiktok.com/@fostersandpaws" target="_blank" rel="noopener noreferrer" aria-label="TikTok" onClick={() => track('social_link_clicked', { platform: 'tiktok' })}>
                   <img src="/logos/social/TikTok_Icon_Black_Circle.png" alt="" className="fp-social-icon-img" />
                 </a>
               </div>
@@ -252,10 +259,16 @@ export default function SpiritDogQuiz({ onAdopt, onExit }) {
 
           <div className="fp-sticky-cta-bar">
             <div className="fp-sticky-cta-bar-inner">
-              <button className="fp-btn fp-btn--primary" onClick={() => onAdopt?.(result.energyLabel)}>
+              <button
+                className="fp-btn fp-btn--primary"
+                onClick={() => {
+                  track('quiz_find_my_match_clicked')
+                  onAdopt?.(result.energyLabel)
+                }}
+              >
                 Find my match
               </button>
-              <DonateButton style={{ marginTop: 0 }} />
+              <DonateButton style={{ marginTop: 0 }} source="quiz" />
             </div>
           </div>
         </>

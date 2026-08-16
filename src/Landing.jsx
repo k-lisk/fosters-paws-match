@@ -1,4 +1,6 @@
+import { useEffect } from 'react'
 import { THEME_CSS } from './shared/StepPrimitives'
+import { track } from './shared/analytics'
 
 // ============================================================
 // Fosters & Paws — Landing screen
@@ -16,6 +18,8 @@ import { THEME_CSS } from './shared/StepPrimitives'
 // ============================================================
 
 export default function Landing({ onFindMatch, onSpiritQuiz }) {
+  useEffect(() => { track('landing_viewed') }, [])
+
   return (
     <div className="fp-page">
       <style>{THEME_CSS}{CSS}</style>
