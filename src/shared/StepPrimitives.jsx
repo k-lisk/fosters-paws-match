@@ -43,6 +43,7 @@ export const THEME_CSS = `
 .fp-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
 .fp-question { font-size: 22px; font-weight: 700; margin: 0 0 6px; }
 .fp-hint { color: var(--text-muted); font-size: 14px; margin: 0 0 20px; line-height: 1.5; }
+.fp-lead { color: var(--text-muted); font-size: 15px; line-height: 1.55; margin: 0; }
 
 /* ---------- Section progress rings ---------- */
 .fp-section-progress-desktop { display: flex; align-items: flex-start; flex: 1; }
@@ -93,6 +94,9 @@ export const THEME_CSS = `
 .fp-btn--donate:not(:disabled):hover { opacity: 0.9; }
 .fp-btn--ghost { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
 .fp-btn--full { display: block; width: 100%; margin-top: 14px; box-sizing: border-box; }
+
+.fp-spinner { width: 28px; height: 28px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: fp-spin .7s linear infinite; }
+@keyframes fp-spin { to { transform: rotate(360deg); } }
 
 .fp-badge-card {
   background: var(--bg-card);

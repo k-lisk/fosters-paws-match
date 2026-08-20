@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from 'react'
 import { THEME_CSS, SectionProgress, OptionGrid, StepActions, BrowseMoreLinks, DonateButton } from './shared/StepPrimitives'
 import { DogCard, DOG_CARD_CSS } from './shared/DogCard'
-import { ENERGY_SCALE, MOCK_DOGS } from './shared/mockDogs'
+import { ENERGY_SCALE } from './shared/mockDogs'
 import { track } from './shared/analytics'
 
 // ============================================================
@@ -143,8 +143,8 @@ function puppyAdultFit(pref, dog) {
   return (pref === 'puppy') === (dog.ageCategory === 'Puppy') ? 1 : 0
 }
 
-function computeMatches(answers) {
-  const scored = MOCK_DOGS.map(dog => {
+function computeMatches(answers, dogs) {
+  const scored = dogs.map(dog => {
     // Hard filters
     if (answers.good_with_kids === 'yes' && !dog.goodWithKids) return { dog, score: -1 }
     if (answers.potty_trained === 'yes' && !dog.houseTrained) return { dog, score: -1 }
@@ -216,7 +216,7 @@ function formatPhone(value) {
 }
 
 // ---------- Guided-match component ----------
-export default function GuidedMatch({ initialAnswers = {}, onExit }) {
+export default function GuidedMatch({ initialAnswers = {}, onExit, dogs }) {
   const [phase, setPhase] = useState('flow') // flow | computing | results
   const [step, setStep] = useState(1)
   const [answers, setAnswers] = useState(() => ({ ...initialAnswers }))
@@ -282,16 +282,16 @@ export default function GuidedMatch({ initialAnswers = {}, onExit }) {
   }, [current, formDraft])
 
   const matches = useMemo(() => {
-    if (phase !== 'results') return []
+    if (phase !== 'results' || !dogs) return []
     const flatAnswers = { ...answers }
-    return computeMatches(flatAnswers)
-  }, [phase]) // eslint-disable-line react-hooks/exhaustive-deps
+    return computeMatches(flatAnswers, dogs)
+  }, [phase, dogs]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (phase === 'results') {
+    if (phase === 'results' && dogs) {
       track('guided_match_completed', { match_count: matches.length })
     }
-  }, [phase, matches])
+  }, [phase, dogs, matches])
 
   function restart() {
     setAnswers({})
@@ -373,26 +373,34 @@ export default function GuidedMatch({ initialAnswers = {}, onExit }) {
         </>
       )}
 
-      {phase === 'computing' && (
+      {(phase === 'computing' || (phase === 'results' && !dogs)) && (
         <div className="fp-body fp-body--center">
           <div className="fp-spinner" />
           <p className="fp-lead" style={{ marginTop: 16 }}>Finding your matches…</p>
         </div>
       )}
 
-      {phase === 'results' && (
+      {phase === 'results' && dogs && (
         <div className="fp-body">
           <div className="fp-eyebrow">Your matches</div>
           <h2 className="fp-question">A few dogs we think you'd love</h2>
-          <p className="fp-hint">
-            These aren't ranked — every dog here could be a great fit based on what you told us. Reach out about any of them.
-          </p>
+          {matches.length > 0 && (
+            <p className="fp-hint">
+              These aren't ranked — every dog here could be a great fit based on what you told us. Reach out about any of them.
+            </p>
+          )}
 
-          <div className="fp-dog-card-grid">
-            {matches.map(dog => (
-              <DogCard key={dog.id} dog={dog} tags={[dog.ageCategory, ...matchReasons(dog, answers)]} />
-            ))}
-          </div>
+          {matches.length === 0 ? (
+            <p className="fp-hint">
+              We don't have a dog that fits everything you're looking for right now — but check back soon, or browse everyone currently available below.
+            </p>
+          ) : (
+            <div className="fp-dog-card-grid">
+              {matches.map(dog => (
+                <DogCard key={dog.id} dog={dog} tags={[dog.ageCategory, ...matchReasons(dog, answers)]} />
+              ))}
+            </div>
+          )}
 
           <DonateButton style={{ marginTop: 24 }} source="guided_match" />
 
@@ -409,7 +417,6 @@ export default function GuidedMatch({ initialAnswers = {}, onExit }) {
 
 // ---------- Styles (flow-specific — shared tokens/primitives/chrome live in shared/StepPrimitives) ----------
 const CSS = `
-.fp-lead { color: var(--text-muted); font-size: 15px; line-height: 1.55; margin: 0; }
 .fp-form-fields { display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; }
 .fp-field-label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
 .fp-required { color: var(--accent); }
@@ -420,6 +427,4 @@ const CSS = `
 .fp-input:focus { outline: none; border-color: var(--accent); }
 .fp-checkbox-field { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--text-muted); line-height: 1.4; cursor: pointer; }
 .fp-checkbox { margin-top: 2px; accent-color: var(--accent); width: 16px; height: 16px; flex-shrink: 0; }
-.fp-spinner { width: 28px; height: 28px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: fp-spin .7s linear infinite; }
-@keyframes fp-spin { to { transform: rotate(360deg); } }
 `

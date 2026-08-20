@@ -61,7 +61,6 @@ export default function Landing({ onFindMatch, onSpiritQuiz }) {
 const CSS = `
 .fp-landing { max-width: 640px; }
 .fp-title { font-size: 26px; font-weight: 700; margin: 0 0 12px; }
-.fp-lead { color: var(--text-muted); font-size: 15px; line-height: 1.55; margin: 0; }
 .fp-entry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 28px; text-align: left; }
 .fp-entry-card { display: flex; flex-direction: column; position: relative; }
 .fp-entry-card--serious {

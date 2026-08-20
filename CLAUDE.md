@@ -4,7 +4,7 @@ Technical standards and working conventions for this repo. Read this, PRD.md, an
  
 ## Project
  
-Fosters & Paws Dog Matching Tool — a guided adopter intake flow that matches answers to mock dog data. Phase 1 only: no backend, no external APIs, no auth.
+Fosters & Paws Dog Matching Tool — a guided adopter intake flow that matches answers to dog data. No auth, no database. One exception to "no backend": `api/dogs.js`, a Vercel serverless function that proxies ShelterLuv's `/animals` endpoint so the API key never reaches the client — see DECISIONS.md. Everything else about the zero-backend framing still holds: no database, no other external APIs, no auth.
  
 ## Tech Stack
  
@@ -12,7 +12,7 @@ Fosters & Paws Dog Matching Tool — a guided adopter intake flow that matches a
 - **Language:** JavaScript (not TypeScript — matches SUPR, keeps this fast to iterate on)
 - **Styling:** Plain CSS via a single injected `<style>` block per component (see existing `GuidedMatch.jsx` for the pattern) — no CSS framework, no CSS-in-JS library
 - **State:** React `useState`/`useMemo` only. No Redux, no Zustand, no context providers — the whole app is one flow with local state.
-- **Backend:** None in Phase 1. No Supabase, no database, no server. `MOCK_DOGS` is a hardcoded array in `src/shared/mockDogs.js`.
+- **Backend:** No Supabase, no database, no auth server. One serverless function (`api/dogs.js`) proxies ShelterLuv so its API key stays server-side — see Deployment below. `MOCK_DOGS` (`src/shared/mockDogs.js`) is the automatic fallback whenever live data isn't available (no key configured, ShelterLuv unreachable, or running under plain `vite` locally, which doesn't execute `/api` functions at all).
 - **Package manager:** npm
 ## Build & Verify Commands
  
@@ -42,5 +42,5 @@ There is no test suite yet. If Claude Code adds one, prefer Vitest (pairs native
 ## Deployment
  
 - Hosted on Vercel (Hobby tier for now — see DECISIONS.md for the commercial-use caveat)
-- No environment variables needed for Phase 1
-- `npm run build` output deploys as a static site — no serverless functions in this phase
+- `SHELTERLUV_API_KEY` env var, server-side only (never `VITE_`-prefixed — that would bundle it into client JS). `VITE_POSTHOG_KEY` is the one client-exposed env var; see README's environment-variables table for the distinction.
+- `npm run build` output deploys as a static site; `api/dogs.js` deploys alongside it as a Vercel serverless function (zero-config — no `vercel.json`)

@@ -43,6 +43,7 @@ npm run dev
 | Variable | Required | Purpose |
 |---|---|---|
 | `VITE_POSTHOG_KEY` | No — app runs fine without it, analytics just no-ops | PostHog project API key for funnel tracking (`src/shared/analytics.js`). Get one from your PostHog project's settings → Project API Key. |
+| `SHELTERLUV_API_KEY` | No — app runs fine without it, falls back to `MOCK_DOGS` | ShelterLuv API key for live dog data (`api/dogs.js`). **Deliberately not `VITE_`-prefixed** — unlike the PostHog key, this one must never be bundled into client JS. It's read server-side only, via `process.env` inside the Vercel serverless function. Also note: plain `npm run dev` (Vite) doesn't run `/api` functions at all — you'd need `vercel dev` to exercise the live path locally; `npm run dev` always uses the mock fallback regardless of this variable. |
 
 Only the key needs an env var — the PostHog host (`https://us.i.posthog.com`) isn't sensitive and is hardcoded in `analytics.js`.
  

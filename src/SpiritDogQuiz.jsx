@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from 'react'
 import { THEME_CSS, SectionProgress, OptionGrid, StepActions, BrowseMoreLinks, DonateButton } from './shared/StepPrimitives'
 import { DogCard, DOG_CARD_CSS } from './shared/DogCard'
-import { ENERGY_SCALE, MOCK_DOGS } from './shared/mockDogs'
+import { ENERGY_SCALE } from './shared/mockDogs'
 import { IconZzz, IconWaves, IconDice, IconGradCap, IconDevilFace, IconFlame } from './shared/icons'
 import { track } from './shared/analytics'
 
@@ -129,7 +129,7 @@ function sizeLeanFit(dogSize, sizeLean) {
 // Guarantees one Puppy-category and one Adult-category dog (not just top-2-by-
 // closeness), still ranked by closeness within the pair so the closer match
 // displays first — consistent with the quiz's "ranked, not shuffled" results.
-function matchDogs(archetype) {
+function matchDogs(archetype, dogs) {
   const scoreDog = dog => {
     const dogIdx = ENERGY_SCALE.indexOf(dog.energy)
     const energyScore = 1 - Math.abs(dogIdx - archetype.energyIdx) / (ENERGY_SCALE.length - 1)
@@ -140,7 +140,7 @@ function matchDogs(archetype) {
   // otherwise same-profile dogs (e.g. littermates) would always resolve to
   // whichever was added first, defeating the point of having more than one.
   const topByCategory = category => {
-    const pool = MOCK_DOGS
+    const pool = dogs
       .filter(dog => dog.ageCategory === category)
       .map(dog => ({ dog, score: scoreDog(dog) }))
     const topScore = Math.max(...pool.map(p => p.score))
@@ -155,7 +155,7 @@ function matchDogs(archetype) {
 }
 
 // ---------- Spirit Dog Quiz component ----------
-export default function SpiritDogQuiz({ onAdopt, onExit }) {
+export default function SpiritDogQuiz({ onAdopt, onExit, dogs }) {
   const [phase, setPhase] = useState('quiz') // quiz | result
   const [step, setStep] = useState(1)
   const [answers, setAnswers] = useState({})
@@ -177,12 +177,12 @@ export default function SpiritDogQuiz({ onAdopt, onExit }) {
   }
 
   const result = useMemo(() => {
-    if (phase !== 'result') return null
+    if (phase !== 'result' || !dogs) return null
     const profile = computeProfile(answers)
     const archetype = pickArchetype(profile)
-    const dogs = matchDogs(archetype)
-    return { archetype, dogs, energyLabel: ENERGY_SCALE[profile.energyIdx] }
-  }, [phase]) // eslint-disable-line react-hooks/exhaustive-deps
+    const matchedDogs = matchDogs(archetype, dogs)
+    return { archetype, dogs: matchedDogs, energyLabel: ENERGY_SCALE[profile.energyIdx] }
+  }, [phase, dogs]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (phase === 'result' && result) {
@@ -215,6 +215,13 @@ export default function SpiritDogQuiz({ onAdopt, onExit }) {
         </>
       )}
 
+      {phase === 'result' && !dogs && (
+        <div className="fp-body fp-body--center">
+          <div className="fp-spinner" />
+          <p className="fp-lead" style={{ marginTop: 16 }}>Finding your matches…</p>
+        </div>
+      )}
+
       {phase === 'result' && result && (
         <>
           <div className="fp-body fp-quiz-results">
@@ -232,12 +239,20 @@ export default function SpiritDogQuiz({ onAdopt, onExit }) {
               <button className="fp-btn fp-btn--tertiary" onClick={retake}>Retake the quiz</button>
             </StepActions>
 
-            <h3 className="fp-question fp-quiz-dogs-heading">Dogs with this energy right now</h3>
-            <div className="fp-dog-card-grid">
-              {result.dogs.map(dog => (
-                <DogCard key={dog.id} dog={dog} tags={[dog.ageCategory]} />
-              ))}
-            </div>
+            {result.dogs.length === 0 ? (
+              <p className="fp-hint">
+                We don't have a dog that fits this energy right now — but check back soon, or browse everyone currently available below.
+              </p>
+            ) : (
+              <>
+                <h3 className="fp-question fp-quiz-dogs-heading">Dogs with this energy right now</h3>
+                <div className="fp-dog-card-grid">
+                  {result.dogs.map(dog => (
+                    <DogCard key={dog.id} dog={dog} tags={[dog.ageCategory]} />
+                  ))}
+                </div>
+              </>
+            )}
 
             <BrowseMoreLinks />
 
