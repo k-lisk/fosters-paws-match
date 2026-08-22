@@ -112,12 +112,23 @@ export function DogCard({ dog, tags = [] }) {
           {overflow > 0 && <span className="fp-chip fp-chip--more">+{overflow} more</span>}
         </div>
       )}
-      <button
-        className="fp-btn fp-btn--secondary fp-dog-card-cta"
-        onClick={() => window.alert(`In production, this would start an inquiry with Fosters & Paws about ${dog.name}.`)}
-      >
-        Learn more
-      </button>
+      {dog.detailUrl ? (
+        <a
+          className="fp-btn fp-btn--secondary fp-dog-card-cta"
+          href={dog.detailUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn more
+        </a>
+      ) : (
+        <button
+          className="fp-btn fp-btn--secondary fp-dog-card-cta"
+          onClick={() => window.alert(`In production, this would start an inquiry with Fosters & Paws about ${dog.name}.`)}
+        >
+          Learn more
+        </button>
+      )}
     </div>
   )
 }

@@ -37,7 +37,7 @@ There is no test suite yet. If Claude Code adds one, prefer Vitest (pairs native
  
 - Don't add a backend, database, or auth system "just in case" — Phase 1 is explicitly zero-backend (see PRD Non-Goals)
 - Don't add TypeScript, a CSS framework, or a state management library — these are conscious omissions, not oversights
-- Don't wire the dog card's CTA ("Learn more", `src/shared/DogCard.jsx` — labeled "Ask about {dog}" in earlier builds) to a real email/API call — it's a placeholder alert by design until a submission-delivery decision is made (see PRD Open Questions)
+- Don't wire the dog card's CTA ("Learn more", `src/shared/DogCard.jsx` — labeled "Ask about {dog}" in earlier builds) to a real email/API submission call — still no inquiry-delivery mechanism, and that decision is still open (see PRD Open Questions). It's no longer a placeholder alert for real dogs, though: live ShelterLuv data now carries a `detailUrl` (computed server-side in `api/dogs.js`) and "Learn more" links out to the dog's real public ShelterLuv profile — a navigation, not a submission. `MOCK_DOGS` entries have no `detailUrl`, so the local-dev/no-key path still shows the original placeholder alert unchanged.
 - Don't build the opt-in checkbox into an actual email capture/ESP integration — Phase 1 only captures and stores the consent flag locally in form state; there's nothing to send to yet
 ## Deployment
  

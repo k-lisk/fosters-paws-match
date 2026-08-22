@@ -10,6 +10,14 @@
 
 const SHELTERLUV_URL = 'https://new.shelterluv.com/api/v1/animals?status_type=publishable&limit=100'
 
+// Two genuinely distinct base URLs (different wrap IDs per page), not one
+// shared pattern with a swapped ID — manually verified against two real
+// dogs (Lady Beatrix, adult-dogs; Murphy, puppies) before wiring this up.
+// Uses Internal-ID, not ID — the two are different ShelterLuv identifiers
+// and only Internal-ID resolves. See DECISIONS.md.
+const PUPPY_DETAIL_BASE = 'https://www.fostersandpaws.org/puppies#sl_embed&page=shelterluv_wrap_1782937715/embed/animal/'
+const ADULT_DETAIL_BASE = 'https://www.fostersandpaws.org/adult-dogs#sl_embed&page=shelterluv_wrap_1782937131/embed/animal/'
+
 // Distinct-keyword-count net score → the app's existing 5-point ENERGY_SCALE.
 // A lossy approximation over free-text Description — ShelterLuv has no
 // structured temperament field (confirmed unavailable via direct response
@@ -52,6 +60,7 @@ function mapAnimal(raw) {
   const attributes = raw.Attributes || []
   const isHousetrainedYes = hasAttribute(attributes, 'Housetrained', 'Yes')
   const ageCategory = raw.Age < 12 ? 'Puppy' : 'Adult'
+  const detailBase = ageCategory === 'Puppy' ? PUPPY_DETAIL_BASE : ADULT_DETAIL_BASE
 
   return {
     id: raw.ID,
@@ -65,6 +74,7 @@ function mapAnimal(raw) {
     houseTrained: isHousetrainedYes,
     energy: scoreEnergy(raw.Description),
     bio: cleanBio(raw.Description),
+    detailUrl: `${detailBase}${raw['Internal-ID']}`,
   }
 }
 

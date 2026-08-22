@@ -204,13 +204,15 @@ export default function SpiritDogQuiz({ onAdopt, onExit, dogs }) {
         <>
           <div className="fp-header">
             <SectionProgress steps={QUIZ_QUESTIONS} step={step} />
-            <button className="fp-back" onClick={goBack}>← Back</button>
           </div>
 
           <div className="fp-body">
             <div className="fp-eyebrow">{current.section}</div>
             <h2 className="fp-question">{current.question}</h2>
             <OptionGrid options={current.options} selected={answers[current.id]} onSelect={selectAnswer} />
+            <StepActions>
+              <button className="fp-btn fp-btn--tertiary" onClick={goBack}>← Back</button>
+            </StepActions>
           </div>
         </>
       )}

@@ -37,7 +37,6 @@ export const THEME_CSS = `
 }
 
 .fp-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px 0; max-width: 560px; margin: 0 auto; }
-.fp-back { background: none; border: none; color: var(--text-muted); font-size: 14px; cursor: pointer; margin-left: 16px; white-space: nowrap; }
 .fp-body { padding: 28px 24px 0; max-width: 560px; margin: 0 auto; }
 .fp-body--center { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 420px; padding-top: 0; }
 .fp-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
@@ -66,7 +65,7 @@ export const THEME_CSS = `
 .fp-option-grid--stack { display: flex; flex-direction: column; gap: 8px; }
 .fp-option-grid--grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .fp-option-card {
-  display: flex; align-items: center; gap: 10px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
   background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
   padding: 14px; cursor: pointer; transition: border-color .15s, background .15s, box-shadow .15s;
   box-shadow: 0 1px 2px rgba(55,56,61,0.04);

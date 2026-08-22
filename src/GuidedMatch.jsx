@@ -300,7 +300,6 @@ export default function GuidedMatch({ initialAnswers = {}, onExit, dogs }) {
         <>
           <div className="fp-header">
             <SectionProgress steps={STEPS} step={step} />
-            <button className="fp-back" onClick={goBack}>← Back</button>
           </div>
 
           <div className="fp-body">
@@ -309,7 +308,12 @@ export default function GuidedMatch({ initialAnswers = {}, onExit, dogs }) {
             {current.hint && <p className="fp-hint">{current.hint}</p>}
 
             {current.type === 'single' && (
-              <OptionGrid options={current.options} selected={answers[current.id]} onSelect={selectSingle} />
+              <>
+                <OptionGrid options={current.options} selected={answers[current.id]} onSelect={selectSingle} />
+                <StepActions>
+                  <button className="fp-btn fp-btn--tertiary" onClick={goBack}>← Back</button>
+                </StepActions>
+              </>
             )}
 
             {current.type === 'form' && (
@@ -358,6 +362,7 @@ export default function GuidedMatch({ initialAnswers = {}, onExit, dogs }) {
                   <button className="fp-btn fp-btn--primary" disabled={!formValid} onClick={submitForm}>
                     Continue
                   </button>
+                  <button className="fp-btn fp-btn--tertiary" onClick={goBack}>← Back</button>
                 </StepActions>
               </>
             )}
