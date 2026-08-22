@@ -143,12 +143,10 @@ function puppyAdultFit(pref, dog) {
   return (pref === 'puppy') === (dog.ageCategory === 'Puppy') ? 1 : 0
 }
 
+const RESULT_COUNT = 4
+
 function computeMatches(answers, dogs) {
   const scored = dogs.map(dog => {
-    // Hard filters
-    if (answers.good_with_kids === 'yes' && !dog.goodWithKids) return { dog, score: -1 }
-    if (answers.potty_trained === 'yes' && !dog.houseTrained) return { dog, score: -1 }
-
     let score = 0
     // Activity match — closeness on the energy scale (35%)
     const wantIdx = ENERGY_SCALE.indexOf(answers.activity)
@@ -169,23 +167,17 @@ function computeMatches(answers, dogs) {
     // Puppy/adult preference — soft boost, not a hard filter (15%)
     score += puppyAdultFit(answers.puppy_or_adult, dog) * 15
 
+    // Stated hard requirements — no longer disqualifying, now a heavy penalty.
+    // A dog that fails one can still surface if nothing better exists, ranked low.
+    // See DECISIONS.md — deliberate reversal of the earlier unranked/shuffled design.
+    if (answers.good_with_kids === 'yes' && !dog.goodWithKids) score -= 50
+    if (answers.potty_trained === 'yes' && !dog.houseTrained) score -= 50
+
     return { dog, score }
   })
 
-  const eligible = scored.filter(s => s.score >= 0)
-  eligible.sort((a, b) => b.score - a.score)
-
-  const threshold = 55
-  let matches = eligible.filter(s => s.score >= threshold)
-  if (matches.length < 2) matches = eligible.slice(0, 3) // fallback so we never show an empty result
-
-  // Shuffle so it never reads as a fixed ranking, even though it's scored underneath
-  const shuffled = [...matches]
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
-  }
-  return shuffled.map(s => s.dog)
+  scored.sort((a, b) => b.score - a.score)
+  return scored.slice(0, RESULT_COUNT).map(s => s.dog)
 }
 
 function energyTag(dogEnergy) {
@@ -386,13 +378,13 @@ export default function GuidedMatch({ initialAnswers = {}, onExit, dogs }) {
           <h2 className="fp-question">A few dogs we think you'd love</h2>
           {matches.length > 0 && (
             <p className="fp-hint">
-              These aren't ranked — every dog here could be a great fit based on what you told us. Reach out about any of them.
+              Ranked by how closely each dog matches what you told us — reach out about any of them.
             </p>
           )}
 
           {matches.length === 0 ? (
             <p className="fp-hint">
-              We don't have a dog that fits everything you're looking for right now — but check back soon, or browse everyone currently available below.
+              We don't have any adoptable dogs listed right now — but check back soon, or browse everyone currently available below.
             </p>
           ) : (
             <div className="fp-dog-card-grid">

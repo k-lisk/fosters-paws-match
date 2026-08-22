@@ -325,4 +325,9 @@ const CSS = `
   padding: 12px 24px calc(12px + env(safe-area-inset-bottom, 0px));
 }
 .fp-sticky-cta-bar-inner { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
+
+@media (min-width: 481px) {
+  .fp-sticky-cta-bar-inner { flex-direction: row; gap: 10px; }
+  .fp-sticky-cta-bar-inner > .fp-btn { flex: 1; padding: 9px 16px; font-size: 13px; }
+}
 `

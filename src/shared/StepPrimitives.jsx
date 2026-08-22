@@ -36,7 +36,7 @@ export const THEME_CSS = `
   overflow: hidden;
 }
 
-.fp-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px 0; }
+.fp-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px 0; max-width: 560px; margin: 0 auto; }
 .fp-back { background: none; border: none; color: var(--text-muted); font-size: 14px; cursor: pointer; margin-left: 16px; white-space: nowrap; }
 .fp-body { padding: 28px 24px 0; max-width: 560px; margin: 0 auto; }
 .fp-body--center { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 420px; padding-top: 0; }
@@ -57,10 +57,10 @@ export const THEME_CSS = `
 .fp-section-connector { flex: 1; height: 2px; background: var(--border); margin: 21px 6px 0; align-self: flex-start; }
 .fp-section-connector--done { background: var(--accent); }
 
-.fp-section-progress-mobile { display: none; align-items: center; gap: 10px; flex: 1; }
-.fp-section-progress-mobile-text { display: flex; flex-direction: column; }
-.fp-section-progress-mobile-text .fp-section-name { font-size: 13px; font-weight: 700; color: var(--text-primary); }
-.fp-section-progress-mobile-text .fp-section-count { font-size: 11px; color: var(--text-muted); }
+.fp-section-progress-mobile { display: none; align-items: flex-start; flex: 1; }
+.fp-section-progress-mobile .fp-section-label { font-size: 9px; }
+.fp-section-progress-mobile .fp-section-connector { margin: 16px 3px 0; }
+.fp-section-progress-mobile .fp-section-ring-inner { font-size: 9px; }
 
 .fp-option-grid { margin-bottom: 12px; }
 .fp-option-grid--stack { display: flex; flex-direction: column; gap: 8px; }
@@ -163,30 +163,28 @@ function groupSections(steps, step) {
   })
 }
 
+function SectionRow({ sections, size }) {
+  return sections.map((s, i) => (
+    <Fragment key={s.name}>
+      {i > 0 && <div className={`fp-section-connector ${sections[i - 1].status === 'done' ? 'fp-section-connector--done' : ''}`} />}
+      <div className="fp-section-ring-wrap">
+        <SectionRing section={s} size={size} />
+        <span className={`fp-section-label fp-section-label--${s.status}`}>{s.name}</span>
+      </div>
+    </Fragment>
+  ))
+}
+
 export function SectionProgress({ steps, step }) {
   const sections = groupSections(steps, step)
-  const activeIndex = sections.findIndex(s => s.status === 'active')
-  const active = activeIndex === -1 ? sections[sections.length - 1] : sections[activeIndex]
 
   return (
     <>
       <div className="fp-section-progress-desktop">
-        {sections.map((s, i) => (
-          <Fragment key={s.name}>
-            {i > 0 && <div className={`fp-section-connector ${sections[i - 1].status === 'done' ? 'fp-section-connector--done' : ''}`} />}
-            <div className="fp-section-ring-wrap">
-              <SectionRing section={s} size={42} />
-              <span className={`fp-section-label fp-section-label--${s.status}`}>{s.name}</span>
-            </div>
-          </Fragment>
-        ))}
+        <SectionRow sections={sections} size={42} />
       </div>
       <div className="fp-section-progress-mobile">
-        <SectionRing section={active} size={38} />
-        <div className="fp-section-progress-mobile-text">
-          <span className="fp-section-name">{active.name}</span>
-          <span className="fp-section-count">Section {(activeIndex === -1 ? sections.length - 1 : activeIndex) + 1} of {sections.length}</span>
-        </div>
+        <SectionRow sections={sections} size={32} />
       </div>
     </>
   )
